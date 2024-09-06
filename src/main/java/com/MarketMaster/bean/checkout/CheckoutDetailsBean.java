@@ -20,7 +20,7 @@ public class CheckoutDetailsBean  implements Serializable {
     private int productPrice;
 	
     private int checkoutPrice;
-    
+
 	public CheckoutDetailsBean() {
 		super();
 	}
@@ -84,7 +84,7 @@ public class CheckoutDetailsBean  implements Serializable {
 		return "CheckoutDetailsBean [checkoutId=" + checkoutId + ", productId=" + productId + ", numberOfCheckout="
 				+ numberOfCheckout + ", productPrice=" + productPrice + ", checkoutPrice=" + checkoutPrice + "]";
 	}
-    
-	
-	
+
+
+
 }

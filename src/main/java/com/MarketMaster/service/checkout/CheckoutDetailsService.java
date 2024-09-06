@@ -1,12 +1,13 @@
 package com.MarketMaster.service.checkout;
 
-import com.MarketMaster.dao.checkout.CheckoutDetailsDao;
-import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.math.BigDecimal;
+
+import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
+import com.MarketMaster.dao.checkout.CheckoutDetailsDao;
 
 public class CheckoutDetailsService {
 	private static final Logger logger = Logger.getLogger(CheckoutDetailsService.class.getName());
@@ -19,7 +20,7 @@ public class CheckoutDetailsService {
     public CheckoutDetailsBean getCheckoutDetails(String checkoutId, String productId) {
         return CheckoutDetailsDao.getOne(checkoutId, productId);
     }
-    
+
     public List<CheckoutDetailsBean> getPartCheckoutDetails(String checkoutId) {
         return CheckoutDetailsDao.getPart(checkoutId);
     }
@@ -38,7 +39,7 @@ public class CheckoutDetailsService {
             // 計算新的 checkout_price
             int newCheckoutPrice = checkoutDetails.getNumberOfCheckout() * checkoutDetails.getProductPrice();
             checkoutDetails.setCheckoutPrice(newCheckoutPrice);
-            
+
             checkoutDetailsDao.update(checkoutDetails);
             logger.info("結帳明細更新成功: " + checkoutDetails);
         } catch (RuntimeException e) {
@@ -73,6 +74,6 @@ public class CheckoutDetailsService {
     public List<Map<String, Object>> getProductReturnRates() {
         return CheckoutDetailsDao.getProductReturnRates();
     }
-    
-   
+
+
 }

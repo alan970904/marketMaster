@@ -138,5 +138,5 @@ public class ProductBean implements java.io.Serializable {
 	public ProductBean() {
 		super();
 	}
-	
+
 }
