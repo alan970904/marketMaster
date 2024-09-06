@@ -7,7 +7,7 @@ public class CheckoutDetailsBean  implements java.io.Serializable {
     private int numberOfCheckout;
     private int productPrice;
     private int checkoutPrice;
-    
+
 	public CheckoutDetailsBean() {
 		super();
 	}
@@ -71,7 +71,7 @@ public class CheckoutDetailsBean  implements java.io.Serializable {
 		return "CheckoutDetailsBean [checkoutId=" + checkoutId + ", productId=" + productId + ", numberOfCheckout="
 				+ numberOfCheckout + ", productPrice=" + productPrice + ", checkoutPrice=" + checkoutPrice + "]";
 	}
-    
-	
-	
+
+
+
 }

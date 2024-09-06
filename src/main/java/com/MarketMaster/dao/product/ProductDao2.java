@@ -8,10 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import com.MarketMaster.bean.product.ProductBean;
 
 public class ProductDao2 {
@@ -53,10 +49,10 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(getOneSql);
 			stmt.setString(1, productId);
 			rs = stmt.executeQuery();
@@ -86,7 +82,7 @@ public class ProductDao2 {
 	}
 
 	public static List<ProductBean> getLike(String productName) {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 		try {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
@@ -94,7 +90,7 @@ public class ProductDao2 {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			StringBuilder getLikeSqlStr = new StringBuilder(getLikeSql);
 			stmt = connection.prepareStatement(getLikeSqlStr.append(" '%" + productName + "%'").toString());
 			rs = stmt.executeQuery();
@@ -133,10 +129,10 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			String sql = "SELECT * FROM products WHERE product_name LIKE ? ORDER BY product_id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 			stmt = connection.prepareStatement(sql);
 			stmt.setString(1, " %" + productName + "%");
@@ -174,14 +170,14 @@ public class ProductDao2 {
 		try {
 			total = 0;
 			String sql = "SELECT COUNT(*) FROM products WHERE product_name LIKE ?";
-			
+
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			PreparedStatement stmt = connection.prepareStatement(sql);
 			stmt.setString(1, "%" + productName + "%");
 			ResultSet rs = stmt.executeQuery();
@@ -200,7 +196,7 @@ public class ProductDao2 {
 	}
 
 	public static List<ProductBean> getAll() {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 
 		try {
 			// javax.naming.Context context = new InitialContext();
@@ -209,7 +205,7 @@ public class ProductDao2 {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(getAllSql);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -241,16 +237,16 @@ public class ProductDao2 {
 	}
 
 	public static List<ProductBean> getPagesProducts(int pageIndex, int pageSize) {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 
 		try {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(getPageSql);
 			int pageIndexCalc = (pageIndex - 1) * pageSize;
 			stmt.setInt(1, pageIndexCalc);
@@ -293,10 +289,10 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(sql);
 			rs = stmt.executeQuery();
 
@@ -320,10 +316,10 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-		
+
 			stmt = connection.prepareStatement(insertSql);
 
 			stmt.setString(1, product.getProductId());
@@ -362,7 +358,7 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
 
@@ -411,7 +407,7 @@ public class ProductDao2 {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(shelveSql);
 
 			String productId = product.getProductId();
@@ -440,7 +436,7 @@ public class ProductDao2 {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(removeSql);
 
 			String productId = product.getProductId();
@@ -465,7 +461,7 @@ public class ProductDao2 {
 
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(updateSaleByCheckOut);
 			stmt.execute();
 
@@ -484,10 +480,10 @@ public class ProductDao2 {
 			// javax.naming.Context context = new InitialContext();
 			// DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
 			// connection = ds.getConnection();
-			
+
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	        connection = DriverManager.getConnection(url, user, password);
-			
+
 			stmt = connection.prepareStatement(sql);
 			stmt.setString(1, productId);
 			ResultSet rs = stmt.executeQuery();

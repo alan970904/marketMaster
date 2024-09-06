@@ -1,16 +1,5 @@
 package com.MarketMaster.controller.checkout;
 
-import com.MarketMaster.bean.checkout.CheckoutBean;
-import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
-import com.MarketMaster.bean.employee.EmpBean;
-import com.MarketMaster.bean.product.ProductBean;
-import com.MarketMaster.service.checkout.CheckoutService;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -18,13 +7,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.NamingException;
 
+import com.MarketMaster.bean.checkout.CheckoutBean;
+import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
+import com.MarketMaster.bean.employee.EmpBean;
+import com.MarketMaster.bean.product.ProductBean;
+import com.MarketMaster.service.checkout.CheckoutService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/CheckoutServlet")
 public class CheckoutServlet extends HttpServlet {
@@ -32,7 +32,7 @@ public class CheckoutServlet extends HttpServlet {
     private CheckoutService checkoutService;
     private static final Logger logger = Logger.getLogger(CheckoutServlet.class.getName());
 
-    
+
     // 構造函數
     public CheckoutServlet() {
         super();
@@ -103,11 +103,11 @@ public class CheckoutServlet extends HttpServlet {
                 break;
             case "getProductNames":
                 getProductNames(request, response);
-                break;   
+                break;
             case "updateTotalAndBonus":
                 updateTotalAndBonus(request, response);
-                break;  
-     
+                break;
+
                 default:
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無效的操作");
                     break;
@@ -118,7 +118,7 @@ public class CheckoutServlet extends HttpServlet {
             request.getRequestDispatcher("/checkout/error.jsp").forward(request, response);
         }
     }
-    
+
 
     // 刪除結帳記錄
     private void deleteCheckout(HttpServletRequest request, HttpServletResponse response)
@@ -179,19 +179,19 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("checkout", checkout);
         request.getRequestDispatcher("/checkout/InsertCheckout.jsp").forward(request, response);
     }
-    
+
  // 新增方法來從請求中創建 CheckoutDetailsBean 列表
     private List<CheckoutDetailsBean> createCheckoutDetailsFromRequest(HttpServletRequest request) {
         List<CheckoutDetailsBean> details = new ArrayList<>();
         String[] productIds = request.getParameterValues("productId");
         String[] quantities = request.getParameterValues("quantity");
         String[] prices = request.getParameterValues("productPrice");
-        
+
         if (productIds != null) {
             for (int i = 0; i < productIds.length; i++) {
                 CheckoutDetailsBean detail = new CheckoutDetailsBean();
                 detail.setProductId(productIds[i]);
-                
+
                 // 處理數量可能為空的情況
                 String quantityStr = quantities[i];
                 if (quantityStr != null && !quantityStr.isEmpty()) {
@@ -199,7 +199,7 @@ public class CheckoutServlet extends HttpServlet {
                 } else {
                     detail.setNumberOfCheckout(0); // 或者設置為其他默認值
                 }
-                
+
                 // 處理價格可能為空的情況
                 String priceStr = prices[i];
                 if (priceStr != null && !priceStr.isEmpty()) {
@@ -207,25 +207,25 @@ public class CheckoutServlet extends HttpServlet {
                 } else {
                     detail.setCheckoutPrice(0); // 或者設置為其他默認值
                 }
-                
+
                 details.add(detail);
             }
         }
-        
+
         return details;
     }
-    
+
 
     // 更新結帳記錄
     private void updateCheckout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        
+
         try {
             CheckoutBean checkout = createCheckoutFromRequest(request);
             boolean updateSuccess = checkoutService.updateCheckout(checkout);
-            
+
             if (updateSuccess) {
                 String jsonResponse = "{\"status\":\"success\",\"message\":\"更新成功\"}";
                 response.getWriter().write(jsonResponse);
@@ -312,7 +312,7 @@ public class CheckoutServlet extends HttpServlet {
         response.getWriter().write(nextId);
     }
 
-    
+
 
     // 獲取所有員工
     private void getAllEmployees(HttpServletRequest request, HttpServletResponse response)
@@ -329,16 +329,16 @@ public class CheckoutServlet extends HttpServlet {
         List<ProductBean> products = checkoutService.getProductNamesByCategory(category);
         sendJsonResponse(response, products);
     }
-    
+
     private void sendJsonResponse(HttpServletResponse response, Object data) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         new Gson().toJson(data, response.getWriter());
     }
-    
-    
-    
-    
+
+
+
+
  // 插入結帳記錄和明細
     private void insertCheckoutWithDetails(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -352,7 +352,7 @@ public class CheckoutServlet extends HttpServlet {
         if (request.getParameter("pointsDueDate") != null && !request.getParameter("pointsDueDate").isEmpty()) {
             pointsDueDate = Date.valueOf(request.getParameter("pointsDueDate"));
         }
-        
+
         CheckoutBean checkout = new CheckoutBean();
         checkout.setCheckoutId(checkoutId);
         checkout.setCustomerTel(customerTel);
@@ -361,7 +361,7 @@ public class CheckoutServlet extends HttpServlet {
         checkout.setCheckoutDate(checkoutDate);
         checkout.setBonusPoints(bonusPoints);
         checkout.setPointsDueDate(pointsDueDate);
-        
+
         List<CheckoutDetailsBean> details = new ArrayList<>();
         String productsJson = request.getParameter("products");
         if (productsJson != null && !productsJson.isEmpty()) {
@@ -398,8 +398,8 @@ public class CheckoutServlet extends HttpServlet {
         logger.info("解析完成，創建了 " + details.size() + " 個 CheckoutDetailsBean 對象");
         return details;
     }
-    
-    
+
+
     private void updateTotalAndBonus(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String checkoutId = request.getParameter("checkoutId");
@@ -417,5 +417,5 @@ public class CheckoutServlet extends HttpServlet {
         }
     }
 
-    
+
 }

@@ -17,7 +17,7 @@ public class EmpService {
     public EmpBean login(String employeeId, String password) throws DataAccessException {
         return empDao.validateEmployee(employeeId, password);
     }
-    
+
     // 檢查是否為首次登入
     public boolean isFirstLogin(String employeeId) throws DataAccessException {
         return empDao.isFirstLogin(employeeId);
@@ -27,7 +27,7 @@ public class EmpService {
     public boolean updatePassword(String employeeId, String newPassword) throws DataAccessException {
         return empDao.updatePassword(employeeId, newPassword);
     }
-    
+
     public boolean addEmployee(EmpBean emp) throws DataAccessException {
         if (empDao.getEmployee(emp.getEmployeeId()) != null) {
             throw new DataAccessException("員工編號已存在");
@@ -64,12 +64,12 @@ public class EmpService {
     public List<RankLevelBean> getRankList() throws DataAccessException {
         return empDao.getRankList();
     }
-    
+
     // 獲取員工視圖模型的方法
     public EmployeeViewModel getEmployeeViewModel(String employeeId) throws DataAccessException {
         return empDao.getEmployeeViewModel(employeeId);
     }
-    
+
     // 生成新的員工ID的方法
     public String generateNewEmployeeId() throws DataAccessException {
     	// 獲取最後一個員工ID

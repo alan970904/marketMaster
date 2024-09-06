@@ -1,20 +1,19 @@
 package com.MarketMaster.service.checkout;
 
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.naming.NamingException;
+
 import com.MarketMaster.bean.checkout.CheckoutBean;
 import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
 import com.MarketMaster.bean.employee.EmpBean;
 import com.MarketMaster.bean.product.ProductBean;
 import com.MarketMaster.dao.checkout.CheckoutDao;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import javax.naming.NamingException;
-
-import java.util.logging.Level;
 
 public class CheckoutService {
     private static final Logger logger = Logger.getLogger(CheckoutService.class.getName());
@@ -93,7 +92,7 @@ public class CheckoutService {
     public String generateNextCheckoutId() {
         logger.info("開始生成下一個結帳ID");
         String lastId = checkoutDao.getLastCheckoutId();
-        
+
         if (lastId == null || !lastId.matches("C\\d{8}")) {
             logger.info("無效的上一個ID或沒有現有ID，返回初始ID: C00000001");
             return "C00000001";
@@ -121,7 +120,7 @@ public class CheckoutService {
         logger.info("獲取類別為 '" + category + "' 的產品");
         return checkoutDao.getProductNamesByCategory(category);
     }
-    
+
 
 
     // 插入結帳記錄和明細
@@ -139,8 +138,8 @@ public class CheckoutService {
             return false;
         }
     }
-    
-    
+
+
  // 刪除結帳記錄和相關的結帳明細
     public void deleteCheckoutAndDetails(String checkoutId) {
         logger.info("開始刪除結帳記錄及其相關明細，結帳ID: " + checkoutId);
@@ -165,6 +164,6 @@ public class CheckoutService {
         return totalAmount.divide(new BigDecimal(100), 0, BigDecimal.ROUND_DOWN).intValue();
     }
 
-    
-    
+
+
 }

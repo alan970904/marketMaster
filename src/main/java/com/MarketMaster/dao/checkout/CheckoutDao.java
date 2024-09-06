@@ -1,5 +1,6 @@
 package com.MarketMaster.dao.checkout;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.math.BigDecimal;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -174,7 +174,7 @@ public class CheckoutDao {
         logger.info("開始獲取要更新的結帳記錄，ID為 " + checkoutId);
         return getOne(checkoutId);
     }
-    
+
     // 更新結帳記錄
     public boolean update(CheckoutBean ck) {
         logger.info("開始更新結帳記錄，ID為 " + ck.getCheckoutId());
@@ -241,7 +241,7 @@ public class CheckoutDao {
             logger.log(Level.SEVERE, "更新結帳總價時發生錯誤", e);
         }
     }
-    
+
     // 獲取每日銷售報告
     public List<Map<String, Object>> getDailySalesReport() {
         logger.info("開始獲取每日銷售報告");
@@ -262,7 +262,7 @@ public class CheckoutDao {
         logger.info("成功獲取 " + report.size() + " 天的銷售報告");
         return report;
     }
-    
+
     // 獲取結帳總表
     public List<Map<String, Object>> getCheckoutSummary() {
         logger.info("開始獲取結帳總表");
@@ -289,7 +289,7 @@ public class CheckoutDao {
         logger.info("成功獲取 " + summary.size() + " 筆結帳總表記錄");
         return summary;
     }
-    
+
  // 獲取最新的結帳ID
     public String getLastCheckoutId() {
         logger.info("開始獲取最新的結帳ID");
@@ -349,7 +349,7 @@ public class CheckoutDao {
 //        logger.info("成功獲取 " + categories.size() + " 個產品類別");
 //        return categories;
 //    }
-    
+
  // 根據類別獲取所有產品名稱 & ID & 價錢
     public List<ProductBean> getProductNamesByCategory(String category) throws SQLException, ClassNotFoundException, NamingException {
         logger.info("開始獲取類別為 '" + category + "' 的產品列表");
@@ -372,7 +372,7 @@ public class CheckoutDao {
         logger.info("成功獲取 " + productList.size() + " 個產品");
         return productList;
     }
-    
+
 
  // 新增方法來同時插入結帳記錄和明細
     public boolean insertCheckoutWithDetails(CheckoutBean checkout, List<CheckoutDetailsBean> details) {
@@ -432,7 +432,7 @@ public class CheckoutDao {
         }
     }
 
- 
+
     // 更新產品庫存
     public void updateProductStock(String productId, int quantity) {
         logger.info("開始更新產品ID為 " + productId + " 的庫存，數量變化: " + quantity);
@@ -451,8 +451,8 @@ public class CheckoutDao {
             logger.log(Level.SEVERE, "更新產品庫存時發生錯誤", e);
         }
     }
-    
-    
+
+
  // 刪除結帳記錄和相關的結帳明細
     public void deleteCheckoutAndDetails(String checkoutId) {
         logger.info("開始刪除結帳記錄及其相關明細，結帳ID: " + checkoutId);
@@ -525,6 +525,6 @@ public class CheckoutDao {
         }
     }
 
-    
-    
+
+
 }

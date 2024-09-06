@@ -1,17 +1,18 @@
 package com.MarketMaster.controller.checkout;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
 import com.MarketMaster.service.checkout.CheckoutDetailsService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
 
 @WebServlet("/CheckoutDetailsServlet")
 public class CheckoutDetailsServlet extends HttpServlet {
@@ -113,7 +114,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         request.setAttribute("checkoutDetailsList", checkoutDetailsList);
         request.getRequestDispatcher("/checkoutDetails/GetPartCheckoutDetails.jsp").forward(request, response);
     }
-    
+
     private void getCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String checkoutId = request.getParameter("checkoutId");
@@ -204,7 +205,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
 
     private CheckoutDetailsBean createCheckoutDetailsFromRequest(HttpServletRequest request) {
         CheckoutDetailsBean checkoutDetails = new CheckoutDetailsBean();
-        
+
         String checkoutId = request.getParameter("checkoutId");
         String productId = request.getParameter("productId");
         String numberOfCheckoutStr = request.getParameter("numberOfCheckout");
@@ -212,7 +213,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         String checkoutPriceStr = request.getParameter("checkoutPrice");
 
         // 檢查必要參數是否存在
-        if (checkoutId == null || productId == null || numberOfCheckoutStr == null || 
+        if (checkoutId == null || productId == null || numberOfCheckoutStr == null ||
             productPriceStr == null || checkoutPriceStr == null) {
             throw new IllegalArgumentException("必要參數缺失");
         }
@@ -234,7 +235,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
 
         return checkoutDetails;
     }
-    
-    
-    
+
+
+
 }

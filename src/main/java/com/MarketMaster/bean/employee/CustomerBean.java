@@ -3,7 +3,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class CustomerBean {
-	
+
     private String customerTel;  // 顧客手機
     private String customerName; // 顧客姓名
     private String customerEmail; // 顧客電子郵件

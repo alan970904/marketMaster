@@ -1,10 +1,14 @@
 package com.MarketMaster.dao.schedule;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -30,18 +34,18 @@ public class ScheduleDao {
 	    return new LinkedList<>(employeeNamesSet);
 	}
 
-	
+
 
 
     private Connection getConnection() throws NamingException, SQLException {
 
-    	
-    	
+
+
         Context context = new InitialContext();
         DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/ispan");
         return ds.getConnection();
     }
-    
+
 
 }
 
