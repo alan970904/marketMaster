@@ -1,11 +1,24 @@
 package com.MarketMaster.bean.checkout;
 
-public class CheckoutDetailsBean  implements java.io.Serializable {
+import jakarta.persistence.*;
+import java.io.Serializable;
+
+@Entity @Table(name = "CHECKOUT_DETAILS")
+public class CheckoutDetailsBean  implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@EmbeddedId
 	private String checkoutId;
+	
+	@Column(name = "NUMBER_OF_CHECKOUT")
     private String productId;
+	
+	@Column(name = "PRODUCT_PRICE")
     private int numberOfCheckout;
+	
+	@Column(name = "CHECKOUT_PRICE")
     private int productPrice;
+	
     private int checkoutPrice;
     
 	public CheckoutDetailsBean() {
