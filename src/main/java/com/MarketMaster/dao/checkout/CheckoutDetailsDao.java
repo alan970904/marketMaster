@@ -16,6 +16,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
 import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
 
 public class CheckoutDetailsDao {
@@ -191,14 +192,14 @@ public class CheckoutDetailsDao {
                 stmt.setInt(3, ckd.getCheckoutPrice());
                 stmt.setString(4, ckd.getCheckoutId());
                 stmt.setString(5, ckd.getProductId());
-                
+
                 logger.info("執行 SQL: " + updateDetailsSql);
-                logger.info("參數: numberOfCheckout=" + ckd.getNumberOfCheckout() + 
-                            ", productPrice=" + ckd.getProductPrice() + 
-                            ", checkoutPrice=" + ckd.getCheckoutPrice() + 
-                            ", checkoutId=" + ckd.getCheckoutId() + 
+                logger.info("參數: numberOfCheckout=" + ckd.getNumberOfCheckout() +
+                            ", productPrice=" + ckd.getProductPrice() +
+                            ", checkoutPrice=" + ckd.getCheckoutPrice() +
+                            ", checkoutId=" + ckd.getCheckoutId() +
                             ", productId=" + ckd.getProductId());
-                
+
                 int affectedRows = stmt.executeUpdate();
                 if (affectedRows == 0) {
                     throw new SQLException("更新結帳明細失敗，沒有找到匹配的記錄。");
@@ -361,7 +362,7 @@ public class CheckoutDetailsDao {
         }
         return returnRates;
     }
-    
+
     public int calculateCheckoutTotal(String checkoutId) {
         logger.info("計算結帳ID為 " + checkoutId + " 的總金額");
         String sql = "SELECT SUM(checkout_price) AS total FROM checkout_details WHERE checkout_id = ?";
@@ -387,17 +388,17 @@ public class CheckoutDetailsDao {
             stmt.setInt(1, totalAmount);
             stmt.setInt(2, bonusPoints);
             stmt.setString(3, checkoutId);
-            
+
             logger.info("執行 SQL: " + sql);
-            logger.info("參數: totalAmount=" + totalAmount + 
-                        ", bonusPoints=" + bonusPoints + 
+            logger.info("參數: totalAmount=" + totalAmount +
+                        ", bonusPoints=" + bonusPoints +
                         ", checkoutId=" + checkoutId);
-            
+
             int affectedRows = stmt.executeUpdate();
             logger.info("更新 checkout 表成功，影響的行數: " + affectedRows);
         }
     }
-    
+
     private static int calculateCheckoutTotal(Connection conn, String checkoutId) throws SQLException {
         String sql = "SELECT SUM(checkout_price) AS total FROM checkout_details WHERE checkout_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -415,5 +416,5 @@ public class CheckoutDetailsDao {
         // 假設每100元可得1點紅利
         return totalAmount / 100;
     }
-    
+
 }

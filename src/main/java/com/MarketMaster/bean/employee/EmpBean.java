@@ -102,7 +102,7 @@ public class EmpBean implements java.io.Serializable {
 	public void setResigndate(LocalDate resigndate) {
 		this.resigndate = resigndate;
 	}
-	
+
     public boolean isFirstLogin() {
         return isFirstLogin;
     }

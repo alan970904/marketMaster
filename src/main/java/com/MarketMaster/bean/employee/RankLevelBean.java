@@ -7,7 +7,7 @@ public class RankLevelBean implements java.io.Serializable {
     private int limitsOfAuthority;
     private int activeEmployeeCount;
     private int totalEmployeeCount;
-    
+
     public RankLevelBean() {
     }
 

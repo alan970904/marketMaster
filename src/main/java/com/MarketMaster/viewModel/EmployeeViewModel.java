@@ -10,16 +10,16 @@ public class EmployeeViewModel{
     private String employeeIdcard;
     private String employeeEmail;
     private String positionName;  // 職位名稱替代職位編號
-    private String salaryLevel;   
+    private String salaryLevel;
     private LocalDate hiredate;
     private LocalDate resigndate;
-    
+
     public EmployeeViewModel() {}
 
     public String getEmployeeId() {
     	return employeeId;
     	}
-    
+
     public void setEmployeeId(String employeeId) {
     	this.employeeId = employeeId;
     	}
@@ -34,7 +34,7 @@ public class EmployeeViewModel{
     public String getEmployeeTel() {
     	return employeeTel;
     	}
-    
+
     public void setEmployeeTel(String employeeTel) {
     	this.employeeTel = employeeTel;
     	}
@@ -42,7 +42,7 @@ public class EmployeeViewModel{
     public String getEmployeeIdcard() {
     	return employeeIdcard;
     	}
-    
+
     public void setEmployeeIdcard(String employeeIdcard) {
     	this.employeeIdcard = employeeIdcard;
     	}
@@ -50,7 +50,7 @@ public class EmployeeViewModel{
     public String getEmployeeEmail() {
     	return employeeEmail;
     	}
-    
+
     public void setEmployeeEmail(String employeeEmail) {
     	this.employeeEmail = employeeEmail;
     	}
@@ -58,7 +58,7 @@ public class EmployeeViewModel{
     public String getPositionName() {
     	return positionName;
     	}
-    
+
     public void setPositionName(String positionName) {
     	this.positionName = positionName;
     	}
@@ -66,7 +66,7 @@ public class EmployeeViewModel{
     public String getSalaryLevel() {
     	return salaryLevel;
     	}
-    
+
     public void setSalaryLevel(String salaryLevel) {
     	this.salaryLevel = salaryLevel;
     	}
@@ -74,7 +74,7 @@ public class EmployeeViewModel{
     public LocalDate getHiredate() {
     	return hiredate;
     	}
-    
+
     public void setHiredate(LocalDate hiredate) {
     	this.hiredate = hiredate;
     	}
@@ -82,7 +82,7 @@ public class EmployeeViewModel{
     public LocalDate getResigndate() {
     	return resigndate;
     	}
-    
+
     public void setResigndate(LocalDate resigndate) {
     	this.resigndate = resigndate;
     	}

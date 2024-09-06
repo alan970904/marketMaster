@@ -82,7 +82,7 @@ public class ProductDao {
 	}
 
 	public static List<ProductBean> getLike(String productName) {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 		try {
 			javax.naming.Context context = new InitialContext();
 			DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/ispan");
@@ -185,7 +185,7 @@ public class ProductDao {
 	}
 
 	public static List<ProductBean> getAll() {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 
 		try {
 			javax.naming.Context context = new InitialContext();
@@ -223,7 +223,7 @@ public class ProductDao {
 	}
 
 	public static List<ProductBean> getPagesProducts(int pageIndex, int pageSize) {
-		List<ProductBean> products = new ArrayList<ProductBean>();
+		List<ProductBean> products = new ArrayList<>();
 
 		try {
 

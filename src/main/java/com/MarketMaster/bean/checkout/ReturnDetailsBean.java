@@ -9,12 +9,12 @@ public class ReturnDetailsBean implements java.io.Serializable {
 	private String numberOfReturn;
 	private String productPrice;
 	private String returnPrice;
-	
-	
+
+
 	public ReturnDetailsBean() {
 		super();
 	}
-	
+
 	public ReturnDetailsBean(String returnId, String checkoutId, String productId, String reasonForReturn,
 			String numberOfReturn, String productPrice, String returnPrice) {
 		super();
@@ -76,8 +76,8 @@ public class ReturnDetailsBean implements java.io.Serializable {
 				+ ", reasonForReturn=" + reasonForReturn + ", numberOfReturn=" + numberOfReturn + ", productPrice="
 				+ productPrice + ", returnPrice=" + returnPrice + "]";
 	}
-	
-	
-	
+
+
+
 
 }

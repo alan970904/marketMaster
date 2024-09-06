@@ -1,27 +1,33 @@
 package com.MarketMaster.dao.schedule;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
 import com.MarketMaster.bean.schedule.AskForLeaveBean;
 
 public class AskForLeaveDao {
-    
+
     Connection conn;
 
     // Generate the next leave ID
     public String generateNextLeaveId() throws SQLException, ClassNotFoundException {
         String sql = "SELECT MAX(CAST(SUBSTRING(leave_id, 2, LEN(leave_id) - 1) AS INT)) AS max_id FROM ask_for_leave";
-        
+
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
-            
+
             if (rs.next()) {
                 Integer maxId = rs.getInt("max_id");
                 if (maxId != null) {
@@ -31,14 +37,14 @@ public class AskForLeaveDao {
         } catch (NamingException e) {
             e.printStackTrace();
         }
-        
-        return "L00001"; 
+
+        return "L00001";
     }
 
     // Get employee name by ID
     public String getEmployeeNameById(String employeeId) throws SQLException, ClassNotFoundException {
         if (employeeId == null || employeeId.trim().isEmpty()) {
-            return null; 
+            return null;
         }
 
         String sql = "SELECT employee_name FROM employee WHERE employee_id = ?";
@@ -77,7 +83,7 @@ public class AskForLeaveDao {
             e.printStackTrace();
         }
     }
-    
+
     // Update a leave record
     public void updateLeaveRecord(AskForLeaveBean leave) throws SQLException, ClassNotFoundException {
         String updateLeaveSql = "UPDATE ask_for_leave SET "
@@ -98,7 +104,7 @@ public class AskForLeaveDao {
             updateLeaveStmt.setString(4, leave.getLeaveCategory());
             updateLeaveStmt.setString(5, leave.getReasonOfLeave());
             updateLeaveStmt.setString(6, leave.getApprovedStatus());
-            updateLeaveStmt.setString(7, leave.getLeaveId()); 
+            updateLeaveStmt.setString(7, leave.getLeaveId());
 
             updateLeaveStmt.executeUpdate();
         } catch (NamingException e) {
@@ -137,7 +143,7 @@ public class AskForLeaveDao {
         }
         return leaveList;
     }
-    
+
     // Get leave records by leave ID
     public List<AskForLeaveBean> getLeaveRecordsByLeaveId(String leaveId) throws SQLException, ClassNotFoundException {
         List<AskForLeaveBean> leaveList = new ArrayList<>();
@@ -162,7 +168,7 @@ public class AskForLeaveDao {
                             rs.getString("reason_of_leave"),
                             rs.getString("approved_status"));
                     leaveList.add(leave);
-                    
+
                 }
             }
         } catch (NamingException e) {
@@ -220,10 +226,10 @@ public class AskForLeaveDao {
 //        String user = "Java05";
 //        String password = "0000";
 //        return DriverManager.getConnection(url, user, password);
-    	
+
         Context context = new InitialContext();
         DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/ispan");
-        return ds.getConnection(); 
+        return ds.getConnection();
     }
 
     public boolean updateLeaveRecord(String leaveIdUpdate, String employeeId, String employeeNameUpdate,
@@ -231,15 +237,15 @@ public class AskForLeaveDao {
             String reasonOfLeaveUpdate) {
         return false;
     }
-    
+
     public static void main(String[] args) {
         AskForLeaveDao askForLeaveDao = new AskForLeaveDao();
-        
+
         try {
             Connection conn = askForLeaveDao.getConnection();
             if (conn != null && !conn.isClosed()) {
                 System.out.println("连接成功！");
-                conn.close(); 
+                conn.close();
             } else {
                 System.out.println("连接失败！");
             }

@@ -1,6 +1,11 @@
 package com.MarketMaster.dao.employee;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +18,7 @@ import com.MarketMaster.bean.employee.EmpBean;
 import com.MarketMaster.bean.employee.RankLevelBean;
 import com.MarketMaster.exception.DataAccessException;
 import com.MarketMaster.viewModel.EmployeeViewModel;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 
@@ -20,10 +26,10 @@ import jakarta.servlet.http.HttpServlet;
 @WebServlet("/EmpDao")
 public class EmpDao extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    
+
     // 數據源的 JNDI 名稱，用於獲取數據庫連接
     private static final String DATASOURCE_JNDI = "java:/comp/env/jdbc/ispan";
-    
+
     // 獲取數據庫連接的私有方法
     private Connection getConnection() throws DataAccessException {
         try {
@@ -36,7 +42,7 @@ public class EmpDao extends HttpServlet {
             throw new DataAccessException("無法獲取數據庫連接", e);
         }
     }
-    
+
     // 驗證員工登入
     public EmpBean validateEmployee(String employeeId, String password) throws DataAccessException {
         String sql = "SELECT * FROM employee WHERE employee_id = ? AND password = ?";
@@ -102,20 +108,20 @@ public class EmpDao extends HttpServlet {
             pstmt.setDate(8, Date.valueOf(emp.getHiredate()));
             pstmt.setDate(9, emp.getResigndate() != null ? Date.valueOf(emp.getResigndate()) : null);
             pstmt.setBoolean(10, emp.isFirstLogin());
-            
+
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
             throw new DataAccessException("添加員工失敗", e);
         }
     }
-    
+
     public boolean deleteEmployee(String employeeId) throws DataAccessException {
     	String sql = "DELETE FROM employee WHERE employee_id=?";
     	try (Connection conn = getConnection();
     			PreparedStatement pstmt = conn.prepareStatement(sql)) {
     		pstmt.setString(1, employeeId);
-    		
+
     		int affectedRows = pstmt.executeUpdate();
     		return affectedRows > 0;
     	} catch (SQLException e) {
@@ -177,10 +183,10 @@ public class EmpDao extends HttpServlet {
         }
         return employees;
     }
-    
+
     public List<EmpBean> searchEmployees(String searchName, boolean showAll) throws DataAccessException {
         List<EmpBean> employees = new ArrayList<>();
-        String sql = showAll 
+        String sql = showAll
             ? "SELECT * FROM employee WHERE employee_name LIKE ?"
             : "SELECT * FROM employee WHERE employee_name LIKE ? AND resigndate IS NULL";
         try (Connection conn = getConnection();
@@ -196,7 +202,7 @@ public class EmpDao extends HttpServlet {
         }
         return employees;
     }
-    
+
     public List<RankLevelBean> getRankList() throws DataAccessException {
         List<RankLevelBean> rankList = new ArrayList<>();
         String sql = "SELECT r.position_id, r.position_name, r.limits_of_authority, " +
@@ -205,11 +211,11 @@ public class EmpDao extends HttpServlet {
                      "FROM ranklevel r " +
                      "LEFT JOIN employee e ON r.position_id = e.position_id " +
                      "GROUP BY r.position_id, r.position_name, r.limits_of_authority";
-        
+
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-            
+
             while (rs.next()) {
                 RankLevelBean rank = new RankLevelBean();
                 rank.setPositionId(rs.getString("position_id"));
@@ -257,7 +263,7 @@ public class EmpDao extends HttpServlet {
         }
         return null;
     }
-    
+
     // 從 ResultSet 中提取員工視圖模型的私有方法
     private EmployeeViewModel extractEmployeeViewModelFromResultSet(ResultSet rs) throws SQLException {
         EmployeeViewModel viewModel = new EmployeeViewModel();
@@ -273,7 +279,7 @@ public class EmpDao extends HttpServlet {
         viewModel.setResigndate(resigndate != null ? resigndate.toLocalDate() : null);
         return viewModel;
     }
-    
+
     public String getLastEmployeeId() throws DataAccessException {
         String sql = "SELECT TOP 1 employee_id FROM employee ORDER BY employee_id DESC";
         try (Connection conn = getConnection();

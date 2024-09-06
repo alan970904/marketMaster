@@ -6,11 +6,11 @@ public class ReturnProductBean  implements java.io.Serializable {
     private String employeeId;
     private String returnTotalPrice;
     private String returnDate;
-    
+
 	public ReturnProductBean() {
 		super();
 	}
-	
+
 	public ReturnProductBean(String returnId, String employeeId, String returnTotalPrice, String returnDate) {
 		super();
 		this.returnId = returnId;
@@ -49,7 +49,7 @@ public class ReturnProductBean  implements java.io.Serializable {
 		return "ReturnProductBean [returnId=" + returnId + ", employeeId=" + employeeId + ", returnTotalPrice="
 				+ returnTotalPrice + ", returnDate=" + returnDate + "]";
 	}
-    
-	
-	
+
+
+
 }
