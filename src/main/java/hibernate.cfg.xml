@@ -6,6 +6,7 @@
 	<session-factory>
 	
 		<property name="hibernate.connection.datasource">java:comp/env/connectSQLServerConn/OrderSystem</property>
+		<property name="hibernate.connection.datasource">java:comp/env/jdbc/ispan</property>
 
 		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
 
@@ -15,6 +16,7 @@
 		<property name="hibernate.format_sql">true</property>
 
 		<mapping class="com.MarketMaster.model.House"/>
+		<mapping class="com.MarketMaster.bean.product.ProductBean"/>
 
 	</session-factory>
 </hibernate-configuration> 

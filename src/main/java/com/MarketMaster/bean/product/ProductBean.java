@@ -1,18 +1,49 @@
 package com.MarketMaster.bean.product;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity @Table(name = "products")
 public class ProductBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	@Id @Column(name = "PRODUCT_ID")
 	private String productId;
+	
+	@Column(name = "PRODUCT_CATEGORY")
 	private String productCategory;
+	
+	@Column(name = "PRODUCT_NAME")
 	private String productName;
+	
+	@Column(name = "PRODUCT_PRICE")
 	private int productPrice;
+	
+	@Column(name = "PRODUCT_SAFEINVENTORY")
 	private int productSafeInventory;
+	
+	@Column(name = "NUMBER_OF_SHELVE")
 	private int numberOfShelve;
+	
+	@Column(name = "NUMBER_OF_INVENTORY")
 	private int numberOfInventory;
+	
+	@Column(name = "NUMBER_OF_SALE")
 	private int numberOfSale;
+	
+	@Column(name = "NUMBER_OF_EXCHANGE")
 	private int numberOfExchange;
+	
+	@Column(name = "NUMBER_OF_DESTRUCTION")
 	private int numberOfDestruction;
+	
+	@Column(name = "NUMBER_OF_REMOVE")
 	private int numberOfRemove;
+	
+	
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
