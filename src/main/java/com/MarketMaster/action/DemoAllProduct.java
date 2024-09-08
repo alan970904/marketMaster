@@ -2,11 +2,13 @@ package com.MarketMaster.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.MarketMaster.bean.product.ProductBean;
+import com.MarketMaster.dao.product.ProductDao;
 import com.MarketMaster.util.HibernateUtil;
 
 import jakarta.servlet.ServletException;
@@ -15,8 +17,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/DemoProduct")
-public class DemoProduct extends HttpServlet {
+@WebServlet("/DemoAllProduct")
+public class DemoAllProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -38,10 +40,12 @@ public class DemoProduct extends HttpServlet {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session = factory.getCurrentSession();
 
-		ProductBean product = session.get(ProductBean.class, "PMS001");
+		ProductDao productDao = new ProductDao(session);
+		List<ProductBean> products = productDao.selectAll();
 		
-		request.setAttribute("product", product);
-		request.getRequestDispatcher("/jsp/GetOneProduct.jsp").forward(request, response);
+		request.setAttribute("products", products);
+		request.getRequestDispatcher("/jsp/GetPagesProducts.jsp").forward(request, response);
+
 
 
 		out.close();

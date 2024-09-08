@@ -39,9 +39,9 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-                .dataTables_length select {
-            padding-right: 30px !important; /* 確保有足夠的空間顯示箭頭 */
-            background-position: right 0.5rem center !important; /* 調整箭頭位置 */
+        .dataTables_length select {
+            padding-right: 30px !important;
+            background-position: right 0.5rem center !important;
         }
     </style>
 </head>
@@ -114,7 +114,7 @@
     <script>
     $(document).ready(function() {
         var table = $('#productTable').DataTable({
-            "pageLength": ${pageSize},
+            "pageLength": 10, // 設置默認每頁顯示的記錄數
             "language": {
                 "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese.json"
             },
@@ -123,16 +123,15 @@
             },
             "columnDefs": [
                 {
-                    "targets": [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 所有列的索引，除了商品名稱列
+                    "targets": [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                     "searchable": false
                 }
             ],
             "initComplete": function() {
-                // 修改搜索框的佔位符文字
                 $('.dataTables_filter input')
                     .attr("placeholder", "搜索商品名稱")
                     .css({
-                        'width': '200px', // 增加搜索框寬度
+                        'width': '200px',
                         'display': 'inline-block'
                     });
                 $('.dataTables_filter label').contents().first().replaceWith('搜索商品名稱：');
@@ -168,7 +167,6 @@
             }
         }
 
-        // 處理排序後的重新渲染
         table.on('order.dt', function() {
             applyInventoryStyles(table);
         });

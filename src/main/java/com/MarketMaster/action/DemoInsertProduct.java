@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.MarketMaster.bean.product.ProductBean;
+import com.MarketMaster.dao.product.ProductDao;
 import com.MarketMaster.util.HibernateUtil;
 
 import jakarta.servlet.ServletException;
@@ -15,8 +16,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/DemoProduct")
-public class DemoProduct extends HttpServlet {
+@WebServlet("/DemoInsertProduct")
+public class DemoInsertProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -38,10 +39,27 @@ public class DemoProduct extends HttpServlet {
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session = factory.getCurrentSession();
 
-		ProductBean product = session.get(ProductBean.class, "PMS001");
+		ProductDao productDao = new ProductDao(session);
+	
+		ProductBean product = new ProductBean();
+		
+		product.setProductId("PMS005");
+		product.setProductCategory("肉品海鮮");
+		product.setProductName("羊肉");
+		product.setProductPrice(200);
+		product.setproductSafeInventory(100);
+		product.setNumberOfShelve(0);
+		product.setNumberOfInventory(0);
+		product.setNumberOfSale(0);
+		product.setNumberOfExchange(0);
+		product.setNumberOfDestruction(0);
+		product.setNumberOfRemove(0);
+		
+		productDao.insertProduct(product);
 		
 		request.setAttribute("product", product);
-		request.getRequestDispatcher("/jsp/GetOneProduct.jsp").forward(request, response);
+		request.getRequestDispatcher("/jsp/ShowInsertProduct.jsp").forward(request, response);
+
 
 
 		out.close();
