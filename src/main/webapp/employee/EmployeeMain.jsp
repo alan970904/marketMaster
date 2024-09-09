@@ -54,7 +54,7 @@
 </head>
 <body>
 	<%@ include file="/body/body.jsp"%>
-	<main class="container mt-4">
+	<main>
 		<h1 class="mb-4">員工資訊</h1>
 		<form action="${pageContext.request.contextPath}/EmpServlet"
 			method="get" class="mb-3">
