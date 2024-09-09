@@ -8,6 +8,7 @@
 	<packaging>war</packaging>
 	<dependencies>
 
+		<!-- Hibernate 核心 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -30,6 +31,13 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.10.1</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>jakarta.servlet.jsp</groupId>
+		    <artifactId>jakarta.servlet.jsp-api</artifactId>
+		    <version>3.0.0</version>
+		    <scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -58,7 +66,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<release>22</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>

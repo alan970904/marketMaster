@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="/ispan/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/ispan/CSS/extra.css">
+    <link href="/marketMaster/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/marketMaster/CSS/extra.css">
     
     <!-- 修改的自定義樣式 -->
 </head>
