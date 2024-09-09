@@ -37,7 +37,9 @@
 		
 		<!-- 如果有 EmpBean，請添加以下行 -->
         <mapping class="com.MarketMaster.bean.employee.EmpBean"/>
+        <mapping class="com.MarketMaster.bean.employee.RankLevelBean"/>
         <mapping class="com.MarketMaster.bean.product.ProductBean"/>
+        
 
 	</session-factory>
 </hibernate-configuration> 

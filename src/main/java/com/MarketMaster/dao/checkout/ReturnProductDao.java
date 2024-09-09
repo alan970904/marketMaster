@@ -39,7 +39,7 @@ public class ReturnProductDao {
                 if (rs.next()) {
                     ck.setCheckoutId(rs.getString("checkout_id"));
                     ck.setCustomerTel(rs.getString("customer_tel"));
-                    ck.setEmployeeId(rs.getString("employee_id"));
+//                    ck.setEmployeeId(rs.getString("employee_id"));
 //                    ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
 //                    ck.setCheckoutDate(rs.getString("checkout_date"));
 //                    ck.setBonusPoints(rs.getString("bonus_points"));
@@ -61,7 +61,7 @@ public class ReturnProductDao {
                 CheckoutBean ck = new CheckoutBean();
                 ck.setCheckoutId(rs.getString("checkout_id"));
                 ck.setCustomerTel(rs.getString("customer_tel"));
-                ck.setEmployeeId(rs.getString("employee_id"));
+//                ck.setEmployeeId(rs.getString("employee_id"));
 //                ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
 //                ck.setCheckoutDate(rs.getString("checkout_date"));
 //                ck.setBonusPoints(rs.getString("bonus_points"));
@@ -79,7 +79,7 @@ public class ReturnProductDao {
              PreparedStatement stmt = connection.prepareStatement(INSERT_SQL)) {
             stmt.setString(1, ck.getCheckoutId());
             stmt.setString(2, ck.getCustomerTel());
-            stmt.setString(3, ck.getEmployeeId());
+//            stmt.setString(3, ck.getEmployeeId());
 //            stmt.setString(4, ck.getCheckoutTotalPrice());
 //            stmt.setString(5, ck.getCheckoutDate());
 //            stmt.setString(6, ck.getBonusPoints());
@@ -108,7 +108,7 @@ public class ReturnProductDao {
         try (Connection connection = getConnection();
              PreparedStatement stmt = connection.prepareStatement(UPDATE_SQL)) {
             stmt.setString(1, ck.getCustomerTel());
-            stmt.setString(2, ck.getEmployeeId());
+//            stmt.setString(2, ck.getEmployeeId());
 //            stmt.setString(3, ck.getCheckoutTotalPrice());
 //            stmt.setString(4, ck.getCheckoutDate());
 //            stmt.setString(5, ck.getBonusPoints());
@@ -130,7 +130,7 @@ public class ReturnProductDao {
                     CheckoutBean ck = new CheckoutBean();
                     ck.setCheckoutId(rs.getString("checkout_id"));
                     ck.setCustomerTel(rs.getString("customer_tel"));
-                    ck.setEmployeeId(rs.getString("employee_id"));
+//                    ck.setEmployeeId(rs.getString("employee_id"));
 //                    ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
 //                    ck.setCheckoutDate(rs.getString("checkout_date"));
 //                    ck.setBonusPoints(rs.getString("bonus_points"));
