@@ -69,7 +69,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <tr><td>下架數量<td><input type="text" disabled value=${product.numberOfRemove }>
 </table>
 <p>
-<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/jsp/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
 
 </div>
 </main>

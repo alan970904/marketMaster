@@ -3,9 +3,11 @@ package com.MarketMaster.dao.product;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.MarketMaster.bean.product.ProductBean;
+import com.MarketMaster.util.HibernateUtil;
 
 public class ProductDao {
 	private Session session;
@@ -24,25 +26,33 @@ public class ProductDao {
 		return null;
 	}
 	
-	 public List<ProductBean> selectAll() {
-	        
+	
+	public ProductBean getOne(String productId) {
+		ProductBean product = session.get(ProductBean.class, productId);
+		if (product != null) {
+			return product;
+		}
+		return null;
+	}
+	 public List<ProductBean> getAll() {
 	        Query<ProductBean> query = session.createQuery("from ProductBean", ProductBean.class);
 	        return query.list();
 	    }
 
-	public ProductBean updateProduct(String productId) {
+	public ProductBean updateProduct(ProductBean product) {
+		String productId = product.getProductId();
+		String productName = product.getProductName();
+		int productPrice = product.getProductPrice();
+		int productSafeInventory = product.getproductSafeInventory();
+		
 		ProductBean productBean = session.get(ProductBean.class, productId);
 		if (productBean != null) {
-			
+			productBean.setProductName(productName);
+			productBean.setproductSafeInventory(productSafeInventory);
+			productBean.setProductPrice(productPrice);
+			session.merge(productBean);
+			return productBean;
 		}
-		return null;
-
-	}
-	public ProductBean updateBeanProduct(String productId) {
-		ProductBean productBean = session.get(ProductBean.class, productId);
-		
-		
-		
 		return null;
 	}
 	
@@ -54,9 +64,10 @@ public class ProductDao {
 		if (productBean != null) {
 			productBean.setNumberOfInventory(inventory-shelveNumber);
 			productBean.setNumberOfShelve(shelve+shelveNumber);
-			session.persist(productBean);
+			session.merge(productBean);
+			return productBean;
 		}
-		return productBean;
+		return null;
 	}
 	
 	
@@ -69,8 +80,9 @@ public class ProductDao {
 			productBean.setNumberOfInventory(0);
 			productBean.setNumberOfShelve(0);
 			productBean.setNumberOfRemove(remove+shelve+inventory);
-			session.persist(productBean);
+			session.merge(productBean);
 		}
 		return productBean;
 	}
+	
 }

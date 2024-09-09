@@ -89,7 +89,7 @@ td {
 <main>
 <div class="div1">
 	<h2>商品資料</h2>
-	<form method="get" action="<%=request.getContextPath()%>/ProductsServlet">
+	<form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
 		<table>
 			<tr>
 				<td>商品編號
@@ -106,24 +106,13 @@ td {
 			<tr>
 				<td>安全庫存量
 				<td><input class="number" type="number" value="${product.productSafeInventory}" name="productSafeInventory" step="any" min="0">
-			<tr>
-				<td>上架數量
-				<td><input class="number" type="number" value="${product.numberOfShelve}" name="numberOfShelve" step="any" min="0">
-			<tr>
-				<td>庫存數量
-				<td><input class="number" type="number" value="${product.numberOfInventory}" name="numberOfInventory" step="any" min="0">
-			<tr>
-				<td>銷售數量
-				<td><input class="number" type="number" value="${product.numberOfSale}" name="numberOfSale" step="any" min="0">
-			<tr>
-				<td>兌換數量
-				<td><input class="number" type="number" value="${product.numberOfExchange}" name="numberOfExchange" step="any" min="0">
-			<tr>
-				<td>銷毀數量
-				<td><input class="number" type="number" value="${product.numberOfDestruction}" name="numberOfDestruction" step="any" min="0">
-			<tr>
-				<td>下架數量
-				<td><input class="number" type="number" value="${product.numberOfRemove}" name="numberOfRemove" step="any" min="0">
+				
+				<input class="number" type="hidden" value="${product.numberOfShelve}" name="numberOfShelve" step="any" min="0">
+				<input class="number" type="hidden" value="${product.numberOfInventory}" name="numberOfInventory" step="any" min="0">
+				<input class="number" type="hidden" value="${product.numberOfSale}" name="numberOfSale" step="any" min="0">
+				<input class="number" type="hidden" value="${product.numberOfExchange}" name="numberOfExchange" step="any" min="0">
+				<input class="number" type="hidden" value="${product.numberOfDestruction}" name="numberOfDestruction" step="any" min="0">
+				<input class="number" type="hidden" value="${product.numberOfRemove}" name="numberOfRemove" step="any" min="0">
 		</table>
 		<p>
 			<input type="hidden" name="action" value="UpdateProduct">

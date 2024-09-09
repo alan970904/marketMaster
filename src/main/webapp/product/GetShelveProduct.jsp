@@ -112,7 +112,7 @@ input[type="submit"]:hover {
 </form>
 <p>
 <p>
-<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/jsp/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/product/productHomepage.jsp'">
 
 </div>
 </main>

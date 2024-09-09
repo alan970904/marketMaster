@@ -35,8 +35,8 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>商品資訊</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="<%=request.getContextPath()%>/jsp/InsertProduct.jsp" class="dropdown-item">新增商品</a>
-					<a href="${pageContext.request.contextPath}/jsp/productHomepage.jsp" class="dropdown-item">商品主頁</a>
+					<a href="<%=request.getContextPath()%>/product/InsertProduct.jsp" class="dropdown-item">新增商品</a>
+					<a href="${pageContext.request.contextPath}/product/productHomepage.jsp" class="dropdown-item">商品主頁</a>
 				</div>
 			</div>
 			<div class="nav-item dropdown">
