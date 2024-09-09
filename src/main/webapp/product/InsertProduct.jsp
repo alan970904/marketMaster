@@ -32,7 +32,6 @@
         }
         body {
             font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
         }
         .st1 {
             display: flex;
@@ -88,7 +87,7 @@
 <body>
     <%@ include file="/body/body.jsp" %>
     <main>
-    <form method="get" action="<%=request.getContextPath()%>/ProductsServlet">
+    <form method="post" action="<%=request.getContextPath()%>/ProductsServlet">
         <fieldset>
             <legend>新增商品</legend>
             <% if(request.getAttribute("errorMessage") != null) { %>
