@@ -13,144 +13,145 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "employee_id")
-	private String employeeId;
+ private static final long serialVersionUID = 1L;
 
-	@Column(name = "employee_name")
-	private String employeeName;
+ @Id
+ @Column(name = "employee_id")
+ private String employeeId;
 
-	@Column(name = "employee_tel")
-	private String employeeTel;
+ @Column(name = "employee_name")
+ private String employeeName;
 
-	@Column(name = "employee_idcard")
-	private String employeeIdcard;
+ @Column(name = "employee_tel")
+ private String employeeTel;
 
-	@Column(name = "employee_email")
-	private String employeeEmail;
+ @Column(name = "employee_idcard")
+ private String employeeIdcard;
 
-	@Column(name = "password")
-	private String password;
+ @Column(name = "employee_email")
+ private String employeeEmail;
 
-	@Column(name = "position_id")
-	private String positionId;
+ @Column(name = "password")
+ private String password;
 
-	@Column(name = "hiredate")
-	private LocalDate hiredate;
+ @Column(name = "position_id")
+ private String positionId;
 
-	@Column(name = "resigndate")
-	private LocalDate resigndate;
+ @Column(name = "hiredate")
+ private LocalDate hiredate;
 
-	@Column(name = "is_first_login")
-	private boolean isFirstLogin;
+ @Column(name = "resigndate")
+ private LocalDate resigndate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "position_id", referencedColumnName = "position_id", insertable = false, updatable = false)
-	private RankLevelBean rankLevel;
+ @Column(name = "is_first_login")
+ private boolean isFirstLogin;
 
-	public EmpBean() {
-	}
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "position_id", referencedColumnName = "position_id", insertable = false, updatable = false)
+ private RankLevelBean rankLevel;
 
-	public EmpBean(String employeeId, String employeeName, String employeeTel, String employeeIdcard,
-			String employeeEmail, String password, String positionId, LocalDate hiredate, LocalDate resigndate) {
-		this.employeeId = employeeId;
-		this.employeeName = employeeName;
-		this.employeeTel = employeeTel;
-		this.employeeIdcard = employeeIdcard;
-		this.employeeEmail = employeeEmail;
-		this.password = password;
-		this.positionId = positionId;
-		this.hiredate = hiredate;
-		this.resigndate = resigndate;
-	}
+ public EmpBean() {
+ }
 
-	public String getEmployeeId() {
-		return employeeId;
-	}
+ public EmpBean(String employeeId, String employeeName, String employeeTel, String employeeIdcard,
+   String employeeEmail, String password, String positionId, LocalDate hiredate, LocalDate resigndate) {
+  this.employeeId = employeeId;
+  this.employeeName = employeeName;
+  this.employeeTel = employeeTel;
+  this.employeeIdcard = employeeIdcard;
+  this.employeeEmail = employeeEmail;
+  this.password = password;
+  this.positionId = positionId;
+  this.hiredate = hiredate;
+  this.resigndate = resigndate;
+ }
 
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
-	}
+ public String getEmployeeId() {
+  return employeeId;
+ }
 
-	public String getEmployeeName() {
-		return employeeName;
-	}
+ public void setEmployeeId(String employeeId) {
+  this.employeeId = employeeId;
+ }
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
+ public String getEmployeeName() {
+  return employeeName;
+ }
 
-	public String getEmployeeTel() {
-		return employeeTel;
-	}
+ public void setEmployeeName(String employeeName) {
+  this.employeeName = employeeName;
+ }
 
-	public void setEmployeeTel(String employeeTel) {
-		this.employeeTel = employeeTel;
-	}
+ public String getEmployeeTel() {
+  return employeeTel;
+ }
 
-	public String getEmployeeIdcard() {
-		return employeeIdcard;
-	}
+ public void setEmployeeTel(String employeeTel) {
+  this.employeeTel = employeeTel;
+ }
 
-	public void setEmployeeIdcard(String employeeIdcard) {
-		this.employeeIdcard = employeeIdcard;
-	}
+ public String getEmployeeIdcard() {
+  return employeeIdcard;
+ }
 
-	public String getEmployeeEmail() {
-		return employeeEmail;
-	}
+ public void setEmployeeIdcard(String employeeIdcard) {
+  this.employeeIdcard = employeeIdcard;
+ }
 
-	public void setEmployeeEmail(String employeeEmail) {
-		this.employeeEmail = employeeEmail;
-	}
+ public String getEmployeeEmail() {
+  return employeeEmail;
+ }
 
-	public String getPassword() {
-		return password;
-	}
+ public void setEmployeeEmail(String employeeEmail) {
+  this.employeeEmail = employeeEmail;
+ }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+ public String getPassword() {
+  return password;
+ }
 
-	public String getPositionId() {
-		return positionId;
-	}
+ public void setPassword(String password) {
+  this.password = password;
+ }
 
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
-	}
+ public String getPositionId() {
+  return positionId;
+ }
 
-	public LocalDate getHiredate() {
-		return hiredate;
-	}
+ public void setPositionId(String positionId) {
+  this.positionId = positionId;
+ }
 
-	public void setHiredate(LocalDate hiredate) {
-		this.hiredate = hiredate;
-	}
+ public LocalDate getHiredate() {
+  return hiredate;
+ }
 
-	public LocalDate getResigndate() {
-		return resigndate;
-	}
+ public void setHiredate(LocalDate hiredate) {
+  this.hiredate = hiredate;
+ }
 
-	public void setResigndate(LocalDate resigndate) {
-		this.resigndate = resigndate;
-	}
+ public LocalDate getResigndate() {
+  return resigndate;
+ }
 
-	public boolean isFirstLogin() {
-		return isFirstLogin;
-	}
+ public void setResigndate(LocalDate resigndate) {
+  this.resigndate = resigndate;
+ }
 
-	public void setFirstLogin(boolean isFirstLogin) {
-		this.isFirstLogin = isFirstLogin;
-	}
+ public boolean isFirstLogin() {
+  return isFirstLogin;
+ }
 
-	public RankLevelBean getRankLevel() {
-		return rankLevel;
-	}
+ public void setFirstLogin(boolean isFirstLogin) {
+  this.isFirstLogin = isFirstLogin;
+ }
 
-	public void setRankLevel(RankLevelBean rankLevel) {
-		this.rankLevel = rankLevel;
-	}
+ public RankLevelBean getRankLevel() {
+  return rankLevel;
+ }
+
+ public void setRankLevel(RankLevelBean rankLevel) {
+  this.rankLevel = rankLevel;
+ }
 }

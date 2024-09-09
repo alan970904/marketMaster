@@ -5,7 +5,7 @@
 	<nav class="navbar bg-light navbar-light">
 		<a href="${pageContext.request.contextPath}/body/HomePage.jsp" class="navbar-brand mx-4 mb-3">
 			<h3 class="text-primary">
-				<i class="fa fa-hashtag me-2"></i>後台管理系統
+				<i class="fa fa-hashtag me-2"></i>超市後台系統
 			</h3>
 		</a>
 		<div class="d-flex align-items-center ms-4 mb-4">
@@ -51,7 +51,7 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>訂單系統</a> 
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/checkout/index.jsp" class="dropdown-item">訂單資訊</a>
+					<a href="${pageContext.request.contextPath}/checkout/checkout/index.jsp" class="dropdown-item">訂單資訊</a>
 				</div>
 			</div>
 			<div class="nav-item dropdown">
