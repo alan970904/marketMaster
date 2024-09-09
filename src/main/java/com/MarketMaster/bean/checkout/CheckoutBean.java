@@ -6,7 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
-@Entity @Table(name = "CHECKOUT")
+@Entity @Table(name = "checkout")
 public class CheckoutBean {
 	
 	@Id @Column(name = "CHECKOUT_ID")
@@ -21,7 +21,7 @@ public class CheckoutBean {
 	@Column(name = "CHECKOUT_TOTAL_PRICE")
 	private int checkoutTotalPrice;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
     @Column(name = "CHECKOUT_DATE")
 	private Date checkoutDate;
 	

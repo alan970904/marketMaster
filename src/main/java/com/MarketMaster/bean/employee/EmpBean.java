@@ -1,19 +1,43 @@
 package com.MarketMaster.bean.employee;
 
 import java.time.LocalDate;
+import jakarta.persistence.*;
 
+
+@Entity @Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	private String employeeId;
-	private String employeeName;
-	private String employeeTel;
-	private String employeeIdcard;
-	private String employeeEmail;
-	private String password;
-	private String positionId;
-	private LocalDate hiredate;
-	private LocalDate resigndate;
-	private boolean isFirstLogin;
+	
+	@Id
+    @Column(name = "employee_id")
+    private String employeeId;
+
+    @Column(name = "employee_name")
+    private String employeeName;
+
+    @Column(name = "employee_tel")
+    private String employeeTel;
+
+    @Column(name = "employee_idcard")
+    private String employeeIdcard;
+
+    @Column(name = "employee_email")
+    private String employeeEmail;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "position_id")
+    private String positionId;
+
+    @Column(name = "hiredate")
+    private LocalDate hiredate;
+
+    @Column(name = "resigndate")
+    private LocalDate resigndate;
+
+    @Column(name = "is_first_login")
+    private boolean isFirstLogin;
 
 	public EmpBean() {
 	}

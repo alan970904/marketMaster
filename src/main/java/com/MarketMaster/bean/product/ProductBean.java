@@ -1,142 +1,176 @@
 package com.MarketMaster.bean.product;
 
-public class ProductBean implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
-	private String productId;
-	private String productCategory;
-	private String productName;
-	private int productPrice;
-	private int productSafeInventory;
-	private int numberOfShelve;
-	private int numberOfInventory;
-	private int numberOfSale;
-	private int numberOfExchange;
-	private int numberOfDestruction;
-	private int numberOfRemove;
+import jakarta.persistence.*;
+import java.io.Serializable;
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+@Entity
+@Table(name = "products")
+public class ProductBean implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	public String getProductId() {
-		return productId;
-	}
+    @Id
+    @Column(name = "product_id")
+    private String productId;
 
-	public String getProductCategory() {
-		return productCategory;
-	}
+    @Column(name = "product_category")
+    private String productCategory;
 
-	public String getProductName() {
-		return productName;
-	}
+    @Column(name = "product_name")
+    private String productName;
 
-	public int getProductPrice() {
-		return productPrice;
-	}
+    @Column(name = "product_price")
+    private int productPrice;
 
-	public int getproductSafeInventory() {
-		return productSafeInventory;
-	}
+    @Column(name = "product_safeinventory")
+    private int productSafeInventory;
 
-	public int getNumberOfShelve() {
-		return numberOfShelve;
-	}
+    @Column(name = "number_of_shelve")
+    private int numberOfShelve;
 
-	public int getNumberOfInventory() {
-		return numberOfInventory;
-	}
+    @Column(name = "number_of_inventory")
+    private int numberOfInventory;
 
-	public int getNumberOfSale() {
-		return numberOfSale;
-	}
+    @Column(name = "number_of_sale")
+    private int numberOfSale;
 
-	public int getNumberOfExchange() {
-		return numberOfExchange;
-	}
+    @Column(name = "number_of_exchange")
+    private int numberOfExchange;
 
-	public int getNumberOfDestruction() {
-		return numberOfDestruction;
-	}
+    @Column(name = "number_of_destruction")
+    private int numberOfDestruction;
 
-	public int getNumberOfRemove() {
-		return numberOfRemove;
-	}
+    @Column(name = "number_of_remove")
+    private int numberOfRemove;
 
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
-	public void setProductCategory(String productCategory) {
-		this.productCategory = productCategory;
-	}
+    public String getProductId() {
+        return productId;
+    }
 
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
+    public String getProductCategory() {
+        return productCategory;
+    }
 
-	public void setProductPrice(int productPrice) {
-		this.productPrice = productPrice;
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	public void setproductSafeInventory(int productSafeInventory) {
-		this.productSafeInventory = productSafeInventory;
-	}
+    public int getProductPrice() {
+        return productPrice;
+    }
 
-	public void setNumberOfShelve(int numberOfShelve) {
-		this.numberOfShelve = numberOfShelve;
-	}
+    public int getproductSafeInventory() {
+        return productSafeInventory;
+    }
 
-	public void setNumberOfInventory(int numberOfInventory) {
-		this.numberOfInventory = numberOfInventory;
-	}
+    public int getNumberOfShelve() {
+        return numberOfShelve;
+    }
 
-	public void setNumberOfSale(int numberOfSale) {
-		this.numberOfSale = numberOfSale;
-	}
+    public int getNumberOfInventory() {
+        return numberOfInventory;
+    }
 
-	public void setNumberOfExchange(int numberOfExchange) {
-		this.numberOfExchange = numberOfExchange;
-	}
+    public int getNumberOfSale() {
+        return numberOfSale;
+    }
 
-	public void setNumberOfDestruction(int numberOfDestruction) {
-		this.numberOfDestruction = numberOfDestruction;
-	}
+    public int getNumberOfExchange() {
+        return numberOfExchange;
+    }
 
-	public void setNumberOfRemove(int numberOfRemove) {
-		this.numberOfRemove = numberOfRemove;
-	}
+    public int getNumberOfDestruction() {
+        return numberOfDestruction;
+    }
 
-	public ProductBean(String productId, String productCategory, String productName, int productPrice,
-			int productSafeInventory, int numberOfShelve, int numberOfInventory, int numberOfSale, int numberOfExchange,
-			int numberOfDestruction, int numberOfRemove) {
-		super();
-		this.productId = productId;
-		this.productCategory = productCategory;
-		this.productName = productName;
-		this.productPrice = productPrice;
-		this.productSafeInventory = productSafeInventory;
-		this.numberOfShelve = numberOfShelve;
-		this.numberOfInventory = numberOfInventory;
-		this.numberOfSale = numberOfSale;
-		this.numberOfExchange = numberOfExchange;
-		this.numberOfDestruction = numberOfDestruction;
-		this.numberOfRemove = numberOfRemove;
-	}
+    public int getNumberOfRemove() {
+        return numberOfRemove;
+    }
 
-	public ProductBean(String productId, int numberOfShelve, int numberOfInventory) {
-		super();
-		this.productId = productId;
-		this.numberOfShelve = numberOfShelve;
-		this.numberOfInventory = numberOfInventory;
-	}
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
-	public ProductBean(String productName) {
-		super();
-		this.productName = productName;
-	}
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
 
-	public ProductBean() {
-		super();
-	}
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public void setproductSafeInventory(int productSafeInventory) {
+        this.productSafeInventory = productSafeInventory;
+    }
+
+    public void setNumberOfShelve(int numberOfShelve) {
+        this.numberOfShelve = numberOfShelve;
+    }
+
+    public void setNumberOfInventory(int numberOfInventory) {
+        this.numberOfInventory = numberOfInventory;
+    }
+
+    public void setNumberOfSale(int numberOfSale) {
+        this.numberOfSale = numberOfSale;
+    }
+
+    public void setNumberOfExchange(int numberOfExchange) {
+        this.numberOfExchange = numberOfExchange;
+    }
+
+    public void setNumberOfDestruction(int numberOfDestruction) {
+        this.numberOfDestruction = numberOfDestruction;
+    }
+
+    public void setNumberOfRemove(int numberOfRemove) {
+        this.numberOfRemove = numberOfRemove;
+    }
+
+    public ProductBean(String productId, String productCategory, String productName, int productPrice,
+                       int productSafeInventory, int numberOfShelve, int numberOfInventory, int numberOfSale, 
+                       int numberOfExchange, int numberOfDestruction, int numberOfRemove) {
+        super();
+        this.productId = productId;
+        this.productCategory = productCategory;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productSafeInventory = productSafeInventory;
+        this.numberOfShelve = numberOfShelve;
+        this.numberOfInventory = numberOfInventory;
+        this.numberOfSale = numberOfSale;
+        this.numberOfExchange = numberOfExchange;
+        this.numberOfDestruction = numberOfDestruction;
+        this.numberOfRemove = numberOfRemove;
+    }
+
+    public ProductBean(String productId, int numberOfShelve, int numberOfInventory) {
+        super();
+        this.productId = productId;
+        this.numberOfShelve = numberOfShelve;
+        this.numberOfInventory = numberOfInventory;
+    }
+    
+    public ProductBean(String productId, String productName, String productCategory, int productPrice) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.productPrice = productPrice;
+    }
+
+    public ProductBean(String productName) {
+        super();
+        this.productName = productName;
+    }
+
+    public ProductBean() {
+        super();
+    }
 }
