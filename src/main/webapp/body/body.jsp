@@ -69,6 +69,7 @@
 					href="blank.html" class="dropdown-item">Blank Page</a>
 			</div>
 		</div>
+	</div>
 </nav>
 </div>
 <div class="content">
@@ -174,4 +175,3 @@
 			</div>
 		</div>
 	</nav>
-</div>

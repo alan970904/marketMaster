@@ -23,7 +23,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/marketMaster/CSS/style.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -31,7 +31,7 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-    <link rel="stylesheet" href="/marketMaster/CSS/extra.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
     <%@ include file="/body/body.jsp"%>
