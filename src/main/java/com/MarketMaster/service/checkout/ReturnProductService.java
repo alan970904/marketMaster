@@ -2,46 +2,41 @@ package com.MarketMaster.service.checkout;
 
 import java.util.List;
 import java.util.Map;
-
-import com.MarketMaster.bean.checkout.CheckoutBean;
+import com.MarketMaster.bean.checkout.ReturnProductBean;
 import com.MarketMaster.dao.checkout.ReturnProductDao;
 
 public class ReturnProductService {
     private ReturnProductDao returnProductDao = new ReturnProductDao();
 
-    public CheckoutBean getReturnProduct(String checkoutId) {
-        return ReturnProductDao.getOne(checkoutId);
+    public ReturnProductBean getReturnProduct(String returnId) {
+        return returnProductDao.getOne(returnId);
     }
 
-    public List<CheckoutBean> getAllReturnProducts() {
-        return ReturnProductDao.getAll();
+    public List<ReturnProductBean> getAllReturnProducts() {
+        return returnProductDao.getAll();
     }
 
-    public void addReturnProduct(CheckoutBean returnProduct) {
-        ReturnProductDao.insert(returnProduct);
+    public void addReturnProduct(ReturnProductBean returnProduct) {
+        returnProductDao.insert(returnProduct);
     }
 
-    public void updateReturnProduct(CheckoutBean returnProduct) {
-        ReturnProductDao.update(returnProduct);
+    public void updateReturnProduct(ReturnProductBean returnProduct) {
+        returnProductDao.update(returnProduct);
     }
 
-    public void deleteReturnProduct(String checkoutId) {
-        ReturnProductDao.delete(checkoutId);
-    }
-
-    public List<CheckoutBean> searchReturnProductsByTel(String customerTel) {
-        return ReturnProductDao.searchByTel(customerTel);
+    public void deleteReturnProduct(String returnId) {
+        returnProductDao.delete(returnId);
     }
 
     public void updateReturnTotalPrice(String returnId) {
-        ReturnProductDao.updateTotalPrice(returnId);
+        returnProductDao.updateTotalPrice(returnId);
     }
 
     public List<Map<String, Object>> getDailyReturnsReport() {
-        return ReturnProductDao.getDailyReturnsReport();
+        return returnProductDao.getDailyReturnsReport();
     }
 
     public List<Map<String, Object>> getReturnSummary() {
-        return ReturnProductDao.getReturnSummary();
+        return returnProductDao.getReturnSummary();
     }
 }
