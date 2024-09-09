@@ -36,7 +36,7 @@ public class AuthenticationFilter implements Filter {
         if (isLoggedIn || isLoginPage || isLoginServlet || isStaticResource) {
             chain.doFilter(request, response);
         } else {
-            httpResponse.sendRedirect(httpRequest.getContextPath() + "/jsp/Login.jsp");
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/employee/Login.jsp");
         }
     }
 

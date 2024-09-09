@@ -3,87 +3,123 @@ package com.MarketMaster.viewModel;
 import java.time.LocalDate;
 
 //EmployeeViewModel 類：用於在表現層展示豐富的員工信息
-public class EmployeeViewModel{
+public class EmployeeViewModel {
 	private String employeeId;
-    private String employeeName;
-    private String employeeTel;
-    private String employeeIdcard;
-    private String employeeEmail;
-    private String positionName;  // 職位名稱替代職位編號
-    private String salaryLevel;
-    private LocalDate hiredate;
-    private LocalDate resigndate;
+	private String employeeName;
+	private String employeeTel;
+	private String employeeIdcard;
+	private String employeeEmail;
+	private String positionName; // 職位名稱替代職位編號
+	private String salaryLevel;
+	private LocalDate hiredate;
+	private LocalDate resigndate;
+    private String password;
+    private String positionId;
 
-    public EmployeeViewModel() {}
+	public EmployeeViewModel() {
+	}
 
-    public String getEmployeeId() {
-    	return employeeId;
-    	}
+	public EmployeeViewModel(String employeeId, String employeeName, String employeeTel, String employeeIdcard,
+			String employeeEmail, String positionName, String salaryLevel, LocalDate hiredate, LocalDate resigndate,
+			String password, String positionId) {
+		this.employeeId = employeeId;
+		this.employeeName = employeeName;
+		this.employeeTel = employeeTel;
+		this.employeeIdcard = employeeIdcard;
+		this.employeeEmail = employeeEmail;
+		this.positionName = positionName;
+		this.salaryLevel = salaryLevel;
+		this.hiredate = hiredate;
+		this.resigndate = resigndate;
+        this.password = password;
+        this.positionId = positionId;
+	}
 
-    public void setEmployeeId(String employeeId) {
-    	this.employeeId = employeeId;
-    	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
 
-    public String getEmployeeName() {
-    	return employeeName;
-    	}
-    public void setEmployeeName(String employeeName) {
-    	this.employeeName = employeeName;
-    	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
 
-    public String getEmployeeTel() {
-    	return employeeTel;
-    	}
+	public String getEmployeeName() {
+		return employeeName;
+	}
 
-    public void setEmployeeTel(String employeeTel) {
-    	this.employeeTel = employeeTel;
-    	}
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
+	}
 
-    public String getEmployeeIdcard() {
-    	return employeeIdcard;
-    	}
+	public String getEmployeeTel() {
+		return employeeTel;
+	}
 
-    public void setEmployeeIdcard(String employeeIdcard) {
-    	this.employeeIdcard = employeeIdcard;
-    	}
+	public void setEmployeeTel(String employeeTel) {
+		this.employeeTel = employeeTel;
+	}
 
-    public String getEmployeeEmail() {
-    	return employeeEmail;
-    	}
+	public String getEmployeeIdcard() {
+		return employeeIdcard;
+	}
 
-    public void setEmployeeEmail(String employeeEmail) {
-    	this.employeeEmail = employeeEmail;
-    	}
+	public void setEmployeeIdcard(String employeeIdcard) {
+		this.employeeIdcard = employeeIdcard;
+	}
 
-    public String getPositionName() {
-    	return positionName;
-    	}
+	public String getEmployeeEmail() {
+		return employeeEmail;
+	}
 
-    public void setPositionName(String positionName) {
-    	this.positionName = positionName;
-    	}
+	public void setEmployeeEmail(String employeeEmail) {
+		this.employeeEmail = employeeEmail;
+	}
 
-    public String getSalaryLevel() {
-    	return salaryLevel;
-    	}
+	public String getPositionName() {
+		return positionName;
+	}
 
-    public void setSalaryLevel(String salaryLevel) {
-    	this.salaryLevel = salaryLevel;
-    	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
 
-    public LocalDate getHiredate() {
-    	return hiredate;
-    	}
+	public String getSalaryLevel() {
+		return salaryLevel;
+	}
 
-    public void setHiredate(LocalDate hiredate) {
-    	this.hiredate = hiredate;
-    	}
+	public void setSalaryLevel(String salaryLevel) {
+		this.salaryLevel = salaryLevel;
+	}
 
-    public LocalDate getResigndate() {
-    	return resigndate;
-    	}
+	public LocalDate getHiredate() {
+		return hiredate;
+	}
 
-    public void setResigndate(LocalDate resigndate) {
-    	this.resigndate = resigndate;
-    	}
+	public void setHiredate(LocalDate hiredate) {
+		this.hiredate = hiredate;
+	}
+
+	public LocalDate getResigndate() {
+		return resigndate;
+	}
+
+	public void setResigndate(LocalDate resigndate) {
+		this.resigndate = resigndate;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(String positionId) {
+		this.positionId = positionId;
+	}
 }

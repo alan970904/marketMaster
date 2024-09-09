@@ -3,7 +3,7 @@
 
 <div class="sidebar pe-4 pb-3">
 	<nav class="navbar bg-light navbar-light">
-		<a href="index.html" class="navbar-brand mx-4 mb-3">
+		<a href="${pageContext.request.contextPath}/body/HomePage.jsp" class="navbar-brand mx-4 mb-3">
 			<h3 class="text-primary">
 				<i class="fa fa-hashtag me-2"></i>超市後台系統
 			</h3>
@@ -26,12 +26,9 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>人資系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/jsp/EmployeeMain.jsp"
-						class="dropdown-item">員工資訊</a> <a
-						href="${pageContext.request.contextPath}/html/AskForLeave.jsp"
-						class="dropdown-item">請假</a> <a
-						href="${pageContext.request.contextPath}/html/Schedule.jsp"
-						class="dropdown-item">排班</a>
+					<a href="${pageContext.request.contextPath}/employee/EmployeeMain.jsp" class="dropdown-item">員工資訊</a>
+					<a href="${pageContext.request.contextPath}/html/AskForLeave.jsp" class="dropdown-item">請假</a>
+                    <a href="${pageContext.request.contextPath}/html/Schedule.jsp" class="dropdown-item">排班</a>
 				</div>
 			</div>
 
@@ -68,9 +65,8 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>會員系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/html/CustomerMain.jsp"
-						class="dropdown-item">會員資訊</a> <a href="#redeem-product"
-						class="dropdown-item">兌換商品</a>
+					<a href="${pageContext.request.contextPath}/employee/CustomerMain.jsp"
+						class="dropdown-item">會員資訊</a>
 				</div>
 			</div>
 			<div class="dropdown-menu bg-transparent border-0">
@@ -80,8 +76,10 @@
 					href="blank.html" class="dropdown-item">Blank Page</a>
 			</div>
 		</div>
-	</nav>
+	</div>
+</nav>
 </div>
+<div class="content">
 	<!-- Navbar Start -->
 	<nav
 		class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
@@ -179,10 +177,10 @@
 				<div
 					class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
 					<a
-						href="${pageContext.request.contextPath}/jsp/EmployeeDetails.jsp"
+						href="${pageContext.request.contextPath}/employee/EmployeeDetails.jsp"
 						class="dropdown-item">My Profile</a> <a href="#"
 						class="dropdown-item">Settings</a> <a
-						href="${pageContext.request.contextPath}/jsp/Login.jsp"
+						href="${pageContext.request.contextPath}/employee/Login.jsp"
 						class="dropdown-item">Log Out</a>
 				</div>
 			</div>

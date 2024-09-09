@@ -21,7 +21,7 @@ public class ChangePasswordServlet extends HttpServlet {
         EmployeeViewModel employee = (EmployeeViewModel) session.getAttribute("employee");
 
         if (employee == null) {
-            response.sendRedirect(request.getContextPath() + "/jsp/Login.jsp");
+            response.sendRedirect(request.getContextPath() + "/employee/Login.jsp");
             return;
         }
 
@@ -33,14 +33,14 @@ public class ChangePasswordServlet extends HttpServlet {
                 // 更新 session 中的員工資訊
                 EmployeeViewModel updatedEmployee = empService.getEmployeeViewModel(employee.getEmployeeId());
                 session.setAttribute("employee", updatedEmployee);
-                response.sendRedirect(request.getContextPath() + "/jsp/EmployeeMain.jsp");
+                response.sendRedirect(request.getContextPath() + "/body/HomePage.jsp");
             } else {
                 request.setAttribute("errorMessage", "修改密碼失敗");
-                request.getRequestDispatcher("/jsp/ChangePassword.jsp").forward(request, response);
+                request.getRequestDispatcher("/employee/ChangePassword.jsp").forward(request, response);
             }
         } catch (DataAccessException e) {
             request.setAttribute("errorMessage", "修改密碼失敗: " + e.getMessage());
-            request.getRequestDispatcher("/jsp/ChangePassword.jsp").forward(request, response);
+            request.getRequestDispatcher("/employee/ChangePassword.jsp").forward(request, response);
         }
     }
 }
