@@ -2,38 +2,37 @@ package com.MarketMaster.service.checkout;
 
 import java.util.List;
 import java.util.Map;
-
 import com.MarketMaster.bean.checkout.ReturnDetailsBean;
 import com.MarketMaster.dao.checkout.ReturnDetailsDao;
 
 public class ReturnDetailsService {
     private ReturnDetailsDao returnDetailsDao = new ReturnDetailsDao();
 
-    public ReturnDetailsBean getReturnDetails(String returnId) {
-        return ReturnDetailsDao.getOne(returnId);
+    public ReturnDetailsBean getReturnDetails(String returnId, String checkoutId, String productId) {
+        return returnDetailsDao.getOne(returnId, checkoutId, productId);
     }
 
     public List<ReturnDetailsBean> getAllReturnDetails() {
-        return ReturnDetailsDao.getAll();
+        return returnDetailsDao.getAll();
     }
 
     public void addReturnDetails(ReturnDetailsBean returnDetails) {
-        ReturnDetailsDao.insert(returnDetails);
+        returnDetailsDao.insert(returnDetails);
     }
 
     public void updateReturnDetails(ReturnDetailsBean returnDetails) {
-        ReturnDetailsDao.update(returnDetails);
+        returnDetailsDao.update(returnDetails);
     }
 
-    public void deleteReturnDetails(String returnId) {
-        ReturnDetailsDao.delete(returnId);
+    public void deleteReturnDetails(String returnId, String checkoutId, String productId) {
+        returnDetailsDao.delete(returnId, checkoutId, productId);
     }
 
     public List<ReturnDetailsBean> searchReturnDetailsByProductId(String productId) {
-        return ReturnDetailsDao.searchByProductId(productId);
+        return returnDetailsDao.searchByProductId(productId);
     }
 
     public List<Map<String, Object>> getReturnComparisonReport() {
-        return ReturnDetailsDao.getReturnComparisonReport();
+        return returnDetailsDao.getReturnComparisonReport();
     }
 }

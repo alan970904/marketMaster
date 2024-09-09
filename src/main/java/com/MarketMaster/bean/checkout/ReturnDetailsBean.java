@@ -1,83 +1,194 @@
 package com.MarketMaster.bean.checkout;
 
-public class ReturnDetailsBean implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
-	private String returnId;
-	private String checkoutId;
-	private String productId;
-	private String reasonForReturn;
-	private String numberOfReturn;
-	private String productPrice;
-	private String returnPrice;
+import jakarta.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 
+@Entity
+@Table(name = "return_details")
+@IdClass(ReturnDetailsBean.ReturnDetailsId.class)
+public class ReturnDetailsBean implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-	public ReturnDetailsBean() {
-		super();
-	}
+    @Id
+    @Column(name = "return_id")
+    private String returnId;
 
-	public ReturnDetailsBean(String returnId, String checkoutId, String productId, String reasonForReturn,
-			String numberOfReturn, String productPrice, String returnPrice) {
-		super();
-		this.returnId = returnId;
-		this.checkoutId = checkoutId;
-		this.productId = productId;
-		this.reasonForReturn = reasonForReturn;
-		this.numberOfReturn = numberOfReturn;
-		this.productPrice = productPrice;
-		this.returnPrice = returnPrice;
-	}
+    @Id
+    @Column(name = "checkout_id")
+    private String checkoutId;
 
-	public String getReturnId() {
-		return returnId;
-	}
-	public void setReturnId(String returnId) {
-		this.returnId = returnId;
-	}
-	public String getCheckoutId() {
-		return checkoutId;
-	}
-	public void setCheckoutId(String checkoutId) {
-		this.checkoutId = checkoutId;
-	}
-	public String getProductId() {
-		return productId;
-	}
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-	public String getReasonForReturn() {
-		return reasonForReturn;
-	}
-	public void setReasonForReturn(String reasonForReturn) {
-		this.reasonForReturn = reasonForReturn;
-	}
-	public String getNumberOfReturn() {
-		return numberOfReturn;
-	}
-	public void setNumberOfReturn(String numberOfReturn) {
-		this.numberOfReturn = numberOfReturn;
-	}
-	public String getProductPrice() {
-		return productPrice;
-	}
-	public void setProductPrice(String productPrice) {
-		this.productPrice = productPrice;
-	}
-	public String getReturnPrice() {
-		return returnPrice;
-	}
-	public void setReturnPrice(String returnPrice) {
-		this.returnPrice = returnPrice;
-	}
+    @Id
+    @Column(name = "product_id")
+    private String productId;
 
-	@Override
-	public String toString() {
-		return "ReturnDetailsBean [returnId=" + returnId + ", checkoutId=" + checkoutId + ", productId=" + productId
-				+ ", reasonForReturn=" + reasonForReturn + ", numberOfReturn=" + numberOfReturn + ", productPrice="
-				+ productPrice + ", returnPrice=" + returnPrice + "]";
-	}
+    @Column(name = "reason_for_return")
+    private String reasonForReturn;
 
+    @Column(name = "number_of_return")
+    private Integer numberOfReturn;
 
+    @Column(name = "product_price")
+    private Integer productPrice;
 
+    @Column(name = "return_price")
+    private Integer returnPrice;
 
+    // Constructors
+    public ReturnDetailsBean() {
+        super();
+    }
+
+    public ReturnDetailsBean(String returnId, String checkoutId, String productId, String reasonForReturn,
+                             Integer numberOfReturn, Integer productPrice, Integer returnPrice) {
+        this.returnId = returnId;
+        this.checkoutId = checkoutId;
+        this.productId = productId;
+        this.reasonForReturn = reasonForReturn;
+        this.numberOfReturn = numberOfReturn;
+        this.productPrice = productPrice;
+        this.returnPrice = returnPrice;
+    }
+
+    // Getters and setters
+    public String getReturnId() {
+        return returnId;
+    }
+
+    public void setReturnId(String returnId) {
+        this.returnId = returnId;
+    }
+
+    public String getCheckoutId() {
+        return checkoutId;
+    }
+
+    public void setCheckoutId(String checkoutId) {
+        this.checkoutId = checkoutId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getReasonForReturn() {
+        return reasonForReturn;
+    }
+
+    public void setReasonForReturn(String reasonForReturn) {
+        this.reasonForReturn = reasonForReturn;
+    }
+
+    public Integer getNumberOfReturn() {
+        return numberOfReturn;
+    }
+
+    public void setNumberOfReturn(Integer numberOfReturn) {
+        this.numberOfReturn = numberOfReturn;
+    }
+
+    public Integer getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public Integer getReturnPrice() {
+        return returnPrice;
+    }
+
+    public void setReturnPrice(Integer returnPrice) {
+        this.returnPrice = returnPrice;
+    }
+
+    // equals, hashCode, toString methods
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReturnDetailsBean)) return false;
+        ReturnDetailsBean that = (ReturnDetailsBean) o;
+        return Objects.equals(returnId, that.returnId) &&
+               Objects.equals(checkoutId, that.checkoutId) &&
+               Objects.equals(productId, that.productId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(returnId, checkoutId, productId);
+    }
+
+    @Override
+    public String toString() {
+        return "ReturnDetailsBean{" +
+               "returnId='" + returnId + '\'' +
+               ", checkoutId='" + checkoutId + '\'' +
+               ", productId='" + productId + '\'' +
+               ", reasonForReturn='" + reasonForReturn + '\'' +
+               ", numberOfReturn=" + numberOfReturn +
+               ", productPrice=" + productPrice +
+               ", returnPrice=" + returnPrice +
+               '}';
+    }
+
+    // 內部類定義複合主鍵
+    public static class ReturnDetailsId implements Serializable {
+        private String returnId;
+        private String checkoutId;
+        private String productId;
+
+        public ReturnDetailsId() {}
+
+        public ReturnDetailsId(String returnId, String checkoutId, String productId) {
+            this.returnId = returnId;
+            this.checkoutId = checkoutId;
+            this.productId = productId;
+        }
+
+        // Getters and setters
+        public String getReturnId() {
+            return returnId;
+        }
+
+        public void setReturnId(String returnId) {
+            this.returnId = returnId;
+        }
+
+        public String getCheckoutId() {
+            return checkoutId;
+        }
+
+        public void setCheckoutId(String checkoutId) {
+            this.checkoutId = checkoutId;
+        }
+
+        public String getProductId() {
+            return productId;
+        }
+
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+
+        // equals and hashCode methods
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ReturnDetailsId)) return false;
+            ReturnDetailsId that = (ReturnDetailsId) o;
+            return Objects.equals(returnId, that.returnId) &&
+                   Objects.equals(checkoutId, that.checkoutId) &&
+                   Objects.equals(productId, that.productId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(returnId, checkoutId, productId);
+        }
+    }
 }

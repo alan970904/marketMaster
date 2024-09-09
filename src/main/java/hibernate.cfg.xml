@@ -34,6 +34,8 @@
 		<mapping class="com.MarketMaster.model.House"/>
 		<mapping class="com.MarketMaster.bean.checkout.CheckoutBean"/>
 		<mapping class="com.MarketMaster.bean.checkout.CheckoutDetailsBean"/>
+		<mapping class="com.MarketMaster.bean.checkout.ReturnProductBean"/>
+		<mapping class="com.MarketMaster.bean.checkout.ReturnDetailsBean"/>
 		
 		<!-- 如果有 EmpBean，請添加以下行 -->
         <mapping class="com.MarketMaster.bean.employee.EmpBean"/>
