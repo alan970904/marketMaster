@@ -34,8 +34,8 @@ public class DemoAllProduct extends HttpServlet {
 	}
 
 	private void processAction(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
+//		response.setContentType("text/html;charset=UTF-8");
+//		PrintWriter out = response.getWriter();
 
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session = factory.getCurrentSession();
@@ -48,7 +48,7 @@ public class DemoAllProduct extends HttpServlet {
 
 
 
-		out.close();
+//		out.close();
 	}
 
 }

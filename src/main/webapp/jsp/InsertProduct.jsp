@@ -32,6 +32,7 @@
         }
         body {
             font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
         }
         .st1 {
             display: flex;

@@ -40,7 +40,7 @@ public class DemoShelveProduct extends HttpServlet {
 		Session session = factory.getCurrentSession();
 		ProductDao productDao = new ProductDao(session);
 		
-		productDao.shelveProduct("PDR004", 30);
+		productDao.shelveProduct("PDR002", 30);
 		
 		
 

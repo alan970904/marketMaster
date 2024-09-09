@@ -7,7 +7,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.MarketMaster.bean.product.ProductBean;
-import com.MarketMaster.dao.product.ProductDao;
 import com.MarketMaster.util.HibernateUtil;
 
 import jakarta.servlet.ServletException;
@@ -16,8 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/DemoRemoveProduct")
-public class DemoRemoveProduct extends HttpServlet {
+@WebServlet("/ProductServlet")
+public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -38,11 +37,11 @@ public class DemoRemoveProduct extends HttpServlet {
 
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		Session session = factory.getCurrentSession();
-		ProductDao productDao = new ProductDao(session);
+
+		ProductBean product = session.get(ProductBean.class, "PMS001");
 		
-		productDao.removeProduct("PDR002");
-		
-		
+		request.setAttribute("product", product);
+		request.getRequestDispatcher("/jsp/GetOneProduct.jsp").forward(request, response);
 
 
 		out.close();

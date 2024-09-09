@@ -38,7 +38,15 @@ public class ProductDao {
 		return null;
 
 	}
-
+	public ProductBean updateBeanProduct(String productId) {
+		ProductBean productBean = session.get(ProductBean.class, productId);
+		
+		
+		
+		return null;
+	}
+	
+	
 	public ProductBean shelveProduct(String productId,int shelveNumber) {
 		ProductBean productBean = session.get(ProductBean.class, productId);
 		int inventory = productBean.getNumberOfInventory();
@@ -50,6 +58,8 @@ public class ProductDao {
 		}
 		return productBean;
 	}
+	
+	
 	public ProductBean removeProduct(String productId) {
 		ProductBean productBean = session.get(ProductBean.class, productId);
 		if (productBean != null) {
