@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
+
  private static final long serialVersionUID = 1L;
 
  @Id

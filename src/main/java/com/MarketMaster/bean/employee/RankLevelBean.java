@@ -74,14 +74,14 @@ public class RankLevelBean implements java.io.Serializable {
     }
 
     public String getSalaryLevel() {
-  return salaryLevel;
- }
+		return salaryLevel;
+	}
 
- public void setSalaryLevel(String salaryLevel) {
-  this.salaryLevel = salaryLevel;
- }
+	public void setSalaryLevel(String salaryLevel) {
+		this.salaryLevel = salaryLevel;
+	}
 
- public int getActiveEmployeeCount() {
+	public int getActiveEmployeeCount() {
         return activeEmployeeCount;
     }
 
