@@ -14,6 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 //使用 WebServlet 註解來配置 Servlet 的 URL 映射
 @WebServlet("/EmpServlet")
@@ -117,43 +118,53 @@ public class EmpServlet extends HttpServlet {
         String employeeId = request.getParameter("employeeId");
         try {
             EmployeeViewModel empViewModel = empService.getEmployeeViewModel(employeeId);
-            request.setAttribute("employee", empViewModel);
-            request.getSession().setAttribute("employee", empViewModel);
+            request.setAttribute("employeeToUpdate", empViewModel);
             request.getRequestDispatcher("employee/UpdateEmployee.jsp").forward(request, response);
         } catch (DataAccessException e) {
             request.setAttribute("message", "獲取員工訊息失敗：" + e.getMessage());
             request.getRequestDispatcher("employee/ResultEmp.jsp").forward(request, response);
         }
     }
-    
+
     private void updateEmployee(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        EmployeeViewModel currentLoggedInEmployee = (EmployeeViewModel) session.getAttribute("employee");
+        
         try {
             String employeeId = request.getParameter("employeeId");
             EmpBean emp = empService.getEmployee(employeeId);
             if (emp != null) {
-            	emp.setEmployeeName(request.getParameter("employeeName"));
-            	emp.setEmployeeTel(request.getParameter("employeeTel"));
-            	emp.setEmployeeIdcard(request.getParameter("employeeIdcard"));
-            	emp.setEmployeeEmail(request.getParameter("employeeEmail"));
-            	emp.setPassword(request.getParameter("password"));
-            	emp.setPositionId(request.getParameter("positionId"));
-            	emp.setHiredate(LocalDate.parse(request.getParameter("hiredate")));
-            	String resigndate = request.getParameter("resigndate");
-            	emp.setResigndate(resigndate != null && !resigndate.isEmpty() ? LocalDate.parse(resigndate) : null);
-            	// 調用服務層方法更新員工信息
-            	boolean success = empService.updateEmployee(emp);
-            	if (success) {
-            		request.setAttribute("message", "員工更新成功");
-            	} else {
-            		request.setAttribute("message", "更新失敗，員工不存在");
-            	}
-			} else {
-	            request.setAttribute("message", "找不到員工");
-	        }
+                emp.setEmployeeName(request.getParameter("employeeName"));
+                emp.setEmployeeTel(request.getParameter("employeeTel"));
+                emp.setEmployeeIdcard(request.getParameter("employeeIdcard"));
+                emp.setEmployeeEmail(request.getParameter("employeeEmail"));
+                emp.setPassword(request.getParameter("password"));
+                emp.setPositionId(request.getParameter("positionId"));
+                emp.setHiredate(LocalDate.parse(request.getParameter("hiredate")));
+                String resigndate = request.getParameter("resigndate");
+                emp.setResigndate(resigndate != null && !resigndate.isEmpty() ? LocalDate.parse(resigndate) : null);
+                
+                boolean success = empService.updateEmployee(emp);
+                if (success) {
+                    request.setAttribute("message", "員工更新成功");
+                    
+                    // 如果更新的是當前登入的員工，更新session中的資訊
+                    if (currentLoggedInEmployee != null && currentLoggedInEmployee.getEmployeeId().equals(employeeId)) {
+                        EmployeeViewModel updatedEmployee = empService.getEmployeeViewModel(employeeId);
+                        session.setAttribute("employee", updatedEmployee);
+                    }
+                } else {
+                    request.setAttribute("message", "更新失敗，員工不存在");
+                }
+            } else {
+                request.setAttribute("message", "找不到員工");
+            }
         } catch (DataAccessException e) {
             request.setAttribute("message", "更新失敗：" + e.getMessage());
         }
+        
+        // 使用請求轉發而不是重定向
         request.getRequestDispatcher("employee/ResultEmp.jsp").forward(request, response);
     }
 
