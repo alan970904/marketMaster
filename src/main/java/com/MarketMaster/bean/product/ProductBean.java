@@ -3,6 +3,7 @@ package com.MarketMaster.bean.product;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
+
 @Entity
 @Table(name = "products")
 public class ProductBean implements Serializable {
