@@ -46,7 +46,7 @@
 				<div class="dropdown-menu bg-transparent border-0">
 					<a href="${pageContext.request.contextPath}/html/reStockMain.jsp"
 						class="dropdown-item">新增庫存</a> <a
-						href="${pageContext.request.contextPath}/jsp/GetAllRestockDetails.jsp"
+						href="${pageContext.request.contextPath}/restock/GetAllRestockDetails.jsp"
 						class="dropdown-item">庫存明細</a>
 				</div>
 			</div>

@@ -1,7 +1,6 @@
 package com.MarketMaster.bean.restock;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class RestockDetailViewBean {
     private String restockId;
@@ -9,14 +8,31 @@ public class RestockDetailViewBean {
     private String productId;
     private String productName;
     private String productCategory;
-    private int numberOfRestock;
-    private BigDecimal restockPrice;
-    private Date restockDate;
-    private Date productionDate;
-    private Date dueDate;
+    private Integer numberOfRestock;
+    private Integer productPrice;
+    private LocalDate restockDate;
+    private LocalDate productionDate;
+    private LocalDate dueDate;
 
     // Constructors
-    public RestockDetailViewBean() {}
+    public RestockDetailViewBean() {
+    }
+
+    public RestockDetailViewBean(String restockId, String employeeId, String productId,
+                                 String productName, String productCategory,
+                                 Integer numberOfRestock, Integer productPrice,
+                                 LocalDate restockDate, LocalDate productionDate, LocalDate dueDate) {
+        this.restockId = restockId;
+        this.employeeId = employeeId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.numberOfRestock = numberOfRestock;
+        this.productPrice = productPrice;
+        this.restockDate = restockDate;
+        this.productionDate = productionDate;
+        this.dueDate = dueDate;
+    }
 
     // Getters and Setters
     public String getRestockId() {
@@ -59,43 +75,43 @@ public class RestockDetailViewBean {
         this.productCategory = productCategory;
     }
 
-    public int getNumberOfRestock() {
+    public Integer getNumberOfRestock() {
         return numberOfRestock;
     }
 
-    public void setNumberOfRestock(int numberOfRestock) {
+    public void setNumberOfRestock(Integer numberOfRestock) {
         this.numberOfRestock = numberOfRestock;
     }
 
-    public BigDecimal getRestockPrice() {
-        return restockPrice;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setRestockPrice(BigDecimal restockPrice) {
-        this.restockPrice = restockPrice;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Date getRestockDate() {
+    public LocalDate getRestockDate() {
         return restockDate;
     }
 
-    public void setRestockDate(Date restockDate) {
+    public void setRestockDate(LocalDate restockDate) {
         this.restockDate = restockDate;
     }
 
-    public Date getProductionDate() {
+    public LocalDate getProductionDate() {
         return productionDate;
     }
 
-    public void setProductionDate(Date productionDate) {
+    public void setProductionDate(LocalDate productionDate) {
         this.productionDate = productionDate;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -108,7 +124,7 @@ public class RestockDetailViewBean {
                 ", productName='" + productName + '\'' +
                 ", productCategory='" + productCategory + '\'' +
                 ", numberOfRestock=" + numberOfRestock +
-                ", restockPrice=" + restockPrice +
+                ", productPrice=" + productPrice +
                 ", restockDate=" + restockDate +
                 ", productionDate=" + productionDate +
                 ", dueDate=" + dueDate +
