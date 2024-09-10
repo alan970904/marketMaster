@@ -17,7 +17,7 @@ public class HibernateUtil {
     // 這個方法只在類初始化時被調用一次
     private static SessionFactory createSessionFactory() {
         // 創建 StandardServiceRegistry，它保存了 Hibernate 的服務配置
-    	// .configure() 方法會加載默認的 hibernate.cfg.xml 配置文件。
+        // .configure() 方法會加載默認的 hibernate.cfg.xml 配置文件。
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
         // 使用 registry 創建 MetadataSources，然後構建 Metadata，最後創建 SessionFactory
         SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
