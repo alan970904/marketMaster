@@ -4,14 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.*;
+
+@Entity @Table(name = "checkout")
 public class CheckoutBean {
+	
+	@Id @Column(name = "CHECKOUT_ID")
 	private String checkoutId;
+	
+	@Column(name = "CUSTOMER_TEL")
 	private String customerTel;
+	
+	@Column(name = "EMPLOYEE_ID")
 	private String employeeId;
+	
+	@Column(name = "CHECKOUT_TOTAL_PRICE")
 	private int checkoutTotalPrice;
+	
+	@Temporal(TemporalType.DATE)
+    @Column(name = "CHECKOUT_DATE")
 	private Date checkoutDate;
+	
+	@Column(name = "BONUS_POINTS")
 	private int bonusPoints;
+	
+	@Temporal(TemporalType.DATE)
+    @Column(name = "POINTS_DUE_DATE")
 	private Date pointsDueDate;
+	
+	@OneToMany(mappedBy = "checkout", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<CheckoutDetailsBean> checkoutDetails;
 
 	// Constructors, Getters, and Setters
@@ -102,5 +123,6 @@ public class CheckoutBean {
 			checkoutDetails = new ArrayList<>();
 		}
 		checkoutDetails.add(detail);
+		detail.setCheckout(this);
 	}
 }

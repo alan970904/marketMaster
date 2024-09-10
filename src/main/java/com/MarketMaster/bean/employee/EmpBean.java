@@ -2,112 +2,156 @@ package com.MarketMaster.bean.employee;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
-	private static final long serialVersionUID = 1L;
-	private String employeeId;
-	private String employeeName;
-	private String employeeTel;
-	private String employeeIdcard;
-	private String employeeEmail;
-	private String password;
-	private String positionId;
-	private LocalDate hiredate;
-	private LocalDate resigndate;
-	private boolean isFirstLogin;
 
-	public EmpBean() {
-	}
+ private static final long serialVersionUID = 1L;
 
-	public EmpBean(String employeeId, String employeeName, String employeeTel, String employeeIdcard,
-			String employeeEmail, String password, String positionId, LocalDate hiredate, LocalDate resigndate) {
-		this.employeeId = employeeId;
-		this.employeeName = employeeName;
-		this.employeeTel = employeeTel;
-		this.employeeIdcard = employeeIdcard;
-		this.employeeEmail = employeeEmail;
-		this.password = password;
-		this.positionId = positionId;
-		this.hiredate = hiredate;
-		this.resigndate = resigndate;
-	}
+ @Id
+ @Column(name = "employee_id")
+ private String employeeId;
 
-	public String getEmployeeId() {
-		return employeeId;
-	}
+ @Column(name = "employee_name")
+ private String employeeName;
 
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
-	}
+ @Column(name = "employee_tel")
+ private String employeeTel;
 
-	public String getEmployeeName() {
-		return employeeName;
-	}
+ @Column(name = "employee_idcard")
+ private String employeeIdcard;
 
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
+ @Column(name = "employee_email")
+ private String employeeEmail;
 
-	public String getEmployeeTel() {
-		return employeeTel;
-	}
+ @Column(name = "password")
+ private String password;
 
-	public void setEmployeeTel(String employeeTel) {
-		this.employeeTel = employeeTel;
-	}
+ @Column(name = "position_id")
+ private String positionId;
 
-	public String getEmployeeIdcard() {
-		return employeeIdcard;
-	}
+ @Column(name = "hiredate")
+ private LocalDate hiredate;
 
-	public void setEmployeeIdcard(String employeeIdcard) {
-		this.employeeIdcard = employeeIdcard;
-	}
+ @Column(name = "resigndate")
+ private LocalDate resigndate;
 
-	public String getEmployeeEmail() {
-		return employeeEmail;
-	}
+ @Column(name = "is_first_login")
+ private boolean isFirstLogin;
 
-	public void setEmployeeEmail(String employeeEmail) {
-		this.employeeEmail = employeeEmail;
-	}
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "position_id", referencedColumnName = "position_id", insertable = false, updatable = false)
+ private RankLevelBean rankLevel;
 
-	public String getPassword() {
-		return password;
-	}
+ public EmpBean() {
+ }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+ public EmpBean(String employeeId, String employeeName, String employeeTel, String employeeIdcard,
+   String employeeEmail, String password, String positionId, LocalDate hiredate, LocalDate resigndate) {
+  this.employeeId = employeeId;
+  this.employeeName = employeeName;
+  this.employeeTel = employeeTel;
+  this.employeeIdcard = employeeIdcard;
+  this.employeeEmail = employeeEmail;
+  this.password = password;
+  this.positionId = positionId;
+  this.hiredate = hiredate;
+  this.resigndate = resigndate;
+ }
 
-	public String getPositionId() {
-		return positionId;
-	}
+ public String getEmployeeId() {
+  return employeeId;
+ }
 
-	public void setPositionId(String positionId) {
-		this.positionId = positionId;
-	}
+ public void setEmployeeId(String employeeId) {
+  this.employeeId = employeeId;
+ }
 
-	public LocalDate getHiredate() {
-		return hiredate;
-	}
+ public String getEmployeeName() {
+  return employeeName;
+ }
 
-	public void setHiredate(LocalDate hiredate) {
-		this.hiredate = hiredate;
-	}
+ public void setEmployeeName(String employeeName) {
+  this.employeeName = employeeName;
+ }
 
-	public LocalDate getResigndate() {
-		return resigndate;
-	}
+ public String getEmployeeTel() {
+  return employeeTel;
+ }
 
-	public void setResigndate(LocalDate resigndate) {
-		this.resigndate = resigndate;
-	}
+ public void setEmployeeTel(String employeeTel) {
+  this.employeeTel = employeeTel;
+ }
 
-    public boolean isFirstLogin() {
-        return isFirstLogin;
-    }
+ public String getEmployeeIdcard() {
+  return employeeIdcard;
+ }
 
-    public void setFirstLogin(boolean isFirstLogin) {
-        this.isFirstLogin = isFirstLogin;
-    }
+ public void setEmployeeIdcard(String employeeIdcard) {
+  this.employeeIdcard = employeeIdcard;
+ }
+
+ public String getEmployeeEmail() {
+  return employeeEmail;
+ }
+
+ public void setEmployeeEmail(String employeeEmail) {
+  this.employeeEmail = employeeEmail;
+ }
+
+ public String getPassword() {
+  return password;
+ }
+
+ public void setPassword(String password) {
+  this.password = password;
+ }
+
+ public String getPositionId() {
+  return positionId;
+ }
+
+ public void setPositionId(String positionId) {
+  this.positionId = positionId;
+ }
+
+ public LocalDate getHiredate() {
+  return hiredate;
+ }
+
+ public void setHiredate(LocalDate hiredate) {
+  this.hiredate = hiredate;
+ }
+
+ public LocalDate getResigndate() {
+  return resigndate;
+ }
+
+ public void setResigndate(LocalDate resigndate) {
+  this.resigndate = resigndate;
+ }
+
+ public boolean isFirstLogin() {
+  return isFirstLogin;
+ }
+
+ public void setFirstLogin(boolean isFirstLogin) {
+  this.isFirstLogin = isFirstLogin;
+ }
+
+ public RankLevelBean getRankLevel() {
+  return rankLevel;
+ }
+
+ public void setRankLevel(RankLevelBean rankLevel) {
+  this.rankLevel = rankLevel;
+ }
 }
