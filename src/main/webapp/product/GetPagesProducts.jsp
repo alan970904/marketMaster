@@ -31,8 +31,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/ispan/CSS/style.css" rel="stylesheet">
-<link rel="stylesheet" href="/ispan/CSS/extra.css">
+<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 
 <style>
 .inventory-low {
@@ -109,7 +109,7 @@ button:disabled {
 							<td>${product.productId}</td>
 							<td>${product.productCategory}</td>
 							<td><a
-								href="${pageContext.request.contextPath}/ProductsServlet?action=GetOneProduct&productId=${product.productId}">${product.productName}</a></td>
+								href="${pageContext.request.contextPath}//ProductsServlet?action=GetOneProduct&productId=${product.productId}">${product.productName}</a></td>
 							<td>${product.productPrice}</td>
 							<td>${product.productSafeInventory}</td>
 							<td>${product.numberOfShelve}</td>
@@ -120,14 +120,14 @@ button:disabled {
 							<td>${product.numberOfDestruction}</td>
 							<td>${product.numberOfRemove}</td>
 							<td><form method="post"
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}//ProductsServlet"
 									class="d-inline">
 									<input type="hidden" name="action" value="GetUpdateProduct">
 									<input type="hidden" name="productId" value=${product.productId }>
 									<button type="submit" class="update btn btn-sm">修改</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}//ProductsServlet"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="GetShelveProduct">
 									<input type="hidden" name="productId"
@@ -135,7 +135,7 @@ button:disabled {
 									<button type="submit" class="shelve btn btn-sm">上架</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}//ProductsServlet"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="RemoveProduct">
 									<input type="hidden" name="productId"
