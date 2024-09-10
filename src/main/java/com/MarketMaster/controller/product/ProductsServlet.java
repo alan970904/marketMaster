@@ -1,4 +1,4 @@
-package com.MarketMaster.action;
+package com.MarketMaster.controller.product;
 
 import java.io.IOException;
 import java.io.PrintWriter;
