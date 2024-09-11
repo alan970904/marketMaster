@@ -59,12 +59,12 @@
 				<tr>
 					<th>員工編號:</th>
 					<td><input type="text" name="employeeId" id="employeeId"
-						value="${employee.employeeId}" readonly></td>
+						value="${employeeToUpdate.employeeId}" readonly></td>
 				</tr>
 				<tr>
 					<th>姓名:</th>
 					<td><input type="text" name="employeeName" id="employeeName"
-						value="${employee.employeeName}" required></td>
+						value="${employeeToUpdate.employeeName}" required></td>
 				</tr>
 				<tr>
 					<th>電話:</th>
