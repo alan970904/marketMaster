@@ -20,8 +20,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="/ispan/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/ispan/CSS/extra.css">
+    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

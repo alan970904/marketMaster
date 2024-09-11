@@ -63,8 +63,8 @@ display:none;
 </head>
    <%@ include file="/body/body.jsp" %>
 		<!-- Navbar End -->
+		<main style= "width:100%; " >
 		<div class="card" >
-		<main style= "width:100%; " ></main>
 
 			<h1>進貨明細</h1>
 			<table id="restockDetailsTable" class="display">

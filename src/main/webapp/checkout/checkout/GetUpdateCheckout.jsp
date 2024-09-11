@@ -24,7 +24,7 @@
 
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/ispan/CSS/extra.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
