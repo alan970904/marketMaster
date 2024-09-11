@@ -41,7 +41,7 @@ public class DemoAllProduct extends HttpServlet {
 		Session session = factory.getCurrentSession();
 
 		ProductDao productDao = new ProductDao(session);
-		List<ProductBean> products = productDao.selectAll();
+		List<ProductBean> products = productDao.getAll();
 		
 		request.setAttribute("products", products);
 		request.getRequestDispatcher("/jsp/GetPagesProducts.jsp").forward(request, response);
