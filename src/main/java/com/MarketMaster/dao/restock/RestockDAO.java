@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.MarketMaster.DTO.restock.EmployeeDTO;
 import com.MarketMaster.DTO.restock.ProductCategoryDTO;
-import com.MarketMaster.DTO.restock.ProductNameDTO;;
+import com.MarketMaster.DTO.restock.ProductNameDTO;
 import com.MarketMaster.bean.restock.RestockBean;
 import com.MarketMaster.bean.restock.RestockDetailsBean;
 import jakarta.servlet.http.HttpServletRequest;
