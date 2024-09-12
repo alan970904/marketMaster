@@ -33,7 +33,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/ispan/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/CSS/extra.css">
 

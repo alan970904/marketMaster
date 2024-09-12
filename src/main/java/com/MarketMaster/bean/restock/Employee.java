@@ -1,8 +1,22 @@
-package com.MarketMaster.bean.employee;
+package com.MarketMaster.bean.restock;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "Employee")
 public class Employee {
+    @Id
+    @Column(name = "employee_id")
     private String employeeId;
+
+    @Column(name = "employee_name")
     private String employeeName;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<RestockBean> restocks = new ArrayList<>();
+
 
     public Employee() {}
 

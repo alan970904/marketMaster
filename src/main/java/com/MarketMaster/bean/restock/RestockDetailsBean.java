@@ -1,19 +1,48 @@
 package com.MarketMaster.bean.restock;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.MarketMaster.bean.product.ProductBean;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "restock_details")
 public class RestockDetailsBean {
-    private String restockId;
-    private String employeeId;
-    private LocalDate restockDate;
-    private String productId;
-    private String productName;
+    @Id
+    @Column(name = "restock_id")
+    private String restockId;  // 主鍵，同時也是外鍵
+
+    @ManyToOne
+    @JoinColumn(name = "restock_id", insertable = false, updatable = false)
+    private RestockBean restock;
+
+    @Column(name = "product_id")
+    private String productId;  // 外鍵
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private ProductBean product;
+
+    @Column(name = "number_of_restock")
     private int numberOfRestock;
-    private BigDecimal productPrice;
-    private BigDecimal restockTotalPrice;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "restock_price")
+    private int productPrice;
+
+    @Column(name = "restock_total_price")
+    private int restockTotalPrice;
+
+    @Column(name = "production_date")
     private LocalDate productionDate;
+
+    @Column(name = "due_date")
     private LocalDate dueDate;
+
+    @Column(name = "RESTOCK_DATE")
+    private LocalDate restockDate;
 
     // Constructor
     public RestockDetailsBean() {}
@@ -27,20 +56,12 @@ public class RestockDetailsBean {
         this.restockId = restockId;
     }
 
-    public String getEmployeeId() {
-        return employeeId;
+    public RestockBean getRestock() {
+        return restock;
     }
 
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public LocalDate getRestockDate() {
-        return restockDate;
-    }
-
-    public void setRestockDate(LocalDate restockDate) {
-        this.restockDate = restockDate;
+    public void setRestock(RestockBean restock) {
+        this.restock = restock;
     }
 
     public String getProductId() {
@@ -49,6 +70,14 @@ public class RestockDetailsBean {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public ProductBean getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductBean product) {
+        this.product = product;
     }
 
     public String getProductName() {
@@ -67,19 +96,19 @@ public class RestockDetailsBean {
         this.numberOfRestock = numberOfRestock;
     }
 
-    public BigDecimal getProductPrice() {
+    public int getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(BigDecimal productPrice) {
+    public void setProductPrice(int productPrice) {
         this.productPrice = productPrice;
     }
 
-    public BigDecimal getRestockTotalPrice() {
+    public int getRestockTotalPrice() {
         return restockTotalPrice;
     }
 
-    public void setRestockTotalPrice(BigDecimal restockTotalPrice) {
+    public void setRestockTotalPrice(int restockTotalPrice) {
         this.restockTotalPrice = restockTotalPrice;
     }
 
@@ -99,12 +128,18 @@ public class RestockDetailsBean {
         this.dueDate = dueDate;
     }
 
+    public LocalDate getRestockDate() {
+        return restockDate;
+    }
+
+    public void setRestockDate(LocalDate restockDate) {
+        this.restockDate = restockDate;
+    }
+
     @Override
     public String toString() {
         return "RestockDetailBean{" +
                 "restockId='" + restockId + '\'' +
-                ", employeeId='" + employeeId + '\'' +
-                ", restockDate=" + restockDate +
                 ", productId='" + productId + '\'' +
                 ", productName='" + productName + '\'' +
                 ", numberOfRestock=" + numberOfRestock +
@@ -112,6 +147,7 @@ public class RestockDetailsBean {
                 ", restockTotalPrice=" + restockTotalPrice +
                 ", productionDate=" + productionDate +
                 ", dueDate=" + dueDate +
+                ", restockDate=" + restockDate +
                 '}';
     }
 }

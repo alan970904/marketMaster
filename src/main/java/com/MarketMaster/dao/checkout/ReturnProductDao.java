@@ -1,200 +1,156 @@
 package com.MarketMaster.dao.checkout;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import com.MarketMaster.bean.checkout.ReturnProductBean;
+import com.MarketMaster.util.HibernateUtil;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-import com.MarketMaster.bean.checkout.CheckoutBean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReturnProductDao {
-    private static final String GET_ONE_SQL = "SELECT * FROM checkout WHERE checkout_id = ?";
-    private static final String GET_ALL_SQL = "SELECT * FROM checkout";
-    private static final String DELETE_SQL = "DELETE FROM checkout WHERE checkout_id=?";
-    private static final String INSERT_SQL = "INSERT INTO checkout(checkout_id,customer_tel,employee_id,checkout_total_price,checkout_date,bonus_points,points_due_date) VALUES(?,?,?,?,?,?,?)";
-    private static final String UPDATE_SQL = "UPDATE checkout SET customer_tel=?,employee_id=?,checkout_total_price=?,checkout_date=?,bonus_points=?,points_due_date=? WHERE checkout_id=?";
-    private static final String SEARCH_SQL = "SELECT * FROM checkout WHERE customer_tel LIKE ?";
+    private static final Logger logger = Logger.getLogger(ReturnProductDao.class.getName());
+    private SessionFactory sessionFactory;
 
-    private static Connection getConnection() throws SQLException, NamingException {
-        Context context = new InitialContext();
-        DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/ispan");
-        return ds.getConnection();
+    public ReturnProductDao() {
+        this.sessionFactory = HibernateUtil.getSessionFactory();
     }
 
-    public static CheckoutBean getOne(String checkoutId) {
-        CheckoutBean ck = new CheckoutBean();
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(GET_ONE_SQL)) {
-            stmt.setString(1, checkoutId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    ck.setCheckoutId(rs.getString("checkout_id"));
-                    ck.setCustomerTel(rs.getString("customer_tel"));
-                    ck.setEmployeeId(rs.getString("employee_id"));
-//                    ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
-//                    ck.setCheckoutDate(rs.getString("checkout_date"));
-//                    ck.setBonusPoints(rs.getString("bonus_points"));
-//                    ck.setPointsDueDate(rs.getString("points_due_date"));
-                }
+    public ReturnProductBean getOne(String returnId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.get(ReturnProductBean.class, returnId);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取退貨記錄失敗", e);
+            return null;
+        }
+    }
+
+    public List<ReturnProductBean> getAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from ReturnProductBean", ReturnProductBean.class).list();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取所有退貨記錄失敗", e);
+            return new ArrayList<>();
+        }
+    }
+
+    public void insert(ReturnProductBean returnProduct) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.save(returnProduct);
+            transaction.commit();
+            logger.info("退貨記錄插入成功: " + returnProduct.getReturnId());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "插入退貨記錄失敗", e);
+            throw new RuntimeException("插入退貨記錄失敗", e);
         }
-        return ck;
     }
 
-    public static List<CheckoutBean> getAll() {
-        List<CheckoutBean> cks = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(GET_ALL_SQL);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                CheckoutBean ck = new CheckoutBean();
-                ck.setCheckoutId(rs.getString("checkout_id"));
-                ck.setCustomerTel(rs.getString("customer_tel"));
-                ck.setEmployeeId(rs.getString("employee_id"));
-//                ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
-//                ck.setCheckoutDate(rs.getString("checkout_date"));
-//                ck.setBonusPoints(rs.getString("bonus_points"));
-//                ck.setPointsDueDate(rs.getString("points_due_date"));
-                cks.add(ck);
+    public void delete(String returnId) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            ReturnProductBean returnProduct = session.get(ReturnProductBean.class, returnId);
+            if (returnProduct != null) {
+                session.delete(returnProduct);
             }
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-        return cks;
-    }
-
-    public static void insert(CheckoutBean ck) {
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(INSERT_SQL)) {
-            stmt.setString(1, ck.getCheckoutId());
-            stmt.setString(2, ck.getCustomerTel());
-            stmt.setString(3, ck.getEmployeeId());
-//            stmt.setString(4, ck.getCheckoutTotalPrice());
-//            stmt.setString(5, ck.getCheckoutDate());
-//            stmt.setString(6, ck.getBonusPoints());
-//            stmt.setString(7, ck.getPointsDueDate());
-            stmt.executeUpdate();
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void delete(String checkoutId) {
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(DELETE_SQL)) {
-            stmt.setString(1, checkoutId);
-            stmt.executeUpdate();
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static CheckoutBean getUpdate(String checkoutId) {
-        return getOne(checkoutId);
-    }
-
-    public static void update(CheckoutBean ck) {
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(UPDATE_SQL)) {
-            stmt.setString(1, ck.getCustomerTel());
-            stmt.setString(2, ck.getEmployeeId());
-//            stmt.setString(3, ck.getCheckoutTotalPrice());
-//            stmt.setString(4, ck.getCheckoutDate());
-//            stmt.setString(5, ck.getBonusPoints());
-//            stmt.setString(6, ck.getPointsDueDate());
-            stmt.setString(7, ck.getCheckoutId());
-            stmt.executeUpdate();
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static List<CheckoutBean> searchByTel(String customerTel) {
-        List<CheckoutBean> cks = new ArrayList<>();
-        try (Connection connection = getConnection();
-             PreparedStatement stmt = connection.prepareStatement(SEARCH_SQL)) {
-            stmt.setString(1, "%" + customerTel + "%");
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    CheckoutBean ck = new CheckoutBean();
-                    ck.setCheckoutId(rs.getString("checkout_id"));
-                    ck.setCustomerTel(rs.getString("customer_tel"));
-                    ck.setEmployeeId(rs.getString("employee_id"));
-//                    ck.setCheckoutTotalPrice(rs.getString("checkout_total_price"));
-//                    ck.setCheckoutDate(rs.getString("checkout_date"));
-//                    ck.setBonusPoints(rs.getString("bonus_points"));
-//                    ck.setPointsDueDate(rs.getString("points_due_date"));
-                    cks.add(ck);
-                }
+            transaction.commit();
+            logger.info("退貨記錄刪除成功: " + returnId);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-        return cks;
-    }
-
-    public static void updateTotalPrice(String returnId) {
-        String sql = "UPDATE returnProduct SET return_total_price = (SELECT SUM(rd.return_price) FROM return_details rd WHERE rd.return_id = ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, returnId);
-            stmt.executeUpdate();
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "刪除退貨記錄失敗", e);
         }
     }
 
-    public static List<Map<String, Object>> getDailyReturnsReport() {
-        String sql = "SELECT return_date, SUM(return_total_price) AS total_returns FROM returnProduct GROUP BY return_date";
-        List<Map<String, Object>> report = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Map<String, Object> row = new HashMap<>();
-                row.put("date", rs.getDate("return_date"));
-                row.put("total_returns", rs.getBigDecimal("total_returns"));
-                report.add(row);
+    public void update(ReturnProductBean returnProduct) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            session.update(returnProduct);
+            transaction.commit();
+            logger.info("退貨記錄更新成功: " + returnProduct.getReturnId());
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "更新退貨記錄失敗", e);
         }
-        return report;
     }
 
-    public static List<Map<String, Object>> getReturnSummary() {
-        String sql = "SELECT rp.return_date, rp.employee_id, rp.return_id, rd.product_id, rd.number_of_return, rd.return_price, rp.return_total_price, rd.reason_for_return " +
-                     "FROM returnProduct rp JOIN return_details rd ON rp.return_id = rd.return_id";
-        List<Map<String, Object>> summary = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Map<String, Object> row = new HashMap<>();
-                row.put("return_date", rs.getDate("return_date"));
-                row.put("employee_id", rs.getString("employee_id"));
-                row.put("return_id", rs.getString("return_id"));
-                row.put("product_id", rs.getString("product_id"));
-                row.put("number_of_return", rs.getInt("number_of_return"));
-                row.put("return_price", rs.getBigDecimal("return_price"));
-                row.put("return_total_price", rs.getBigDecimal("return_total_price"));
-                row.put("reason_for_return", rs.getString("reason_for_return"));
-                summary.add(row);
+    public void updateTotalPrice(String returnId) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            String hql = "UPDATE ReturnProductBean r SET r.returnTotalPrice = (SELECT SUM(rd.returnPrice) FROM ReturnDetailsBean rd WHERE rd.returnId = :returnId)";
+            Query query = session.createQuery(hql);
+            query.setParameter("returnId", returnId);
+            query.executeUpdate();
+            transaction.commit();
+            logger.info("退貨總價更新成功: " + returnId);
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
             }
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "更新退貨總價失敗", e);
         }
-        return summary;
+    }
+
+    public List<Map<String, Object>> getDailyReturnsReport() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "SELECT r.returnDate as date, SUM(r.returnTotalPrice) as totalReturns FROM ReturnProductBean r GROUP BY r.returnDate";
+            Query<Object[]> query = session.createQuery(hql, Object[].class);
+            List<Object[]> results = query.list();
+            List<Map<String, Object>> report = new ArrayList<>();
+            for (Object[] row : results) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("date", row[0]);
+                map.put("total_returns", row[1]);
+                report.add(map);
+            }
+            return report;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取每日退貨報告失敗", e);
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getReturnSummary() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "SELECT rp.returnDate, rp.employeeId, rp.returnId, rd.productId, rd.numberOfReturn, rd.returnPrice, rp.returnTotalPrice, rd.reasonForReturn " +
+                         "FROM ReturnProductBean rp JOIN rp.returnDetails rd";
+            Query<Object[]> query = session.createQuery(hql, Object[].class);
+            List<Object[]> results = query.list();
+            List<Map<String, Object>> summary = new ArrayList<>();
+            for (Object[] row : results) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("return_date", row[0]);
+                map.put("employee_id", row[1]);
+                map.put("return_id", row[2]);
+                map.put("product_id", row[3]);
+                map.put("number_of_return", row[4]);
+                map.put("return_price", row[5]);
+                map.put("return_total_price", row[6]);
+                map.put("reason_for_return", row[7]);
+                summary.add(map);
+            }
+            return summary;
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取退貨總表失敗", e);
+            return new ArrayList<>();
+        }
     }
 }

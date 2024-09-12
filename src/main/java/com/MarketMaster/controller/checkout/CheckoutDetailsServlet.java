@@ -66,12 +66,12 @@ public class CheckoutDetailsServlet extends HttpServlet {
             case "searchByProductId":
                 searchByProductId(request, response);
                 break;
-            case "updateAfterReturn":
-                updateAfterReturn(request, response);
-                break;
-            case "cancelReturn":
-                cancelReturn(request, response);
-                break;
+//            case "updateAfterReturn":
+//                updateAfterReturn(request, response);
+//                break;
+//            case "cancelReturn":
+//                cancelReturn(request, response);
+//                break;
             case "getProductReturnRates":
                 getProductReturnRates(request, response);
                 break;
@@ -104,7 +104,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
             throws ServletException, IOException {
         List<CheckoutDetailsBean> checkoutDetails = checkoutDetailsService.getAllCheckoutDetails();
         request.setAttribute("checkoutDetails", checkoutDetails);
-        request.getRequestDispatcher("/checkoutDetails/GetAllCheckoutDetails.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/GetAllCheckoutDetails.jsp").forward(request, response);
     }
 
     private void getPartCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
@@ -112,7 +112,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         String checkoutId = request.getParameter("checkoutId");
         List<CheckoutDetailsBean> checkoutDetailsList = checkoutDetailsService.getPartCheckoutDetails(checkoutId);
         request.setAttribute("checkoutDetailsList", checkoutDetailsList);
-        request.getRequestDispatcher("/checkoutDetails/GetPartCheckoutDetails.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/GetPartCheckoutDetails.jsp").forward(request, response);
     }
 
     private void getCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
@@ -121,7 +121,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         String productId = request.getParameter("productId");
         CheckoutDetailsBean checkoutDetails = checkoutDetailsService.getCheckoutDetails(checkoutId, productId);
         request.setAttribute("checkoutDetails", checkoutDetails);
-        request.getRequestDispatcher("/checkoutDetails/GetCheckoutDetails.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/GetCheckoutDetails.jsp").forward(request, response);
     }
 
     private void getUpdateCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
@@ -130,7 +130,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         String productId = request.getParameter("productId");
         CheckoutDetailsBean checkoutDetails = checkoutDetailsService.getCheckoutDetails(checkoutId, productId);
         request.setAttribute("checkoutDetails", checkoutDetails);
-        request.getRequestDispatcher("/checkoutDetails/GetUpdateCheckoutDetails.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/GetUpdateCheckoutDetails.jsp").forward(request, response);
     }
 
     private void insertCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
@@ -138,7 +138,7 @@ public class CheckoutDetailsServlet extends HttpServlet {
         CheckoutDetailsBean checkoutDetails = createCheckoutDetailsFromRequest(request);
         checkoutDetailsService.addCheckoutDetails(checkoutDetails);
         request.setAttribute("checkoutDetails", checkoutDetails);
-        request.getRequestDispatcher("/checkoutDetails/InsertCheckoutDetails.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/InsertCheckoutDetails.jsp").forward(request, response);
     }
 
     private void updateCheckoutDetails(HttpServletRequest request, HttpServletResponse response)
@@ -171,36 +171,36 @@ public class CheckoutDetailsServlet extends HttpServlet {
         String productId = request.getParameter("productId");
         List<CheckoutDetailsBean> checkoutDetails = checkoutDetailsService.searchCheckoutDetailsByProductId(productId);
         request.setAttribute("checkoutDetails", checkoutDetails);
-        request.getRequestDispatcher("/checkoutDetails/SearchResults.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/SearchResults.jsp").forward(request, response);
     }
 
-    private void updateAfterReturn(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String checkoutId = request.getParameter("checkoutId");
-        String productId = request.getParameter("productId");
-        int returnQuantity = Integer.parseInt(request.getParameter("returnQuantity"));
-        BigDecimal returnPrice = new BigDecimal(request.getParameter("returnPrice"));
-        checkoutDetailsService.updateAfterReturn(checkoutId, productId, returnQuantity, returnPrice);
-        request.setAttribute("message", "退貨後結帳明細已更新。");
-        getAllCheckoutDetails(request, response);
-    }
+//    private void updateAfterReturn(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        String checkoutId = request.getParameter("checkoutId");
+//        String productId = request.getParameter("productId");
+//        int returnQuantity = Integer.parseInt(request.getParameter("returnQuantity"));
+//        BigDecimal returnPrice = new BigDecimal(request.getParameter("returnPrice"));
+//        checkoutDetailsService.updateAfterReturn(checkoutId, productId, returnQuantity, returnPrice);
+//        request.setAttribute("message", "退貨後結帳明細已更新。");
+//        getAllCheckoutDetails(request, response);
+//    }
 
-    private void cancelReturn(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String checkoutId = request.getParameter("checkoutId");
-        String productId = request.getParameter("productId");
-        int returnQuantity = Integer.parseInt(request.getParameter("returnQuantity"));
-        BigDecimal returnPrice = new BigDecimal(request.getParameter("returnPrice"));
-        checkoutDetailsService.cancelReturn(checkoutId, productId, returnQuantity, returnPrice);
-        request.setAttribute("message", "退貨已取消，結帳明細已更新。");
-        getAllCheckoutDetails(request, response);
-    }
+//    private void cancelReturn(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        String checkoutId = request.getParameter("checkoutId");
+//        String productId = request.getParameter("productId");
+//        int returnQuantity = Integer.parseInt(request.getParameter("returnQuantity"));
+//        BigDecimal returnPrice = new BigDecimal(request.getParameter("returnPrice"));
+//        checkoutDetailsService.cancelReturn(checkoutId, productId, returnQuantity, returnPrice);
+//        request.setAttribute("message", "退貨已取消，結帳明細已更新。");
+//        getAllCheckoutDetails(request, response);
+//    }
 
     private void getProductReturnRates(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<Map<String, Object>> returnRates = checkoutDetailsService.getProductReturnRates();
         request.setAttribute("returnRates", returnRates);
-        request.getRequestDispatcher("/checkoutDetails/ProductReturnRates.jsp").forward(request, response);
+        request.getRequestDispatcher("/checkout/checkoutDetails/ProductReturnRates.jsp").forward(request, response);
     }
 
     private CheckoutDetailsBean createCheckoutDetailsFromRequest(HttpServletRequest request) {
