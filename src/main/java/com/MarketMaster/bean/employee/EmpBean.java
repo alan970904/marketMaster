@@ -1,19 +1,63 @@
 package com.MarketMaster.bean.employee;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
+import com.MarketMaster.bean.schedule.AskForLeaveBean;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@Column(name = "employee_id")
 	private String employeeId;
+
+	@Column(name = "employee_name")
 	private String employeeName;
+
+	@Column(name = "employee_tel")
 	private String employeeTel;
+
+	@Column(name = "employee_idcard")
 	private String employeeIdcard;
+
+	@Column(name = "employee_email")
 	private String employeeEmail;
+
+	@Column(name = "password")
 	private String password;
+
+	@Column(name = "position_id")
 	private String positionId;
+
+	@Column(name = "hiredate")
 	private LocalDate hiredate;
+
+	@Column(name = "resigndate")
 	private LocalDate resigndate;
+
+	@Column(name = "is_first_login")
 	private boolean isFirstLogin;
+
+//    @ManyToOne
+//    @JoinColumn(name = "position_id", referencedColumnName = "position_id", insertable = false, updatable = false)
+//    private RankLevelBean rankLevel;
+
+//	@OneToMany(mappedBy = "EmpBean", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private Set<AskForLeaveBean> askForLeaves;
 
 	public EmpBean() {
 	}
@@ -103,11 +147,27 @@ public class EmpBean implements java.io.Serializable {
 		this.resigndate = resigndate;
 	}
 
-    public boolean isFirstLogin() {
-        return isFirstLogin;
-    }
+	public boolean isFirstLogin() {
+		return isFirstLogin;
+	}
 
-    public void setFirstLogin(boolean isFirstLogin) {
-        this.isFirstLogin = isFirstLogin;
-    }
+	public void setFirstLogin(boolean isFirstLogin) {
+		this.isFirstLogin = isFirstLogin;
+	}
+
+//	public RankLevelBean getRankLevel() {
+//		return rankLevel;
+//	}
+//
+//	public void setRankLevel(RankLevelBean rankLevel) {
+//		this.rankLevel = rankLevel;
+//	}
+
+//	public Set<AskForLeaveBean> getAskForLeaves() {
+//		return askForLeaves;
+//	}
+//
+//	public void setAskForLeaves(Set<AskForLeaveBean> askForLeaves) {
+//		this.askForLeaves = askForLeaves;
+//	}
 }

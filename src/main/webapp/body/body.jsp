@@ -26,8 +26,8 @@
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>人資系統</a> 
 				<div class="dropdown-menu bg-transparent border-0">
 					<a href="${pageContext.request.contextPath}/jsp/EmployeeMain.jsp" class="dropdown-item">員工資訊</a>
-					<a href="${pageContext.request.contextPath}/html/AskForLeave.jsp" class="dropdown-item">請假</a>
-                    <a href="${pageContext.request.contextPath}/html/Schedule.jsp" class="dropdown-item">排班</a>
+					<a href="${pageContext.request.contextPath}/schedule/AskForLeave.jsp" class="dropdown-item">請假</a>
+                    <a href="${pageContext.request.contextPath}/ScheduleHome" class="dropdown-item">排班</a>
 				</div>
 			</div>
 			
