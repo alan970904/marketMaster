@@ -7,12 +7,10 @@
 <!--        &lt;!&ndash; Connection settings &ndash;&gt;-->
         <property name="hibernate.connection.datasource">java:comp/env/jdbc/ispan</property>
 
-
         <!-- Uncomment the following line if needed -->
 <!--         <property name="hibernate.connection.datasource">java:comp/env/connectSQLServerConn/OrderSystem</property>-->
 
 <!--        &lt;!&ndash; SQL Server JDBC connection settings &ndash;&gt;-->
-
 
 
 <!--        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>-->
@@ -55,5 +53,7 @@
         <mapping class="com.MarketMaster.bean.restock.Employee"/>
         <mapping class="com.MarketMaster.bean.restock.RestockBean"/>
         <mapping class="com.MarketMaster.bean.restock.RestockDetailsBean"/>
+        <mapping class="com.MarketMaster.bean.schedule.AskForLeaveBean" />
+		<mapping class="com.MarketMaster.bean.schedule.ScheduleBean" />
     </session-factory>
 </hibernate-configuration>

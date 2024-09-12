@@ -6,188 +6,175 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import com.MarketMaster.dao.schedule.AskForLeaveDao;
 import com.MarketMaster.bean.schedule.AskForLeaveBean;
+import com.MarketMaster.bean.employee.EmpBean;
+import com.MarketMaster.util.HibernateUtil;
 
 @WebServlet("/AskForLeaveCon")
 public class AskForLeaveCon extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public AskForLeaveCon() {
-        super();
-    }
+	public AskForLeaveCon() {
+		super();
+	}
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = request.getParameter("action");
-        AskForLeaveDao dao = new AskForLeaveDao();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getParameter("action");
+		SessionFactory factory = HibernateUtil.getSessionFactory();
+		Session session = factory.getCurrentSession();
 
-        switch (action) {
-            case "searchLeaveRecords":
-                String employeeId = request.getParameter("employee_id");
-                try {
-                    List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsById(employeeId);
-                    request.setAttribute("leaveRecords", leaveRecords);
-                    request.getRequestDispatcher("jsp/getLeaveById.jsp").forward(request, response);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
-            
-            case "searchByLeaveId":
-                String leaveId3 = request.getParameter("leave_id");
+		try {
+			AskForLeaveDao dao = new AskForLeaveDao(session);
 
-                try {
-                    List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsByLeaveId(leaveId3);
+			switch (action) {
+			case "searchLeaveRecords":
+				String employeeId = request.getParameter("employee_id");
+				List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsById(employeeId);
+				request.setAttribute("leaveRecords", leaveRecords);
+				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
+				break;
 
-                    if (leaveRecords != null && !leaveRecords.isEmpty()) {
-                        AskForLeaveBean leaveRecord = leaveRecords.get(0);
+			case "searchByLeaveId":
+				String leaveId3 = request.getParameter("leave_id");
+				List<AskForLeaveBean> leaveRecords3 = dao.getLeaveRecordsByLeaveId(leaveId3);
 
-                        LocalDateTime startDatetime = leaveRecord.getStartDatetime();  
-                        LocalDateTime endDatetime = leaveRecord.getEndDatetime();      
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                        String startDatetimeFormatted = startDatetime.format(formatter);
-                        String endDatetimeFormatted = endDatetime.format(formatter);
+				if (leaveRecords3 != null && !leaveRecords3.isEmpty()) {
+					AskForLeaveBean leaveRecord = leaveRecords3.get(0);
 
-                        request.setAttribute("startDatetimeFormatted", startDatetimeFormatted);
-                        request.setAttribute("endDatetimeFormatted", endDatetimeFormatted);
+					LocalDateTime startDatetime = leaveRecord.getStartDatetime();
+					LocalDateTime endDatetime = leaveRecord.getEndDatetime();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+					String startDatetimeFormatted = startDatetime.format(formatter);
+					String endDatetimeFormatted = endDatetime.format(formatter);
 
-                        request.setAttribute("leaveRecords", leaveRecords);
-                        request.getRequestDispatcher("jsp/updateLeaveById.jsp").forward(request, response);
-                    } else {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "No leave record found for the given ID.");
-                    }
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
+					request.setAttribute("startDatetimeFormatted", startDatetimeFormatted);
+					request.setAttribute("endDatetimeFormatted", endDatetimeFormatted);
 
-            case "allLeaveRecords":
-                try {
-                    List<AskForLeaveBean> allLeaveRecords = dao.getLeaveRecords();
-                    request.setAttribute("leaveRecords", allLeaveRecords);
-                    request.getRequestDispatcher("jsp/getAllLeaveRecords.jsp").forward(request, response);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
+					request.setAttribute("leaveRecords", leaveRecords3);
+					request.getRequestDispatcher("schedule/updateLeaveById.jsp").forward(request, response);
+				} else {
+					response.sendError(HttpServletResponse.SC_NOT_FOUND, "找不到指定 ID 的請假記錄。");
+				}
+				break;
 
-            case "delete":
-                String leaveId = request.getParameter("leave_id"); 
-                String employeeId1 = request.getParameter("employee_id"); 
-                try {
-                    dao.deleteLeaveRecord(leaveId); 
-                    List<AskForLeaveBean> LeaveRecords = dao.getLeaveRecordsById(employeeId1); 
-                    request.setAttribute("leaveRecords", LeaveRecords);
-                    request.getRequestDispatcher("jsp/getLeaveById.jsp").forward(request, response); 
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
+			case "allLeaveRecords":
+				List<AskForLeaveBean> allLeaveRecords = dao.getLeaveRecords();
+				request.setAttribute("leaveRecords", allLeaveRecords);
+				request.getRequestDispatcher("schedule/getAllLeaveRecords.jsp").forward(request, response);
+				break;
 
-            case "createForm":
-                String employeeId2 = request.getParameter("employee_id");
+			case "delete":
+				String leaveId = request.getParameter("leave_id");
+				String employeeId1 = request.getParameter("employee_id");
+				dao.deleteLeaveRecord(leaveId);
+				List<AskForLeaveBean> LeaveRecords = dao.getLeaveRecordsById(employeeId1);
+				request.setAttribute("leaveRecords", LeaveRecords);
+				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
+				break;
 
-                try {
-                    String employeeName = dao.getEmployeeNameById(employeeId2);
+			case "createForm":
+				String employeeId2 = request.getParameter("employee_id");
+				String employeeName = dao.getEmployeeNameById(employeeId2);
+				String leaveId1 = dao.generateNextLeaveId();
 
-                    String leaveId1 = dao.generateNextLeaveId();
+				request.setAttribute("leave_id", leaveId1);
+				request.setAttribute("employee_id", employeeId2);
+				request.setAttribute("employee_name", employeeName);
 
-                    request.setAttribute("leave_id", leaveId1);
-                    request.setAttribute("employee_id", employeeId2);
-                    request.setAttribute("employee_name", employeeName);
+				request.getRequestDispatcher("schedule/addLeaveRecordById.jsp").forward(request, response);
+				break;
 
-                    request.getRequestDispatcher("jsp/addLeaveRecordById.jsp").forward(request, response);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
-            
-            case "add":
-                String leaveId1 = request.getParameter("leave_id"); 
-                String employeeId4 = request.getParameter("employee_id"); 
-                String employeeName = request.getParameter("employee_name");
-                String startDatetimeStr = request.getParameter("start_datetime");
-                String endDatetimeStr = request.getParameter("end_datetime");
-                String leaveCategory = request.getParameter("leave_category");
-                String reasonOfLeave = request.getParameter("reason_of_leave");
-                String approvedStatus = "未批准"; // Default to "Not Approved"
+			case "add":
+				String leaveId2 = request.getParameter("leave_id");
+				String employeeId4 = request.getParameter("employee_id");
+				String startDatetimeStr = request.getParameter("start_datetime");
+				String endDatetimeStr = request.getParameter("end_datetime");
+				String leaveCategory = request.getParameter("leave_category");
+				String reasonOfLeave = request.getParameter("reason_of_leave");
+				String approvedStatus = "未批准"; // 預設為 "未批准"
 
-                LocalDateTime startDatetime = LocalDateTime.parse(startDatetimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-                LocalDateTime endDatetime = LocalDateTime.parse(endDatetimeStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+				LocalDateTime startDatetime = LocalDateTime.parse(startDatetimeStr,
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+				LocalDateTime endDatetime = LocalDateTime.parse(endDatetimeStr,
+						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-                AskForLeaveBean leave = new AskForLeaveBean();
-                leave.setLeaveId(leaveId1);
-                leave.setEmployeeId(employeeId4);
-                leave.setEmployeeName(employeeName);
-                leave.setStartDatetime(startDatetime);
-                leave.setEndDatetime(endDatetime);
-                leave.setLeaveCategory(leaveCategory);
-                leave.setReasonOfLeave(reasonOfLeave);
-                leave.setApprovedStatus(approvedStatus);
+				AskForLeaveBean leave = new AskForLeaveBean();
+				leave.setLeaveId(leaveId2);
+				leave.setEmployeeId(employeeId4);
+				leave.setStartDatetime(startDatetime);
+				leave.setEndDatetime(endDatetime);
+				leave.setLeaveCategory(leaveCategory);
+				leave.setReasonOfLeave(reasonOfLeave);
+				leave.setApprovedStatus(approvedStatus);
 
-                try {
-                    dao.addLeaveRecordById(leave);
+				// 獲取對應的 EmpBean 並設置關聯
+				EmpBean empBean = session.get(EmpBean.class, employeeId4);
+				leave.setEmpBean(empBean);
 
-                    List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsById(employeeId4);
-                    request.setAttribute("leaveRecords", leaveRecords);
+				dao.addLeaveRecordById(leave);
 
-                    request.getRequestDispatcher("jsp/getLeaveById.jsp").forward(request, response);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
-            
-            case "updateLeaveRecord":
-                String leaveIdUpdate = request.getParameter("leave_id");
-                String employeeIdUpdate = request.getParameter("employee_id");
-                String startDatetimeStr1 = request.getParameter("start_datetime");
-                String endDatetimeStr1 = request.getParameter("end_datetime");
-                String leaveCategoryUpdate = request.getParameter("leave_category");
-                String reasonOfLeaveUpdate = request.getParameter("reason_of_leave");
+				List<AskForLeaveBean> leaveRecords4 = dao.getLeaveRecordsById(employeeId4);
+				request.setAttribute("leaveRecords", leaveRecords4);
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                LocalDateTime startDatetimeUpdate = LocalDateTime.parse(startDatetimeStr1, formatter);
-                LocalDateTime endDatetimeUpdate = LocalDateTime.parse(endDatetimeStr1, formatter);
+				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
+				break;
 
-                AskForLeaveBean leave1 = new AskForLeaveBean();
-                leave1.setLeaveId(leaveIdUpdate);
-                leave1.setEmployeeId(employeeIdUpdate);
-                leave1.setStartDatetime(startDatetimeUpdate);
-                leave1.setEndDatetime(endDatetimeUpdate);
-                leave1.setLeaveCategory(leaveCategoryUpdate);
-                leave1.setReasonOfLeave(reasonOfLeaveUpdate);
-                leave1.setApprovedStatus("未批准");
-                
-                try {
-                    dao.updateLeaveRecord(leave1);
-                    List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsById(employeeIdUpdate);
-                    request.setAttribute("leaveRecords", leaveRecords);
-                    request.getRequestDispatcher("jsp/getLeaveById.jsp").forward(request, response);
-                } catch (SQLException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error occurred.");
-                }
-                break;
+			case "updateLeaveRecord":
+				String leaveIdUpdate = request.getParameter("leave_id");
+				String employeeIdUpdate = request.getParameter("employee_id");
+				String startDatetimeStr1 = request.getParameter("start_datetime");
+				String endDatetimeStr1 = request.getParameter("end_datetime");
+				String leaveCategoryUpdate = request.getParameter("leave_category");
+				String reasonOfLeaveUpdate = request.getParameter("reason_of_leave");
 
-            default:
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action.");
-                break;
-        }
-    }
+				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				LocalDateTime startDatetimeUpdate = LocalDateTime.parse(startDatetimeStr1, formatter1);
+				LocalDateTime endDatetimeUpdate = LocalDateTime.parse(endDatetimeStr1, formatter1);
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doGet(request, response);
-    }
+				AskForLeaveBean leave1 = session.get(AskForLeaveBean.class, leaveIdUpdate);
+				if (leave1 != null) {
+					leave1.setStartDatetime(startDatetimeUpdate);
+					leave1.setEndDatetime(endDatetimeUpdate);
+					leave1.setLeaveCategory(leaveCategoryUpdate);
+					leave1.setReasonOfLeave(reasonOfLeaveUpdate);
+					leave1.setApprovedStatus("未批准");
+
+					// 如果員工 ID 有變更，更新關聯
+					if (!leave1.getEmployeeId().equals(employeeIdUpdate)) {
+						EmpBean newEmpBean = session.get(EmpBean.class, employeeIdUpdate);
+						leave1.setEmpBean(newEmpBean);
+						leave1.setEmployeeId(employeeIdUpdate);
+					}
+
+					dao.updateLeaveRecord(leave1);
+				}
+
+				List<AskForLeaveBean> leaveRecords1 = dao.getLeaveRecordsById(employeeIdUpdate);
+				request.setAttribute("leaveRecords", leaveRecords1);
+				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
+				break;
+
+			default:
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無效的操作。");
+				break;
+			}
+
+		} 
+		finally {
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
 }

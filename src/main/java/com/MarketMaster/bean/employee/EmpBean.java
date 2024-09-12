@@ -2,6 +2,7 @@ package com.MarketMaster.bean.employee;
 
 import java.time.LocalDate;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,8 +14,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
-
- private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
  @Id
  @Column(name = "employee_id")
@@ -154,4 +154,5 @@ public class EmpBean implements java.io.Serializable {
  public void setRankLevel(RankLevelBean rankLevel) {
   this.rankLevel = rankLevel;
  }
+
 }
