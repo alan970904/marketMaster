@@ -3,11 +3,9 @@ package com.MarketMaster.dao.product;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.MarketMaster.bean.product.ProductBean;
-import com.MarketMaster.util.HibernateUtil;
 
 public class ProductDao {
 	private Session session;
@@ -18,12 +16,13 @@ public class ProductDao {
 		this.session = session;
 	}
 
-	public ProductBean insertProduct(ProductBean product) {
-		if (product != null) {
-			session.persist(product);
-			return product;
-		}
-		return null;
+	public boolean insertProduct(ProductBean product) {
+	    try {
+	        session.persist(product);
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    }
 	}
 	
 	
