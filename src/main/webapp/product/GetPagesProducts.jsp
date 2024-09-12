@@ -78,7 +78,7 @@ button:disabled {
 		<div class="container mt-5">
 			<h2 class="mb-4">商品資料</h2>
 
-			<form action="<%=request.getContextPath()%>/ProductsServlet"
+			<form action="${pageContext.request.contextPath}/ProductsServlet"
 				class="mb-3">
 				<input type="hidden" name="action" value="UpdateSaleByCheckOut">
 				<input type="submit" value="更新銷售數量" class="btn btn-primary">
@@ -120,14 +120,14 @@ button:disabled {
 							<td>${product.numberOfDestruction}</td>
 							<td>${product.numberOfRemove}</td>
 							<td><form method="post"
-									action="${pageContext.request.contextPath}//ProductsServlet"
+									action="${pageContext.request.contextPath}/ProductsServlet"
 									class="d-inline">
 									<input type="hidden" name="action" value="GetUpdateProduct">
 									<input type="hidden" name="productId" value=${product.productId }>
 									<button type="submit" class="update btn btn-sm">修改</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}//ProductsServlet"
+									action="${pageContext.request.contextPath}/ProductsServlet"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="GetShelveProduct">
 									<input type="hidden" name="productId"
@@ -135,7 +135,7 @@ button:disabled {
 									<button type="submit" class="shelve btn btn-sm">上架</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}//ProductsServlet"
+									action="${pageContext.request.contextPath}/ProductsServlet"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="RemoveProduct">
 									<input type="hidden" name="productId"
@@ -149,7 +149,7 @@ button:disabled {
 			</table>
 
 			<button class="btn btn-secondary mt-3"
-				onclick="window.location.href='<%=request.getContextPath()%>/product/productHomepage.jsp'">返回首頁</button>
+				onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">返回首頁</button>
 		</div>
 	</main>
 

@@ -1,7 +1,6 @@
 package com.MarketMaster.controller.product;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.hibernate.Session;
