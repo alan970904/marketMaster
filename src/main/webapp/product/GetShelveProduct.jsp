@@ -29,7 +29,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
  rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/ispan/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -44,7 +44,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script
  src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
  
-<link rel="stylesheet" href="/ispan/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 <meta charset="UTF-8">
 <title>商品資料</title>
 <style>
