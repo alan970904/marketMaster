@@ -47,6 +47,34 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 <meta charset="UTF-8">
 <title>商品資料</title>
+<style>
+input[type="text"], input[type="number"] {
+ width: 100%;
+    box-sizing: border-box; /* 確保 padding 不會影響寬度 */
+	background-color: lightgrey;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	padding: 5px;
+}
+
+input[type="button"] {
+	background-color: #4CAF50;
+
+	border: none;
+	border-radius: 5px;
+	margin-top:10px;
+	padding: 10px 20px;
+	cursor: pointer;
+}
+
+input[type="button"]:hover {
+	background-color: #45a049;
+}
+tr td {
+	border-bottom: 2px solid grey;
+	padding: 10px;
+}
+</style>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/onetable.css">
 </head>
 <body>

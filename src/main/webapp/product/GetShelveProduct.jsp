@@ -70,7 +70,6 @@ table {
 tr td {
 	border-bottom: 2px solid grey;
 	padding: 10px;
-	text-align: right;
 }
 
 input[type="submit"] {
@@ -80,6 +79,7 @@ input[type="submit"] {
 	border-radius: 5px;
 	padding: 10px 20px;
 	cursor: pointer;
+	margin-top:10px;
 }
 
 input[type="submit"]:hover {

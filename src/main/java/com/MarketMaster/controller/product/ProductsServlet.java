@@ -119,11 +119,10 @@ public class ProductsServlet extends HttpServlet {
 		product.setNumberOfDestruction(numberOfDestruction);
 		product.setNumberOfRemove(numberOfRemove);
 
-		productDao.insertProduct(product);
-		
 		ProductBean hasProduct = productDao.getOne(productId);
-		System.out.println(hasProduct);
+		
 		if (hasProduct == null) {
+			productDao.insertProduct(product);
 			request.setAttribute("product", product);
 			request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
 		}else {
@@ -209,9 +208,9 @@ public class ProductsServlet extends HttpServlet {
 		product.setNumberOfRemove(numberOfRemove);
 
 		productDao.updateProduct(product);
-		
-		request.setAttribute("product", product);
-		request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
+		handleGetPagesProducts(request, response);
+
+
 	}
 	private void handleRemoveProduct(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
