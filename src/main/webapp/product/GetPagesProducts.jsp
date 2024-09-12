@@ -111,7 +111,7 @@ button:disabled {
 							<td>${product.productId}</td>
 							<td>${product.productCategory}</td>
 							<td><a
-								href="${pageContext.request.contextPath}//ProductsServlet?action=GetOneProduct&productId=${product.productId}">${product.productName}</a></td>
+								href="${pageContext.request.contextPath}/ProductsServlet?action=GetOneProduct&productId=${product.productId}">${product.productName}</a></td>
 							<td>${product.productPrice}</td>
 							<td>${product.productSafeInventory}</td>
 							<td>${product.numberOfShelve}</td>
