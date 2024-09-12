@@ -100,7 +100,7 @@ input[type="submit"]:hover {
 <tr><td>庫存數量:<td><input type="number" readonly value="${product.numberOfInventory}" id="inventory" min="0">
 </table>
 <p>
-<form method="get" action="<%=request.getContextPath()%>/ProductsServlet">
+<form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
 <h2>上架物品數量更改</h2>
     <table>
 	<tr><td>商品編號:<td><input type="text" readonly value="${product.productId}" name="productId">

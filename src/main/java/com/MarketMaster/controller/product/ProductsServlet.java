@@ -119,14 +119,16 @@ public class ProductsServlet extends HttpServlet {
 		product.setNumberOfDestruction(numberOfDestruction);
 		product.setNumberOfRemove(numberOfRemove);
 
-		boolean insertProduct = productDao.insertProduct(product);
-		System.out.println(insertProduct);
-		if (insertProduct) {
+		productDao.insertProduct(product);
+		
+		ProductBean hasProduct = productDao.getOne(productId);
+		System.out.println(hasProduct);
+		if (hasProduct == null) {
 			request.setAttribute("product", product);
 			request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
 		}else {
 			request.setAttribute("errorMessage", "商品編號已存在，請檢查後重新輸入。");
-	        request.getRequestDispatcher("/product/InsertProductForm.jsp").forward(request, response);
+	        request.getRequestDispatcher("/product/InsertProduct.jsp").forward(request, response);
 		}
 		
 	}

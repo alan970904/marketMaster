@@ -16,13 +16,12 @@ public class ProductDao {
 		this.session = session;
 	}
 
-	public boolean insertProduct(ProductBean product) {
-	    try {
-	        session.persist(product);
-	        return true;
-	    } catch (Exception e) {
-	        return false;
-	    }
+	public ProductBean insertProduct(ProductBean product) {
+		if (product != null) {
+			session.persist(product);
+			return product;
+		}
+		return null;
 	}
 	
 	
