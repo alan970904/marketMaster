@@ -29,7 +29,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
  rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}//CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -44,7 +44,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script
  src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
  
-<link rel="stylesheet" href="${pageContext.request.contextPath}//CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品資料處理</title>
@@ -100,14 +100,14 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <div class="home">
     <h2>商品資料處理</h2>
     
-    <form method="get" action="${pageContext.request.contextPath}///ProductsServlet">
+    <form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
         <div class="homecontent">
             <input type="hidden" name="action" value="GetPagesProducts">
             <input type="submit" id="addButton" value="取得所有資料">
         </div>
     </form>
     <div class="homecontent">
-        <button onclick="window.location.href='${pageContext.request.contextPath}///product/InsertProduct.jsp'">新增商品資料</button>
+        <button onclick="window.location.href=`${pageContext.request.contextPath}/product/InsertProduct.jsp`">新增商品資料</button>
     </div>
 
 </div>

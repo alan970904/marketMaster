@@ -89,7 +89,7 @@ td {
 <main>
 <div class="div1">
 	<h2>商品資料</h2>
-	<form method="get" action="${pageContext.request.contextPath}//ProductsServlet">
+	<form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
 		<table>
 			<tr>
 				<td>商品編號
@@ -120,7 +120,7 @@ td {
 			
 	</form>
 			<p>
-<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/jsp/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
 </div>
 </main>
 </body>
