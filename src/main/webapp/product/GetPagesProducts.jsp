@@ -78,6 +78,7 @@ button:disabled {
 		<div class="container mt-5">
 			<h2 class="mb-4">商品資料</h2>
 
+
 <!--  
 			<form action="${pageContext.request.contextPath}/ProductsServlet"
 				class="mb-3">
