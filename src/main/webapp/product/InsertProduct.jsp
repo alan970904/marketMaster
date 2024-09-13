@@ -87,14 +87,14 @@
 <body>
     <%@ include file="/body/body.jsp" %>
     <main>
-    <form method="post" action="<%=request.getContextPath()%>/ProductsServlet">
+    <form method="post" action="${pageContext.request.contextPath}/ProductsServlet">
         <fieldset>
             <legend>新增商品</legend>
-            <% if(request.getAttribute("errorMessage") != null) { %>
-                <div class="error-message">
-                    <%= request.getAttribute("errorMessage") %>
-                </div>
-            <% } %>
+				<% if(request.getAttribute("errorMessage") != null) { %>
+				    <div class="error-message">
+				        <%= request.getAttribute("errorMessage") %>
+				    </div>
+				<% } %>
             <div class="st1">
                 <label for="productId">輸入要新增的商品編號：</label>
                 <input type="text" name="productId" id="productId" required />
@@ -127,7 +127,7 @@
             </div>
                    <p>
                    <p>
-<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/jsp/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
             
         </fieldset>
     </form>

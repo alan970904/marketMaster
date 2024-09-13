@@ -1,7 +1,6 @@
 package com.MarketMaster.controller.product;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -120,10 +119,17 @@ public class ProductsServlet extends HttpServlet {
 		product.setNumberOfDestruction(numberOfDestruction);
 		product.setNumberOfRemove(numberOfRemove);
 
-		productDao.insertProduct(product);
+		ProductBean hasProduct = productDao.getOne(productId);
 		
-		request.setAttribute("product", product);
-		request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
+		if (hasProduct == null) {
+			productDao.insertProduct(product);
+			request.setAttribute("product", product);
+			request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
+		}else {
+			request.setAttribute("errorMessage", "商品編號已存在，請檢查後重新輸入。");
+	        request.getRequestDispatcher("/product/InsertProduct.jsp").forward(request, response);
+		}
+		
 	}
 
 	private void handleGetShelveProduct(HttpServletRequest request, HttpServletResponse response)
@@ -202,9 +208,9 @@ public class ProductsServlet extends HttpServlet {
 		product.setNumberOfRemove(numberOfRemove);
 
 		productDao.updateProduct(product);
-		
-		request.setAttribute("product", product);
-		request.getRequestDispatcher("/product/ShowInsertProduct.jsp").forward(request, response);
+		handleGetPagesProducts(request, response);
+
+
 	}
 	private void handleRemoveProduct(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

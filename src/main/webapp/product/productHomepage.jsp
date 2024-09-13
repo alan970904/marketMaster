@@ -100,14 +100,14 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <div class="home">
     <h2>商品資料處理</h2>
     
-    <form method="get" action="${pageContext.request.contextPath}///ProductsServlet">
+    <form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
         <div class="homecontent">
             <input type="hidden" name="action" value="GetPagesProducts">
             <input type="submit" id="addButton" value="取得所有資料">
         </div>
     </form>
     <div class="homecontent">
-        <button onclick="window.location.href='${pageContext.request.contextPath}///product/InsertProduct.jsp'">新增商品資料</button>
+        <button onclick="window.location.href=`${pageContext.request.contextPath}/product/InsertProduct.jsp`">新增商品資料</button>
     </div>
 
 </div>

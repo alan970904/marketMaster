@@ -70,7 +70,6 @@ table {
 tr td {
 	border-bottom: 2px solid grey;
 	padding: 10px;
-	text-align: right;
 }
 
 input[type="submit"] {
@@ -80,6 +79,7 @@ input[type="submit"] {
 	border-radius: 5px;
 	padding: 10px 20px;
 	cursor: pointer;
+	margin-top:10px;
 }
 
 input[type="submit"]:hover {
@@ -100,7 +100,7 @@ input[type="submit"]:hover {
 <tr><td>庫存數量:<td><input type="number" readonly value="${product.numberOfInventory}" id="inventory" min="0">
 </table>
 <p>
-<form method="get" action="<%=request.getContextPath()%>/ProductsServlet">
+<form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
 <h2>上架物品數量更改</h2>
     <table>
 	<tr><td>商品編號:<td><input type="text" readonly value="${product.productId}" name="productId">
@@ -111,7 +111,7 @@ input[type="submit"]:hover {
 </form>
 <p>
 <p>
-<input type="button" value="返回首頁" onclick="window.location.href='<%=request.getContextPath()%>/product/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
 
 </div>
 </main>

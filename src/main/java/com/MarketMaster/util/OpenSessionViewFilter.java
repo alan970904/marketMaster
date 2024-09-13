@@ -35,6 +35,7 @@ public class OpenSessionViewFilter implements Filter {
 			e.printStackTrace();
 		} finally {
 			System.out.println("Session Closed");
+			session.close();
 		}
 	}
 }
