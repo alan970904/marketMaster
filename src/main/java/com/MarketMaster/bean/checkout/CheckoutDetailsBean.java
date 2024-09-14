@@ -2,6 +2,8 @@ package com.MarketMaster.bean.checkout;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity 
@@ -31,6 +33,9 @@ public class CheckoutDetailsBean implements Serializable {
     @JoinColumn(name = "CHECKOUT_ID", insertable = false, updatable = false)
     private CheckoutBean checkout;
 
+    @OneToMany(mappedBy = "checkoutDetail", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReturnDetailsBean> returnDetails;
+
     // Constructors
     public CheckoutDetailsBean() {
         super();
@@ -42,6 +47,7 @@ public class CheckoutDetailsBean implements Serializable {
         this.numberOfCheckout = numberOfCheckout;
         this.productPrice = productPrice;
         this.checkoutPrice = checkoutPrice;
+        this.returnDetails = new ArrayList<>();
     }
 
     // Getters and setters
@@ -93,8 +99,23 @@ public class CheckoutDetailsBean implements Serializable {
         this.checkout = checkout;
     }
 
-    // equals, hashCode, toString methods
+    public List<ReturnDetailsBean> getReturnDetails() {
+        return returnDetails;
+    }
 
+    public void setReturnDetails(List<ReturnDetailsBean> returnDetails) {
+        this.returnDetails = returnDetails;
+    }
+
+    public void addReturnDetail(ReturnDetailsBean returnDetail) {
+        if (returnDetails == null) {
+            returnDetails = new ArrayList<>();
+        }
+        returnDetails.add(returnDetail);
+        returnDetail.setCheckoutDetail(this);
+    }
+
+    // equals, hashCode, toString methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

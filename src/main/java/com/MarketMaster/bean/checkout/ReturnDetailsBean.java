@@ -34,6 +34,17 @@ public class ReturnDetailsBean implements Serializable {
     @Column(name = "return_price")
     private Integer returnPrice;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+        @JoinColumn(name = "checkout_id", referencedColumnName = "CHECKOUT_ID", insertable = false, updatable = false),
+        @JoinColumn(name = "product_id", referencedColumnName = "PRODUCT_ID", insertable = false, updatable = false)
+    })
+    private CheckoutDetailsBean checkoutDetail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "return_id", insertable = false, updatable = false)
+    private ReturnProductBean returnProduct;
+
     // Constructors
     public ReturnDetailsBean() {
         super();
@@ -90,7 +101,7 @@ public class ReturnDetailsBean implements Serializable {
     public void setNumberOfReturn(Integer numberOfReturn) {
         this.numberOfReturn = numberOfReturn;
     }
-
+    
     public Integer getProductPrice() {
         return productPrice;
     }
@@ -105,6 +116,22 @@ public class ReturnDetailsBean implements Serializable {
 
     public void setReturnPrice(Integer returnPrice) {
         this.returnPrice = returnPrice;
+    }
+
+    public CheckoutDetailsBean getCheckoutDetail() {
+        return checkoutDetail;
+    }
+
+    public void setCheckoutDetail(CheckoutDetailsBean checkoutDetail) {
+        this.checkoutDetail = checkoutDetail;
+    }
+
+    public ReturnProductBean getReturnProduct() {
+        return returnProduct;
+    }
+
+    public void setReturnProduct(ReturnProductBean returnProduct) {
+        this.returnProduct = returnProduct;
     }
 
     // equals, hashCode, toString methods
