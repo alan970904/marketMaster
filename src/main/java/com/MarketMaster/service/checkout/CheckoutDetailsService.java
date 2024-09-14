@@ -1,6 +1,5 @@
 package com.MarketMaster.service.checkout;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,18 +26,27 @@ public class CheckoutDetailsService {
     public CheckoutDetailsBean getCheckoutDetails(String checkoutId, String productId) {
         try (Session session = sessionFactory.openSession()) {
             return checkoutDetailsDao.getOne(session, checkoutId, productId);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取結帳明細失敗", e);
+            return null;
         }
     }
 
     public List<CheckoutDetailsBean> getPartCheckoutDetails(String checkoutId) {
         try (Session session = sessionFactory.openSession()) {
             return checkoutDetailsDao.getPart(session, checkoutId);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取部分結帳明細失敗", e);
+            return null;
         }
     }
 
     public List<CheckoutDetailsBean> getAllCheckoutDetails() {
         try (Session session = sessionFactory.openSession()) {
             return checkoutDetailsDao.getAll(session);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取所有結帳明細失敗", e);
+            return null;
         }
     }
 
@@ -98,6 +106,9 @@ public class CheckoutDetailsService {
     public List<CheckoutDetailsBean> searchCheckoutDetailsByProductId(String productId) {
         try (Session session = sessionFactory.openSession()) {
             return checkoutDetailsDao.searchByProductId(session, productId);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "搜索結帳明細失敗", e);
+            return null;
         }
     }
     
@@ -112,6 +123,9 @@ public class CheckoutDetailsService {
     public List<Map<String, Object>> getProductReturnRates() {
         try (Session session = sessionFactory.openSession()) {
             return checkoutDetailsDao.getProductReturnRates(session);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "獲取商品退貨率失敗", e);
+            return null;
         }
     }
 

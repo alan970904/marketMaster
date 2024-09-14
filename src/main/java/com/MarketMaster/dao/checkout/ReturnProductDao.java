@@ -100,11 +100,11 @@ public class ReturnProductDao {
         }
     }
 
-    // 根據結帳ID搜索退貨記錄
-    public List<ReturnProductBean> searchByCheckoutId(String checkoutId) {
+    // 根據員工ID搜索退貨記錄
+    public List<ReturnProductBean> searchByEmployeeId(String employeeId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<ReturnProductBean> query = session.createQuery("from ReturnProductBean where checkoutId like :checkoutId", ReturnProductBean.class);
-            query.setParameter("checkoutId", "%" + checkoutId + "%");
+            Query<ReturnProductBean> query = session.createQuery("from ReturnProductBean where employeeId like :employeeId", ReturnProductBean.class);
+            query.setParameter("employeeId", "%" + employeeId + "%");
             return query.list();
         } catch (Exception e) {
             logger.severe("搜索退貨記錄失敗: " + e.getMessage());
@@ -112,32 +112,24 @@ public class ReturnProductDao {
         }
     }
 
+    // 更新總價
     public void updateTotalPrice(String returnId) {
-        logger.info("開始更新退貨ID為 " + returnId + " 的總價");
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-
-            String hql = "SELECT SUM(rd.returnPrice) FROM ReturnDetailsBean rd WHERE rd.id.returnId = :returnId";
-            Query<Long> query = session.createQuery(hql, Long.class);
-            query.setParameter("returnId", returnId);
-            Long totalPrice = query.uniqueResult();
-
             ReturnProductBean returnProduct = session.get(ReturnProductBean.class, returnId);
-            if (returnProduct != null && totalPrice != null) {
-                returnProduct.setReturnTotalPrice(totalPrice.intValue());
+            if (returnProduct != null) {
+                int totalAmount = calculateReturnTotal(session, returnId);
+                returnProduct.setReturnTotalPrice(totalAmount);
                 session.update(returnProduct);
-                logger.info("退貨總價更新成功");
-            } else {
-                logger.warning("未找到退貨記錄或計算總價為空");
             }
-
             transaction.commit();
+            logger.info("退貨總金額更新成功");
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            logger.log(Level.SEVERE, "更新退貨總價時發生錯誤", e);
+            logger.severe("更新退貨總金額失敗: " + e.getMessage());
         }
     }
 
@@ -241,22 +233,13 @@ public class ReturnProductDao {
         }
     }
 
-    // 更新總金額
-    public void updateTotal(String returnId, BigDecimal totalAmount) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            ReturnProductBean returnProduct = session.get(ReturnProductBean.class, returnId);
-            if (returnProduct != null) {
-                returnProduct.setReturnTotalPrice(totalAmount.intValue());
-                session.update(returnProduct);
-            }
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.severe("更新退貨總金額失敗: " + e.getMessage());
-        }
+    private int calculateReturnTotal(Session session, String returnId) {
+        Query<Integer> query = session.createQuery(
+            "SELECT COALESCE(CAST(SUM(rd.returnPrice) AS int), 0) " +
+            "FROM ReturnDetailsBean rd WHERE rd.returnId = :returnId", 
+            Integer.class
+        );
+        query.setParameter("returnId", returnId);
+        return query.uniqueResult();
     }
 }

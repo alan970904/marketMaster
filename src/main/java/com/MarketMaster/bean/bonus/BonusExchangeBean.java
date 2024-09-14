@@ -1,14 +1,39 @@
 package com.MarketMaster.bean.bonus;
 import java.util.Date;
 
-public class BonusExchangeBean {
-    private String exchangeId;
-    private String customerTel;
-    private String productId;
-    private int usePoints;
-    private int numberOfExchange;
-    private Date exchangeDate;
+import com.MarketMaster.bean.employee.CustomerBean;
+import com.MarketMaster.bean.product.ProductBean;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "bonus_exchange")
+public class BonusExchangeBean {
+	
+	@Id
+	@Column(name="exchange_id")
+    private String exchangeId;
+	@Column(name = "customer_tel")
+    private String customerTel;
+	@Column(name = "product_id")
+	private String productId;
+	@Column(name="use_points")
+    private int usePoints;
+	@Column(name="number_of_exchange")
+    private int numberOfExchange;
+	@Column(name="exchange_date")
+    private Date exchangeDate;
+	@ManyToOne
+	@JoinColumn(name = "customer_tel")
+	private CustomerBean customer;
+	@ManyToOne
+	@JoinColumn(name="product_id")
+	private ProductBean product;
     // Constructors, Getters, and Setters
     public BonusExchangeBean() {}
 
@@ -35,4 +60,13 @@ public class BonusExchangeBean {
     public void setNumberOfExchange(int numberOfExchange) { this.numberOfExchange = numberOfExchange; }
     public Date getExchangeDate() { return exchangeDate; }
     public void setExchangeDate(Date exchangeDate) { this.exchangeDate = exchangeDate; }
+
+	@Override
+	public String toString() {
+		return "BonusExchangeBean [exchangeId=" + exchangeId + ", customerTel=" + customerTel + ", productId="
+				+ productId + ", usePoints=" + usePoints + ", numberOfExchange=" + numberOfExchange + ", exchangeDate="
+				+ exchangeDate + ", customer=" + customer + ", product=" + product + "]";
+	}
+    
+    
 }

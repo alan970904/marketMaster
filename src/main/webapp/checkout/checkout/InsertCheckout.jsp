@@ -543,7 +543,7 @@ select.form-control {
 
             var formData = {
                 checkoutId: $('#checkoutId').val(),
-                customerTel: $('#customerTel1').val() + '-' + $('#customerTel2').val(),
+                customerTel: $('#customerTel1').val() + $('#customerTel2').val(),
                 employeeId: $('#employeeId').val(),
                 totalAmount: $('#totalAmount').val(),
                 checkoutDate: $('#checkoutDate').val(),

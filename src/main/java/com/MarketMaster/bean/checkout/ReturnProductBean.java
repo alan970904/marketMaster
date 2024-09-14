@@ -2,7 +2,9 @@ package com.MarketMaster.bean.checkout;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "return_products")
@@ -23,16 +25,19 @@ public class ReturnProductBean implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date returnDate;
 
+    @OneToMany(mappedBy = "returnProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReturnDetailsBean> returnDetails;
+
     public ReturnProductBean() {
         super();
     }
 
     public ReturnProductBean(String returnId, String employeeId, Integer returnTotalPrice, Date returnDate) {
-        super();
         this.returnId = returnId;
         this.employeeId = employeeId;
         this.returnTotalPrice = returnTotalPrice;
         this.returnDate = returnDate;
+        this.returnDetails = new ArrayList<>();
     }
 
     // Getters and setters
@@ -66,6 +71,22 @@ public class ReturnProductBean implements Serializable {
 
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public List<ReturnDetailsBean> getReturnDetails() {
+        return returnDetails;
+    }
+
+    public void setReturnDetails(List<ReturnDetailsBean> returnDetails) {
+        this.returnDetails = returnDetails;
+    }
+
+    public void addReturnDetail(ReturnDetailsBean returnDetail) {
+        if (returnDetails == null) {
+            returnDetails = new ArrayList<>();
+        }
+        returnDetails.add(returnDetail);
+        returnDetail.setReturnProduct(this);
     }
 
     @Override
