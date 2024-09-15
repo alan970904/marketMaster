@@ -65,6 +65,8 @@
 				<div class="dropdown-menu bg-transparent border-0">
 					<a href="${pageContext.request.contextPath}/employee/CustomerMain.jsp"
 						class="dropdown-item">會員資訊</a>
+					<a href="${pageContext.request.contextPath}/bonus/BonusExchangeInput.jsp"
+						class="dropdown-item">紅利兌換查詢</a>
 				</div>
 			</div>
 			<div class="dropdown-menu bg-transparent border-0">
