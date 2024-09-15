@@ -82,13 +82,10 @@
         var originalCustomerTel = "${checkout.customerTel}";
         var totalPrice = parseFloat($("#checkoutTotalPrice").val());
 
-        // 初始化時分割並填充電話號碼
+     	// 初始化時分割並填充電話號碼
         if (originalCustomerTel) {
-            var telParts = originalCustomerTel.split('-');
-            if (telParts.length === 2) {
-                $("#customerTel1").val(telParts[0]);
-                $("#customerTel2").val(telParts[1]);
-            }
+            $("#customerTel1").val(originalCustomerTel.substring(0, 4));
+            $("#customerTel2").val(originalCustomerTel.substring(4));
         }
 
         function updateBonusAndDueDate() {
@@ -124,7 +121,7 @@
             // 合併電話號碼
             var tel1 = $("#customerTel1").val();
             var tel2 = $("#customerTel2").val();
-            formData.push({name: "customerTel", value: tel1 + '-' + tel2});
+            formData.push({name: "customerTel", value: tel1 + tel2});
             
             console.log("提交的表單數據:", formData);
 
