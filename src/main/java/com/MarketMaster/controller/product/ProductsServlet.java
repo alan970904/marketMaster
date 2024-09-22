@@ -8,15 +8,12 @@ import org.hibernate.SessionFactory;
 
 import com.MarketMaster.bean.product.ProductBean;
 import com.MarketMaster.dao.product.ProductDao;
-import com.MarketMaster.util.HibernateUtil;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/ProductsServlet")
 public class ProductsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

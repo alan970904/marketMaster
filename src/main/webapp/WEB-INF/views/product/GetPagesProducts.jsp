@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -31,8 +31,9 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 <style>
 .inventory-low {
@@ -73,7 +74,7 @@ button:disabled {
 </style>
 </head>
 <body>
-	<%@ include file="/body/body.jsp"%>
+	<%@ include file="../body/body.jsp"%>
 	<main>
 		<div class="container mt-5">
 			<h2 class="mb-4">商品資料</h2>
@@ -111,7 +112,7 @@ button:disabled {
 							<td>${product.productId}</td>
 							<td>${product.productCategory}</td>
 							<td><a
-								href="${pageContext.request.contextPath}/ProductsServlet?action=GetOneProduct&productId=${product.productId}">${product.productName}</a></td>
+								href="${pageContext.request.contextPath}/getOneProduct?productId=${product.productId}">${product.productName}</a></td>
 							<td>${product.productPrice}</td>
 							<td>${product.productSafeInventory}</td>
 							<td>${product.numberOfShelve}</td>
@@ -122,14 +123,14 @@ button:disabled {
 							<td>${product.numberOfDestruction}</td>
 							<td>${product.numberOfRemove}</td>
 							<td><form method="post"
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}/getUpdateProduct"
 									class="d-inline">
 									<input type="hidden" name="action" value="GetUpdateProduct">
 									<input type="hidden" name="productId" value=${product.productId }>
 									<button type="submit" class="update btn btn-sm">修改</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}/getShelveProduct"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="GetShelveProduct">
 									<input type="hidden" name="productId"
@@ -137,7 +138,7 @@ button:disabled {
 									<button type="submit" class="shelve btn btn-sm">上架</button>
 								</form></td>
 							<td><form
-									action="${pageContext.request.contextPath}/ProductsServlet"
+									action="${pageContext.request.contextPath}/removeProduct"
 									method="post" class="d-inline">
 									<input type="hidden" name="action" value="RemoveProduct">
 									<input type="hidden" name="productId"
@@ -273,5 +274,6 @@ button:disabled {
 							applyInventoryStyles(table);
 						});
 	</script>
+	<script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>

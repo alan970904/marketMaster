@@ -29,7 +29,9 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
  rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -44,7 +46,6 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script
  src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
  
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>商品資料處理</title>
@@ -94,7 +95,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     </style>
 </head>
 <body>
-<%@ include file="/body/body.jsp" %>
+<%@ include file="../body/body.jsp" %>
 <main>
 
 <div class="home">
@@ -112,5 +113,7 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
 </div>
 </main>
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
+
 </html>

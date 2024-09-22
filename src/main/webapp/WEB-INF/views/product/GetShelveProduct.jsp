@@ -29,7 +29,9 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
  rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -44,7 +46,6 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script
  src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
  
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 <meta charset="UTF-8">
 <title>商品資料</title>
 <style>
@@ -88,7 +89,7 @@ input[type="submit"]:hover {
 </style>
 </head>
 <body>
-<%@ include file="/body/body.jsp" %>
+<%@ include file="../body/body.jsp" %>
 <main>
 <div align="center">
 <h2>商品資料</h2>
@@ -100,7 +101,7 @@ input[type="submit"]:hover {
 <tr><td>庫存數量:<td><input type="number" readonly value="${product.numberOfInventory}" id="inventory" min="0">
 </table>
 <p>
-<form method="get" action="${pageContext.request.contextPath}/ProductsServlet">
+<form method="post" action="${pageContext.request.contextPath}/updateProduct">
 <h2>上架物品數量更改</h2>
     <table>
 	<tr><td>商品編號:<td><input type="text" readonly value="${product.productId}" name="productId">
@@ -115,6 +116,7 @@ input[type="submit"]:hover {
 
 </div>
 </main>
+
 </body>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
@@ -133,4 +135,5 @@ $(document).ready(function() {
     });
 });
 </script>
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </html>
