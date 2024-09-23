@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import com.MarketMaster.bean.schedule.ScheduleBean;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 public class ScheduleDao {
@@ -49,31 +50,54 @@ public class ScheduleDao {
         return query.uniqueResult();
     }
 
-    // 檢查特定日期和員工的排班是否存在
-    public boolean scheduleExists(String employeeId, Date jobDate) {
-        String hql = "SELECT COUNT(*) FROM ScheduleBean s WHERE s.employeeId = :employeeId AND s.jobDate = :jobDate";
-        Query<Long> query = session.createQuery(hql, Long.class);
-        query.setParameter("employeeId", employeeId);
-        query.setParameter("jobDate", jobDate);
-        return query.uniqueResult() > 0;
-    }
-
-    // 刪除特定員工和日期的排班
-    public void deleteSchedule(String employeeId, Date jobDate) {
-        String hql = "DELETE FROM ScheduleBean s WHERE s.employeeId = :employeeId AND s.jobDate = :jobDate";
+  //刪除
+    public int deleteSchedule(String employeeId, Date jobDate, Time startTime, Time endTime) {
+        String hql = "DELETE FROM ScheduleBean s WHERE s.employeeId = :employeeId AND s.jobDate = :jobDate "
+                   + "AND s.startTime = :startTime AND s.endTime = :endTime";
         Query query = session.createQuery(hql);
         query.setParameter("employeeId", employeeId);
         query.setParameter("jobDate", jobDate);
+        query.setParameter("startTime", startTime);
+        query.setParameter("endTime", endTime);
+        
+        int result = query.executeUpdate();
+        return result;
+    }
+
+    // 根據日期和時間段獲取排班中的員工 ID 列表
+    public List<String> getEmployeeIdsBySchedule(Date jobDate, Time startTime, Time endTime) {
+        String hql = "SELECT s.employeeId FROM ScheduleBean s WHERE s.jobDate = :jobDate "
+                   + "AND (CAST(s.startTime AS string) <= :endTime AND CAST(s.endTime AS string) >= :startTime)";
+        Query<String> query = session.createQuery(hql, String.class);
+        query.setParameter("jobDate", jobDate);
+        query.setParameter("startTime", startTime.toString());
+        query.setParameter("endTime", endTime.toString());
+        return query.getResultList();
+    }
+
+    // 根據日期和時間段刪除排班
+    public void deleteSchedules(Date jobDate, Time startTime, Time endTime) {
+        String hql = "DELETE FROM ScheduleBean s WHERE s.jobDate = :jobDate "
+                   + "AND (s.startTime <= :endTime AND s.endTime >= :startTime)";
+        Query query = session.createQuery(hql);
+        query.setParameter("jobDate", jobDate);
+        query.setParameter("startTime", startTime);
+        query.setParameter("endTime", endTime);
         query.executeUpdate();
     }
-    public void saveOrUpdateSchedule(ScheduleBean scheduleBean) {
-        session.saveOrUpdate(scheduleBean);
+
+
+    // 根據日期和時間段新增或更新排班
+    public void saveOrUpdateSchedule(List<ScheduleBean> newSchedules, Date jobDate, Time startTime, Time endTime) {
+        // 先刪除符合條件的排班
+        deleteSchedules(jobDate, startTime, endTime);
+
+        // 然後新增新的排班
+        for (ScheduleBean schedule : newSchedules) {
+            if (schedule != null) {
+                session.saveOrUpdate(schedule);
+            }
+        }
     }
-    // 根據日期刪除排班
-    public void deleteSchedulesByDate(Date date) {
-        String hql = "DELETE FROM ScheduleBean WHERE jobDate = :date";
-        session.createQuery(hql)
-               .setParameter("date", date)
-               .executeUpdate();
-    }
+
 }
