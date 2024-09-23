@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,7 +103,7 @@ input[type="submit"]:hover {
 <tr><td>庫存數量:<td><input type="number" readonly value="${product.numberOfInventory}" id="inventory" min="0">
 </table>
 <p>
-<form method="post" action="${pageContext.request.contextPath}/updateProduct">
+<form method="post" action="${pageContext.request.contextPath}/shelveProduct">
 <h2>上架物品數量更改</h2>
     <table>
 	<tr><td>商品編號:<td><input type="text" readonly value="${product.productId}" name="productId">

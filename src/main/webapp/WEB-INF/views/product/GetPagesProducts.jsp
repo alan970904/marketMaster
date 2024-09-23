@@ -1,4 +1,5 @@
- <%@ page language="java" contentType="text/html; charset=UTF-8"
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -80,7 +81,7 @@ button:disabled {
 			<h2 class="mb-4">商品資料</h2>
 
 
-<!--  
+			<!--  
 			<form action="${pageContext.request.contextPath}/ProductsServlet"
 				class="mb-3">
 				<input type="hidden" name="action" value="UpdateSaleByCheckOut">
@@ -126,7 +127,8 @@ button:disabled {
 									action="${pageContext.request.contextPath}/getUpdateProduct"
 									class="d-inline">
 									<input type="hidden" name="action" value="GetUpdateProduct">
-									<input type="hidden" name="productId" value=${product.productId }>
+									<input type="hidden" name="productId"
+										value=${product.productId }>
 									<button type="submit" class="update btn btn-sm">修改</button>
 								</form></td>
 							<td><form
