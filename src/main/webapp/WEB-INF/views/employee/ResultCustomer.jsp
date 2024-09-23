@@ -42,7 +42,7 @@
     </main>
     <script>
         document.getElementById('back').addEventListener('click', function() {
-            window.location.href = "${pageContext.request.contextPath}/employee/CustomerMain.jsp";
+            window.location.href = "${pageContext.request.contextPath}/customer/cusMain";
         });
     </script>
     <script src="<c:url value='/resources/js/main.js'/>"></script>
