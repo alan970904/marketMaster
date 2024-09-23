@@ -1,6 +1,5 @@
 package com.MarketMaster.dao.restock;
 
-import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,23 +16,23 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.MarketMaster.bean.restock.RestockDetailViewBean;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import com.MarketMaster.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-@SuppressWarnings("unused")
+
+@Repository
 public class RestockDAO {
     private static final Logger logger = Logger.getLogger(RestockDAO.class.getName());
+    @Autowired
+    private SessionFactory sessionFactory;
 
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
-        logger.info("嘗試建立數據庫連接");
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection conn = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=ispan;encrypt=false", "Java05", "0000");
-        logger.info("數據庫連接成功建立");
-        return conn;
-    }
+
     public List<EmployeeDTO> getEmployees() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             session.beginTransaction();
             List<EmployeeDTO> employees = session.createQuery(
@@ -64,12 +63,12 @@ public class RestockDAO {
 //        return employees;
 //    }
 public boolean delete(String restockId) {
-    Session session = null;
+    Session session = sessionFactory.openSession();
     Transaction transaction = null;
     boolean success = false;
 
     try {
-        session = HibernateUtil.getSessionFactory().openSession();
+
         transaction = session.beginTransaction();
 
         // 首先刪除 RestockDetailsBean
@@ -115,7 +114,7 @@ public boolean delete(String restockId) {
 //        }
 
     public String getLatestRestockId() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         String hql="FROM RestockBean r WHERE r.restockId LIKE :restockId ORDER BY r.restockId DESC";
         String today = LocalDate.now().now().format(java.time.format.DateTimeFormatter.BASIC_ISO_DATE);
@@ -163,7 +162,7 @@ public boolean delete(String restockId) {
 //    }
 
     public List<ProductCategoryDTO> getProductCategory() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             String hql = "SELECT DISTINCT p.productCategory FROM ProductBean p";
             List<String> categories = session.createQuery(hql, String.class).list();
@@ -194,7 +193,7 @@ public boolean delete(String restockId) {
 //        return categoryList;
 //    }
 public List<ProductNameDTO> getProductNamesByCategory(String category) {
-    Session session = HibernateUtil.getSessionFactory().openSession();
+    Session session = sessionFactory.openSession();
     try {
         String hql = "SELECT NEW com.MarketMaster.DTO.restock.ProductNameDTO(p.productId, p.productName) FROM ProductBean p WHERE p.productCategory = :category";
         Query<ProductNameDTO> query = session.createQuery(hql, ProductNameDTO.class);
@@ -227,7 +226,7 @@ public List<ProductNameDTO> getProductNamesByCategory(String category) {
 
 
     public  void insertRestockData (String restockId,HttpServletRequest request){
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             Transaction transaction = session.beginTransaction();
             insertRestock(session,restockId,request);
@@ -317,9 +316,8 @@ private void insertRestockDetails(Session session, String restockId, HttpServlet
 
     public List<RestockDetailViewBean> getAllRestockDetails() {
         logger.info("開始獲取所有進貨明細");
-        Session session = null;
+        Session session = sessionFactory.openSession();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
 
             String hql = "SELECT new com.MarketMaster.bean.restock.RestockDetailViewBean(" +
                     "r.restockId, r.employeeId, rd.product.productId, rd.product.productName, rd.product.productCategory, " +

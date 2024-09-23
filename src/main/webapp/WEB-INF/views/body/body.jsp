@@ -44,10 +44,9 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>庫存系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/html/reStockMain.jsp"
-						class="dropdown-item">新增庫存</a> <a
-						href="${pageContext.request.contextPath}/restock/GetAllRestockDetails.jsp"
-						class="dropdown-item">庫存明細</a>
+					<a href="${pageContext.request.contextPath}/restock/RestockMain" class="dropdown-item">新增庫存</a>
+					<a href="${pageContext.request.contextPath}/restock/GetAllRestockDetailsDetail" class="dropdown-item">庫存明細</a>
+
 				</div>
 			</div>
 			<div class="nav-item dropdown">
