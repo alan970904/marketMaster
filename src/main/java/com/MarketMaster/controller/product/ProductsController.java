@@ -62,7 +62,7 @@ public class ProductsController {
 	public String getShelveProduct(@RequestParam String productId, Model m) {
 		ProductBean product = productDao.getOne(productId);
 		m.addAttribute("product", product);
-		return "/product/GetShelveProduct";
+		return "product/GetShelveProduct";
 	}
 
 	@PostMapping("/shelveProduct")
@@ -78,7 +78,7 @@ public class ProductsController {
 	public String getUpdateProduct(@RequestParam String productId, Model m) {
 		ProductBean product = productDao.getOne(productId);
 		m.addAttribute("product", product);
-		return "/product/GetUpdateProduct";
+		return "product/GetUpdateProduct";
 	}
 	
 	@PostMapping("/updateProduct")

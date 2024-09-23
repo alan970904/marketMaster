@@ -154,7 +154,7 @@ button:disabled {
 			</table>
 
 			<button class="btn btn-secondary mt-3"
-				onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">返回首頁</button>
+				onclick="window.location.href='${pageContext.request.contextPath}/productHomepage'">返回首頁</button>
 		</div>
 	</main>
 

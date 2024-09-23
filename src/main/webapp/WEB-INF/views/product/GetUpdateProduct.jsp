@@ -123,7 +123,7 @@ td {
 			
 	</form>
 			<p>
-<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/productHomepage'">
 </div>
 </main>
 <script src="<c:url value='/resources/js/main.js'/>"></script>

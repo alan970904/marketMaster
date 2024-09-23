@@ -130,7 +130,7 @@
             </div>
                    <p>
                    <p>
-<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/productHomepage'">
             
         </fieldset>
     </form>
