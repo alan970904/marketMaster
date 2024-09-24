@@ -34,7 +34,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -49,11 +49,11 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 </head>
 <body>
-	<%@ include file="/body/body.jsp"%>
+	<%@ include file="../body/body.jsp"%>
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col text-center">
@@ -61,31 +61,22 @@
 			</div>
 		</div>
 
-		<div class="row mt-3">
-			<div class="col text-start">
-				<a href="${pageContext.request.contextPath}/body/HomePage.jsp"
-					class="btn btn-secondary"> <i class="fas fa-arrow-left"></i> 返回
-				</a>
-			</div>
-		</div>
 
 		<div class="row mt-4">
 			<div class="col text-center">
 				<a
-					href="${pageContext.request.contextPath}/AskForLeaveCon?action=allLeaveRecords"
+					href="${pageContext.request.contextPath}/AskForLeaveCon/allLeaveRecords"
 					class="btn btn-primary">查看所有員工請假表</a>
 			</div>
 		</div>
 
 		<hr>
-
 		<div class="row">
 			<div class="col">
 				<div class="card p-4">
 					<form id="searchForm"
-						action="${pageContext.request.contextPath}/AskForLeaveCon"
+						action="${pageContext.request.contextPath}/AskForLeaveCon/searchLeaveRecords"
 						method="get">
-						<input type="hidden" name="action" value="searchLeaveRecords">
 						<div class="mb-3">
 							<label for="employeeId" class="form-label">輸入員工編號查詢:</label> <input
 								type="text" class="form-control" id="employeeId"
@@ -97,8 +88,7 @@
 			</div>
 		</div>
 	</div>
-
-	
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>
 

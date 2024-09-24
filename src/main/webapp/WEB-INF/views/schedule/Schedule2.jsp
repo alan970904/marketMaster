@@ -33,9 +33,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -71,7 +70,7 @@
 </style>
 </head>
 <body>
-	<jsp:include page="/body/body.jsp" />
+	<jsp:include page="../body/body.jsp" />
 	<div class="container mt-5">
 
 		<div class="col text-center">
