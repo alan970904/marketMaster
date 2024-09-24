@@ -7,13 +7,85 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<properties>
+		<spring.version>6.1.12</spring.version>
+		<hibernate.version>6.6.0.Final</hibernate.version>
+		<jackson.version>2.14.2</jackson.version>
+	</properties>
+	
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.16.1</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>1.5</version>
+		</dependency>
 
 		<!-- Hibernate 核心 - 用於對象關係映射（ORM），簡化 Java 應用程序與數據庫的交互 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>6.6.0.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 		<!-- Microsoft SQL Server JDBC 驅動 - 用於連接和操作 SQL Server 數據庫 -->
@@ -30,6 +102,28 @@
 			<version>8.4.0</version>
 		</dependency>
 
+		<!-- Jakarta Standard Tag Library (JSTL) API - 提供 JSP 頁面中常用的標籤庫 -->
+		<dependency>
+			<groupId>jakarta.servlet.jsp.jstl</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		
+		<!-- JSTL 實現 - 提供 JSTL 標籤的具體實現 -->
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		
+		<!-- Jakarta Servlet API - 提供 Servlet 開發所需的接口和類 -->
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<!-- Gson - Google 的 JSON 處理庫，用於 Java 對象與 JSON 數據之間的轉換 -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -44,50 +138,59 @@
 			<version>3.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<!-- Jakarta Standard Tag Library (JSTL) API - 提供 JSP 頁面中常用的標籤庫 -->
-		<dependency>
-			<groupId>jakarta.servlet.jsp.jstl</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-
-		<!-- JSTL 實現 - 提供 JSTL 標籤的具體實現 -->
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
-			<version>3.0.0</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.13.0</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.13.0</version>
 		</dependency>
-	
-		<!-- Jakarta Servlet API - 提供 Servlet 開發所需的接口和類 -->
-		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>6.0.0</version>
-			<scope>provided</scope>
-		</dependency>
 
+	    <!-- Jackson Core -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-core</artifactId>
+	        <version>${jackson.version}</version>
+	    </dependency>
+	
+	    <!-- Jackson Databind -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <version>${jackson.version}</version>
+	    </dependency>
+	
+	    <!-- Jackson Annotations -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-annotations</artifactId>
+	        <version>${jackson.version}</version>
+	    </dependency>
+	
+	    <!-- Jackson Datatype JSR310 -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.datatype</groupId>
+	        <artifactId>jackson-datatype-jsr310</artifactId>
+	        <version>${jackson.version}</version>
+	    </dependency>
+	
 	</dependencies>
 
 	<build>
@@ -95,12 +198,21 @@
 			<resource>
 				<directory>src/main/java</directory>
 			</resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/webapp</directory>
+            </resource>
 		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
+	                <compilerArgs>
+	                    <arg>-parameters</arg>
+	                </compilerArgs>
 					<release>17</release>
 				</configuration>
 			</plugin>

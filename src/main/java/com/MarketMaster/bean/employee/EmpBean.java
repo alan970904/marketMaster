@@ -1,8 +1,6 @@
 package com.MarketMaster.bean.employee;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 
 import jakarta.persistence.Column;
@@ -16,6 +14,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class EmpBean implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
 
  @Id
  @Column(name = "employee_id")

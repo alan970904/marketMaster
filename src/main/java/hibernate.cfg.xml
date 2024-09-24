@@ -55,5 +55,8 @@
         <mapping class="com.MarketMaster.bean.restock.RestockDetailsBean"/>
         <mapping class="com.MarketMaster.bean.schedule.AskForLeaveBean" />
 		<mapping class="com.MarketMaster.bean.schedule.ScheduleBean" />
+		<mapping class="com.MarketMaster.bean.bonus.BonusExchangeBean" /> 
+		<mapping class="com.MarketMaster.bean.bonus.PointsHistoryBean" /> 
+		
     </session-factory>
 </hibernate-configuration>

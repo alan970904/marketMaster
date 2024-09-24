@@ -1,11 +1,16 @@
 package com.MarketMaster.service.checkout;
 
-import java.util.List;
-import java.util.Map;
 import com.MarketMaster.bean.checkout.ReturnProductBean;
+import com.MarketMaster.bean.checkout.ReturnDetailsBean;
 import com.MarketMaster.dao.checkout.ReturnProductDao;
 
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ReturnProductService {
+    private static final Logger logger = Logger.getLogger(ReturnProductService.class.getName());
     private ReturnProductDao returnProductDao = new ReturnProductDao();
 
     public ReturnProductBean getReturnProduct(String returnId) {
@@ -20,12 +25,16 @@ public class ReturnProductService {
         returnProductDao.insert(returnProduct);
     }
 
-    public void updateReturnProduct(ReturnProductBean returnProduct) {
-        returnProductDao.update(returnProduct);
+    public boolean updateReturnProduct(ReturnProductBean returnProduct) {
+        return returnProductDao.update(returnProduct);
     }
 
     public void deleteReturnProduct(String returnId) {
         returnProductDao.delete(returnId);
+    }
+
+    public List<ReturnProductBean> searchReturnProductsByEmployeeId(String employeeId) {
+        return returnProductDao.searchByEmployeeId(employeeId);
     }
 
     public void updateReturnTotalPrice(String returnId) {
@@ -38,5 +47,17 @@ public class ReturnProductService {
 
     public List<Map<String, Object>> getReturnSummary() {
         return returnProductDao.getReturnSummary();
+    }
+
+    public String getLastReturnId() {
+        return returnProductDao.getLastReturnId();
+    }
+
+    public boolean insertReturnWithDetails(ReturnProductBean returnProduct, List<ReturnDetailsBean> details) {
+        return returnProductDao.insertReturnWithDetails(returnProduct, details);
+    }
+
+    public void deleteReturnAndDetails(String returnId) {
+        returnProductDao.deleteReturnAndDetails(returnId);
     }
 }
