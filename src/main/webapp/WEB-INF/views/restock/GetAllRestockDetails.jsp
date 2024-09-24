@@ -30,6 +30,8 @@
 
 	<!-- DataTables CSS -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+	
+	<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 	<style>
 		.dataTables_length {
@@ -37,9 +39,9 @@
 		}
 	</style>
 </head>
-<%@ include file="../body/body.jsp"%>
 
 <body>
+<%@ include file="../body/body.jsp"%>
 <main style="width: 100%;">
 	<div class="card">
 		<h1>進貨明細</h1>

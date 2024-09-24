@@ -57,8 +57,8 @@
                         <td>${customer.dateOfRegistration}</td>
                         <td>${customer.totalPoints}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/CustomerController?action=get&customerTel=${customer.customerTel}" class="btn btn-primary btn-sm">詳情</a>
-                            <a href="${pageContext.request.contextPath}/CustomerController?action=getForUpdate&customerTel=${customer.customerTel}" class="btn btn-warning btn-sm">修改</a>
+                            <a href="${pageContext.request.contextPath}/customer/get?customerTel=${customer.customerTel}" class="btn btn-primary btn-sm">詳情</a>
+                            <a href="${pageContext.request.contextPath}/customer/getForUpdate?customerTel=${customer.customerTel}" class="btn btn-warning btn-sm">修改</a>
                             <button onclick="confirmDelete('${customer.customerTel}')" class="btn btn-danger btn-sm">刪除</button>
                         </td>
                     </tr>
@@ -78,23 +78,22 @@
             window.confirmDelete = function(customerTel) {
                 if (confirm("確定要刪除此會員嗎？")) {
                     $.ajax({
-                        url: "${pageContext.request.contextPath}/CustomerController",
+                        url: "<c:url value='/customer/delete'/>",
                         type: "POST",
                         data: {
-                            action: "delete",
                             customerTel: customerTel
                         },
                         success: function(response) {
                             if(response.status === "success") {
                                 // 從 DataTable 中移除該行
                                 table.row($("td:contains('" + customerTel + "')").closest("tr")).remove().draw();
-                                alert("會員已成功刪除");
+                                alert(response.message);
                             } else {
-                                alert("刪除失敗：" + response.message);
+                                alert(response.message);
                             }
                         },
-                        error: function() {
-                            alert("刪除操作失敗，請稍後再試");
+                        error: function(xhr, status, error) {
+                            alert("刪除操作失敗。錯誤：" + error);
                         }
                     });
                 }
@@ -102,7 +101,7 @@
         });
 
         document.getElementById('back').addEventListener('click', function() {
-            window.location.href = "${pageContext.request.contextPath}/employee/CustomerMain.jsp";
+            window.location.href = "${pageContext.request.contextPath}/customer/cusMain";
         });
     </script>
     <script src="<c:url value='/resources/js/main.js'/>"></script>

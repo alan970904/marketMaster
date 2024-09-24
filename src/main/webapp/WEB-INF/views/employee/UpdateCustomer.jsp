@@ -37,8 +37,7 @@
     <%@ include file="../body/body.jsp"%>
     <main class="container mt-4">
         <h1 class="mb-4">更新會員資訊</h1>
-        <form action="${pageContext.request.contextPath}/CustomerController" method="post" onsubmit="return validateForm()">
-            <input type="hidden" name="action" value="update">
+        <form action="<c:url value='/customer/update'/>" method="post" onsubmit="return validateForm()">
             <input type="hidden" name="originalTel" value="${customer.customerTel}">
             <table class="table table-bordered">
                 <tr>
@@ -95,7 +94,7 @@
         }
 
         document.getElementById('back').addEventListener('click', function() {
-            window.location.href = "${pageContext.request.contextPath}/employee/CustomerMain.jsp";
+            window.location.href = "${pageContext.request.contextPath}/customer/getAll";
         });
     </script>
     <script src="<c:url value='/resources/js/main.js'/>"></script>
