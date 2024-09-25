@@ -68,7 +68,6 @@ public class AskForLeaveCon {
         return "schedule/addLeaveRecordById";
     }
 
-    // 新增請假紀錄
     @PostMapping("/addLeaveRecord")
     public String addLeaveRecord(@RequestParam String leave_id,
                                  @RequestParam String employee_id,
@@ -91,7 +90,10 @@ public class AskForLeaveCon {
 
         leaveService.addLeaveRecordById(leave);
 
-        return searchLeaveRecords(employee_id, model);
+        List<AskForLeaveBean> updatedLeaveRecords = leaveService.getLeaveRecordsById(employee_id);
+        model.addAttribute("leaveRecords", updatedLeaveRecords);
+
+        return "schedule/getLeaveById";
     }
 
     // 更新請假紀錄
