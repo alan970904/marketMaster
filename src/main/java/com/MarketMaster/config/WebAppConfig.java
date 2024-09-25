@@ -1,10 +1,14 @@
 package com.MarketMaster.config;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+//import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.MarketMaster.controller.employee.AuthenticationInterceptor;
 
@@ -37,6 +42,8 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .addResourceLocations("/resources/");
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("/img/");
+        registry.addResourceHandler("/CSS/**")
+        		.addResourceLocations("/CSS/");
     }
 
     @Bean
@@ -56,4 +63,17 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/resources/**");
     }
+    
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
+    }
+    
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setDefaultEncoding("UTF-8");
+//        resolver.setMaxUploadSize(5242880); // 5MB
+//        return resolver;
+//    }
 }

@@ -54,7 +54,7 @@
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>訂單系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
 					<a
-						href="${pageContext.request.contextPath}/checkout/checkout/index.jsp"
+						href="${pageContext.request.contextPath}/checkout/checkoutMain"
 						class="dropdown-item">訂單資訊</a>
 				</div>
 			</div>

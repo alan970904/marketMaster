@@ -190,6 +190,12 @@
 	        <artifactId>jackson-datatype-jsr310</artifactId>
 	        <version>${jackson.version}</version>
 	    </dependency>
+	    
+	    <dependency>
+        	<groupId>commons-fileupload</groupId>
+        	<artifactId>commons-fileupload</artifactId>
+        <version>1.5</version>
+    </dependency>
 	
 	</dependencies>
 

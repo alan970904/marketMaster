@@ -32,6 +32,9 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
     <link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
+    <style>
+		.dataTables_length select { padding-right: 30px !important; background-position: right 0.5rem center !important; }
+	</style>
 </head>
 <body>
     <%@ include file="../body/body.jsp"%>
