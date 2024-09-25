@@ -42,6 +42,8 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .addResourceLocations("/resources/");
         registry.addResourceHandler("/img/**")
                 .addResourceLocations("/img/");
+        registry.addResourceHandler("/CSS/**")
+        		.addResourceLocations("/CSS/");
     }
 
     @Bean
