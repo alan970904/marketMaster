@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
+    <link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+    <link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
     
     <!-- 修改的自定義樣式 -->
 </head>

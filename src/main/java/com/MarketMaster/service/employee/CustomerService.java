@@ -2,12 +2,20 @@ package com.MarketMaster.service.employee;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.MarketMaster.bean.employee.CustomerBean;
 import com.MarketMaster.dao.employee.CustomerDao;
 import com.MarketMaster.exception.DataAccessException;
 
+@Service
+@Transactional
 public class CustomerService {
-    private CustomerDao customerDao = new CustomerDao();
+	
+	@Autowired
+    private CustomerDao customerDao;
 
     public boolean addCustomer(CustomerBean customer) throws DataAccessException {
         return customerDao.addCustomer(customer);

@@ -23,8 +23,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <!-- jQuery -->
@@ -40,55 +40,10 @@
 <!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/date-fns"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var startDatetime = "${startDatetimeFormatted}";
-        var endDatetime = "${endDatetimeFormatted}";
-
-        var startDatetimePicker = flatpickr("#start_datetime", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: null, // 允許選擇過去的日期
-            defaultDate: startDatetime,
-            time_24hr: true,
-            onChange: function(selectedDates) {
-                if (selectedDates.length > 0) {
-                    var startDatetime = selectedDates[0];
-                    endDatetimePicker.set('minDate', startDatetime);
-                }
-            }
-        });
-
-        var endDatetimePicker = flatpickr("#end_datetime", {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: null, // 允許選擇過去的日期
-            time_24hr: true,
-            defaultDate: endDatetime
-        });
-
-        function submitForm() {
-            var form = document.getElementById("leaveForm");
-            form.submit();
-        }
-
-        function cancelForm() {
-            var employeeId = document.getElementById("employee_id").value; // 獲取員工編號
-            var baseUrl = '${pageContext.request.contextPath}/AskForLeaveCon';
-            var url = baseUrl + '?action=searchLeaveRecords&employee_id='
-                    + encodeURIComponent(employeeId);
-            window.location.href = url;
-        }
-
-        document.getElementById('submitButton').addEventListener('click', submitForm);
-        document.getElementById('cancelButton').addEventListener('click', cancelForm);
-    });
-</script>
-
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../body/body.jsp"%>
     <div class="container mt-5">
         <div class="row">
             <div class="col text-center">
@@ -96,13 +51,7 @@
             </div>
         </div>
 
-        <div class="row mt-3">
-            <div class="col text-start">
-                <a href="${pageContext.request.contextPath}/body/HomePage.jsp"
-                    class="btn btn-secondary"> <i class="fas fa-arrow-left"></i> 返回
-                </a>
-            </div>
-        </div>
+  
 
         <div class="row mt-4">
             <div class="col text-center">
@@ -117,8 +66,7 @@
         <div class="row">
             <div class="col">
                 <div class="card p-4 shadow-sm">
-                    <form id="leaveForm" action="${pageContext.request.contextPath}/AskForLeaveCon" method="post">
-                        <input type="hidden" name="action" value="updateLeaveRecord">
+                    <form id="leaveForm" action="${pageContext.request.contextPath}/AskForLeaveCon/updateLeaveRecord" method="post">
 
                         <c:choose>
                             <c:when test="${not empty leaveRecords}">
@@ -180,6 +128,51 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var startDatetime = "${startDatetimeFormatted}";
+        var endDatetime = "${endDatetimeFormatted}";
+
+        var startDatetimePicker = flatpickr("#start_datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: null, // 允許選擇過去的日期
+            defaultDate: startDatetime,
+            time_24hr: true,
+            onChange: function(selectedDates) {
+                if (selectedDates.length > 0) {
+                    var startDatetime = selectedDates[0];
+                    endDatetimePicker.set('minDate', startDatetime);
+                }
+            }
+        });
+
+        var endDatetimePicker = flatpickr("#end_datetime", {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: null, // 允許選擇過去的日期
+            time_24hr: true,
+            defaultDate: endDatetime
+        });
+
+        function submitForm() {
+            var form = document.getElementById("leaveForm");
+            form.submit();
+        }
+
+        function cancelForm() {
+			var employeeId = document
+					.getElementById("employee_id").value;
+			window.location.href = '${pageContext.request.contextPath}/AskForLeaveCon/searchLeaveRecords?employee_id='
+					+ encodeURIComponent(employeeId);
+		}
+
+
+        document.getElementById('submitButton').addEventListener('click', submitForm);
+        document.getElementById('cancelButton').addEventListener('click', cancelForm);
+    });
+</script>
+    
 </body>
 </html>
 

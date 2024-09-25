@@ -34,7 +34,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -49,10 +49,11 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </head>
 <body>
-	<%@ include file="/body/body.jsp"%>
+	<%@ include file="../body/body.jsp"%>
 	<div class="container mt-5">
 		<div class="row">
 			<div class="col text-center">
@@ -62,7 +63,8 @@
 
 		<div class="row mt-3">
 			<div class="col text-start">
-				<a href="${pageContext.request.contextPath}/schedule/AskForLeave.jsp"
+				<a
+					href="${pageContext.request.contextPath}/AskForLeaveCon/view"
 					class="btn btn-secondary"> <i class="fas fa-arrow-left"></i> 返回
 				</a>
 			</div>
@@ -75,15 +77,17 @@
 		</c:if>
 
 		<c:if test="${not empty leaveRecords}">
-		
+
 			<c:set var="firstEmployeeId" value="${leaveRecords[0].employeeId}" />
 
-			<form action="${pageContext.request.contextPath}/AskForLeaveCon"
+			<form
+				action="${pageContext.request.contextPath}/AskForLeaveCon/createForm"
 				method="post" class="mb-4">
 				<input type="hidden" name="action" value="createForm"> <input
 					type="hidden" name="employee_id" value="${firstEmployeeId}">
 				<button type="submit" class="btn btn-primary">建立請假表單</button>
 			</form>
+
 
 			<table id="leaveRecordsTable"
 				class="table table-striped table-bordered">
@@ -114,28 +118,25 @@
 							<td><c:if test="${leave.approvedStatus != '已批准'}">
 									<!-- 刪除按鈕 -->
 									<form
-										action="${pageContext.request.contextPath}/AskForLeaveCon"
-										method="post" class="d-inline"
-										onsubmit="return handleAction(event, '刪除', '${leave.approvedStatus}')">
-										<input type="hidden" name="action" value="delete" /> <input
-											type="hidden" name="leave_id" value="${leave.leaveId}" /> <input
-											type="hidden" name="employee_id" value="${leave.employeeId}" />
-										<input type="hidden" name="approved_status"
-											value="${leave.approvedStatus}" />
-										<button type="submit" class="btn btn-danger btn-sm">刪除</button>
+										action="${pageContext.request.contextPath}/AskForLeaveCon/deleteLeaveRecord"
+										method="post" class="d-inline">
+										<input type="hidden" name="leave_id" value="${leave.leaveId}" />
+										<input type="hidden" name="employee_id"
+											value="${leave.employeeId}" />
+										<button type="submit" class="btn btn-danger btn-sm"
+											onclick="return confirmDelete('${leave.approvedStatus}')">刪除</button>
 									</form>
+
 
 									<!-- 修改按鈕 -->
 									<form
-										action="${pageContext.request.contextPath}/AskForLeaveCon"
-										method="post" class="d-inline"
+										action="${pageContext.request.contextPath}/AskForLeaveCon/searchByLeaveId"
+										method="get" class="d-inline"
 										onsubmit="return handleAction(event, '修改', '${leave.approvedStatus}')">
-										<input type="hidden" name="action" value="searchByLeaveId" />
 										<input type="hidden" name="leave_id" value="${leave.leaveId}" />
-										<input type="hidden" name="approved_status"
-											value="${leave.approvedStatus}" />
 										<button type="submit" class="btn btn-warning btn-sm">修改</button>
 									</form>
+
 								</c:if> <c:if test="${leave.approvedStatus == '已批准'}">
 									<span class="text-muted">已批准不可編輯</span>
 								</c:if></td>
@@ -147,6 +148,15 @@
 
 
 	</div>
+	<script>
+		function confirmDelete(approvedStatus) {
+			if (approvedStatus === '已批准') {
+				alert('已批准的請假記錄不能刪除。');
+				return false;
+			}
+			return confirm('確定要刪除這筆請假記錄嗎？');
+		}
+	</script>
 </body>
 </html>
 
