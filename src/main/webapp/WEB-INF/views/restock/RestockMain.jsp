@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -21,9 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
-
+    <link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
     <style>
         .restock-form {
             background-color: #f8f9fa;
@@ -80,7 +79,7 @@
     </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp" %>
+<%@ include file="../body/body.jsp"%>
 <main>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -101,7 +100,7 @@
                                 <input type="hidden" id="restock_id" name="restock_id">
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-6 form-group">
                                 <label for="restock_date" class="form-label">進貨日期:</label>
@@ -165,23 +164,23 @@
         </div>
     </div>
 </main>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
+<script>
     $(document).ready(function() {
         console.log("Document ready");
         const contextPath = '${pageContext.request.contextPath}';
         console.log("Context path:", contextPath);
 
-        // 通用的 AJAX 請求函數
+        // 通用的 AJAX 请求函数
         function makeRequest(url, method = 'GET', data = null) {
             return $.ajax({
                 url: contextPath + url,
@@ -191,37 +190,36 @@
             });
         }
 
-        // 顯示錯誤消息
+        // 显示错误消息
         function showError(message) {
-            $('#errorMessage').text(message).show();
+            $('#errorMessage').html(message).show();
             $('#successMessage').hide();
         }
 
-        // 顯示成功消息
+        // 显示成功消息
         function showSuccess(message) {
             $('#successMessage').text(message).show();
             $('#errorMessage').hide();
         }
 
-        // 獲取最新進貨 ID
+        // 获取最新进货 ID
         function getLatestRestockId() {
             console.log("Getting latest restock ID");
-            makeRequest('/RestockServlet?action=getLatestId')
+            makeRequest('/restock/latestId')
                 .done(function(id) {
                     console.log("Latest restock ID received:", id);
                     $('#restock_id_display, #restock_id').val(id);
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error("Error getting latest restock ID:", textStatus, errorThrown);
-                    showError('獲取進貨編號時出錯');
+                    showError('取得進貨編號時出錯');
                 });
         }
 
-
-// 加載員工列表
+        // 加载员工列表
         function loadEmployees() {
             console.log("Loading employees");
-            makeRequest('/RestockServlet?action=getEmployees')
+            makeRequest('/restock/employees')
                 .done(function(employees) {
                     console.log("Employees loaded:", employees);
                     var select = $('#employee_id');
@@ -237,14 +235,14 @@
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error("Error loading employees:", textStatus, errorThrown);
-                    showError('加載員工列表時出錯');
+                    showError('載入員工列表時出錯');
                 });
         }
 
-// 加載商品類別
+        // 加载商品类别
         function loadProductCategories() {
             console.log("Loading product categories");
-            makeRequest('/RestockServlet?action=getProductCategories')
+            makeRequest('/restock/productCategories')
                 .done(function(categories) {
                     console.log("Product categories loaded:", categories);
                     var select = $('#product_category');
@@ -254,22 +252,22 @@
                     }
                     select.empty().append($('<option>').text('請選擇商品種類').attr('value', ''));
                     $.each(categories, function(i, category) {
-                        select.append($('<option>').text(category.productCategory).attr('value', category.productCategory));
+                        select.append($('<option>').text(category.categoryName).attr('value', category.categoryName));
                     });
                     console.log("Product category options added:", select.find('option').length);
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error("Error loading product categories:", textStatus, errorThrown);
-                    showError('加載商品類別時出錯');
+                    showError('載入商品種類時出錯');
                 });
         }
 
-        // 根據類別加載商品名稱
+        // 根据类别加载商品名称
         $('#product_category').change(function() {
             var category = $(this).val();
             console.log("Product category changed:", category);
             if (category) {
-                makeRequest('/RestockServlet?action=getProductNames', 'GET', { category: category })
+                makeRequest('/restock/productNames', 'GET', { category: category })
                     .done(function(products) {
                         console.log("Products loaded for category:", products);
                         var select = $('#product_name');
@@ -283,7 +281,7 @@
                     })
                     .fail(function(jqXHR, textStatus, errorThrown) {
                         console.error("Error loading products for category:", textStatus, errorThrown);
-                        showError('獲取商品名稱時出錯');
+                        showError('取得商品名稱時出錯');
                     });
             } else {
                 $('#product_name').empty().append($('<option>').text('請選擇商品名稱').attr('value', ''));
@@ -291,7 +289,7 @@
             }
         });
 
-        // 當選擇商品名稱時，填充商品 ID
+        // 当选择商品名称时，填充商品 ID
         $('#product_name').change(function() {
             var selectedOption = $(this).find('option:selected');
             var productId = selectedOption.data('productId');
@@ -299,7 +297,7 @@
             $('#product_id').val(productId);
         });
 
-        // 計算總金額
+        // 计算总金额
         function calculateTotal() {
             const quantity = parseFloat($('#number_of_restock').val()) || 0;
             const price = parseFloat($('#product_price').val()) || 0;
@@ -308,10 +306,10 @@
             $('#restock_total_price').val(total.toFixed(2));
         }
 
-        // 綁定計算總金額的事件
+        // 绑定计算总金额的事件
         $('#number_of_restock, #product_price').on('input', calculateTotal);
 
-     // 表單提交
+        // 表单提交
         $('#restockForm').submit(function(e) {
             e.preventDefault();
             console.log("Form submitted");
@@ -319,31 +317,20 @@
                 var formData = $(this).serialize();
                 console.log("Form data:", formData);
                 $.ajax({
-                    url: contextPath + '/RestockServlet',
+                    url: contextPath + '/restock/add',
                     type: 'POST',
                     data: formData,
                     dataType: 'json',
                     success: function(response) {
                         console.log("Form submission response:", response);
-                        if (response.success) {
+                        if (response.status === 'success') {
                             showSuccess('新進貨記錄已成功創建，編號為：' + response.restockId);
-                    
-                            // 使用 setTimeout 來確保警告框顯示後再刷新頁面
+                            // 使用 setTimeout 來確保消息顯示後再刷新頁面
                             setTimeout(function() {
                                 window.location.reload();
-                                alert('新進貨記錄已成功創建，編號為：' + response.restockId);
-                            }, 10000);
+                            }, 3000);
                         } else {
-                            // 檢查是否存在部分成功的情況
-                            if (response.message && response.message.includes("已成功創建")) {
-                                showSuccess(response.message);
-                                
-                                setTimeout(function() {
-                                    window.location.reload();
-                                }, 10000);
-                            } else {
-                                showError('處理進貨時發生錯誤: ' + (response.message || '未知錯誤'));
-                            }
+                            showError('處理進貨時發生錯誤: ' + (response.message || '未知錯誤'));
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -354,13 +341,7 @@
             }
         });
 
-        // 顯示錯誤消息
-
-        
-
-        // 顯示成功消息
-  
-        // 表單驗證
+        // 表单验证
         function validateForm() {
             var errorMessages = [];
             if (!$('#employee_id').val()) errorMessages.push("請選擇負責員工");
@@ -385,8 +366,9 @@
         loadProductCategories();
         $('#restock_date').val(new Date().toISOString().split('T')[0]);
 
-        // 結束 document ready 函數
-        });
-        </script>
-        </body>
-        </html>
+        // 结束 document ready 函数
+    });
+</script>
+<script src="<c:url value='/resources/js/main.js'/>"></script>
+</body>
+</html>

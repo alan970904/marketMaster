@@ -10,9 +10,15 @@ import com.MarketMaster.dao.restock.RestockDAO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.MarketMaster.bean.restock.RestockDetailViewBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@SuppressWarnings("unused")
+@Service
+@Transactional
 public class RestockService {
+
+    @Autowired
     private RestockDAO restockDAO;
     	
     public RestockService() {

@@ -38,24 +38,17 @@
     <%@ include file="../body/body.jsp"%>
     <main class="container mt-4">
         <h1 class="mb-4">會員資訊</h1>
-        <form action="${pageContext.request.contextPath}/CustomerController" method="get" class="mb-3">
-            <input type="hidden" name="action" value="getAll">
+        <form action="<c:url value='/customer/getAll'/>" method="get" class="mb-3">
             <input type="submit" value="查詢全部會員" class="btn btn-primary">
         </form>
-        <form action="${pageContext.request.contextPath}/CustomerController" method="get" class="mb-3">
-            <input type="hidden" name="action" value="get">
+        <form action="<c:url value='/customer/get'/>" method="get" class="mb-3">
             <div class="input-group">
                 <input type="text" name="customerTel" placeholder="輸入會員手機號碼" class="form-control">
                 <button type="submit" class="btn btn-outline-secondary">查詢</button>
             </div>
         </form>
-        <button id="add" class="btn btn-success">新增會員</button>
+        <a href="<c:url value='/customer/add'/>" class="btn btn-success">新增會員</a>
     </main>
-    <script>
-        document.getElementById('add').addEventListener('click', function() {
-            window.location.href = "${pageContext.request.contextPath}/employee/AddCustomer.jsp";
-        });
-    </script>
     <script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>
