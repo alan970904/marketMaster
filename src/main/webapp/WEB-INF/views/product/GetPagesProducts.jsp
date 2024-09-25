@@ -102,7 +102,7 @@
             var table = $('#productTable').DataTable({
                 "pageLength": 10,
                 "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Chinese.json"
+                    "url": "//cdn.datatables.net/plug-ins/2.1.7/i18n/zh-HANT.json"
                 },
                 "drawCallback": function(settings) {
                     applyInventoryStyles(this.api());
