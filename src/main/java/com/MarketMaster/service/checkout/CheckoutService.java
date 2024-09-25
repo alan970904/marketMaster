@@ -109,10 +109,10 @@ public class CheckoutService {
     @Transactional
     public boolean insertCheckoutWithDetails(CheckoutBean checkout, List<CheckoutDetailsBean> details) throws DataAccessException {
         try {
-            // 新增結帳記錄
+            // 插入結帳記錄
             checkoutDao.insert(checkout);
 
-            // 新增結帳明細
+            // 插入結帳明細
             for (CheckoutDetailsBean detail : details) {
                 detail.setCheckoutId(checkout.getCheckoutId());
                 checkoutDetailsDao.insert(detail);
@@ -121,7 +121,9 @@ public class CheckoutService {
             // 計算並更新總金額和紅利點數
             BigDecimal totalAmount = calculateTotalAmount(details);
             int bonusPoints = calculateBonusPoints(totalAmount);
-            checkoutDao.updateTotalAndBonus(checkout.getCheckoutId(), totalAmount, bonusPoints);
+            checkout.setCheckoutTotalPrice(totalAmount.intValue());
+            checkout.setBonusPoints(bonusPoints);
+            checkoutDao.update(checkout);
 
             return true;
         } catch (Exception e) {
@@ -140,7 +142,7 @@ public class CheckoutService {
     }
 
     // 計算總金額
-    public BigDecimal calculateTotalAmount(List<CheckoutDetailsBean> details) {
+    private BigDecimal calculateTotalAmount(List<CheckoutDetailsBean> details) {
         return details.stream()
                 .map(detail -> new BigDecimal(detail.getCheckoutPrice()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

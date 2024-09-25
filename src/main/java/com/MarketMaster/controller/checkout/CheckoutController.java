@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.MarketMaster.exception.DataAccessException;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class CheckoutController {
 
     @Autowired
     private CheckoutService checkoutService;
+    
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -79,54 +83,52 @@ public class CheckoutController {
     @PostMapping("/add")
     @ResponseBody
     public ResponseEntity<Map<String, String>> addCheckoutWithDetails(@RequestBody Map<String, Object> requestData) {
-        logger.info("開始處理新增結帳請求");
-        
+        logger.info("Received checkout data: " + requestData);
         try {
-            // 解析並驗證結帳基本資訊
-            CheckoutBean checkout = parseCheckoutData(requestData);
+            // 解析結帳基本信息
+            CheckoutBean checkout = new CheckoutBean();
+            checkout.setCheckoutId((String) requestData.get("checkoutId"));
+            checkout.setCustomerTel((String) requestData.get("customerTel"));
+            checkout.setEmployeeId((String) requestData.get("employeeId"));
+            checkout.setCheckoutTotalPrice(((Number) requestData.get("totalAmount")).intValue());
             
-            // 解析並驗證結帳明細
-            List<CheckoutDetailsBean> detailsList = parseCheckoutDetails(requestData);
-            
-            // 驗證結帳資料的完整性
-            validateCheckoutData(checkout, detailsList);
-            
-            // 執行結帳新增操作
-            boolean success = checkoutService.insertCheckoutWithDetails(checkout, detailsList);
-            
-            // 根據操作結果返回響應
-            if (success) {
-                logger.info("結帳記錄新增成功，ID: " + checkout.getCheckoutId());
-                return ResponseEntity.ok(Map.of(
-                    "status", "success",
-                    "message", "結帳記錄新增成功",
-                    "checkoutId", checkout.getCheckoutId()
-                ));
-            } else {
-                logger.warning("結帳記錄新增失敗");
-                return ResponseEntity.badRequest().body(Map.of(
-                    "status", "error",
-                    "message", "結帳記錄新增失敗，請檢查輸入資料並重試"
-                ));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            checkout.setCheckoutDate(dateFormat.parse((String) requestData.get("checkoutDate")));
+            checkout.setBonusPoints(((Number) requestData.get("bonusPoints")).intValue());
+            checkout.setPointsDueDate(dateFormat.parse((String) requestData.get("pointsDueDate")));
+
+            logger.info("Parsed checkout data: " + checkout);
+
+            // 解析結帳明細
+            List<CheckoutDetailsBean> details = new ArrayList<>();
+            List<Map<String, Object>> detailsData = (List<Map<String, Object>>) requestData.get("details");
+            for (Map<String, Object> detail : detailsData) {
+                CheckoutDetailsBean checkoutDetail = new CheckoutDetailsBean();
+                checkoutDetail.setCheckoutId(checkout.getCheckoutId());
+                checkoutDetail.setProductId((String) detail.get("productId"));
+                checkoutDetail.setNumberOfCheckout(((Number) detail.get("quantity")).intValue());
+                checkoutDetail.setProductPrice(((Number) detail.get("price")).intValue());
+                checkoutDetail.setCheckoutPrice(((Number) detail.get("subtotal")).intValue());
+                details.add(checkoutDetail);
             }
-        } catch (InvalidCheckoutDataException e) {
-            logger.severe("結帳資料驗證失敗: " + e.getMessage());
-            return ResponseEntity.badRequest().body(Map.of(
-                "status", "error",
-                "message", "結帳資料無效: " + e.getMessage()
-            ));
-        } catch (DataAccessException e) {
-            logger.severe("資料存取錯誤: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "status", "error",
-                "message", "新增結帳記錄時發生資料庫錯誤，請稍後再試"
-            ));
+
+            logger.info("Parsed checkout details: " + details);
+
+            // 執行新增操作
+            boolean success = checkoutService.insertCheckoutWithDetails(checkout, details);
+
+            if (success) {
+                logger.info("Checkout record added successfully");
+                return ResponseEntity.ok(Map.of("status", "success", "message", "結帳記錄新增成功"));
+            } else {
+                logger.warning("Failed to add checkout record");
+                return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "結帳記錄新增失敗"));
+            }
         } catch (Exception e) {
-            logger.severe("處理結帳請求時發生未預期的錯誤: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "status", "error",
-                "message", "處理請求時發生未知錯誤，請聯繫系統管理員"
-            ));
+            logger.severe("Error processing checkout request: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("status", "error", "message", "處理請求時發生錯誤：" + e.getMessage()));
         }
     }
 
@@ -144,16 +146,24 @@ public class CheckoutController {
 
     @PostMapping("/update")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> updateCheckout(@ModelAttribute CheckoutBean checkout) {
+    public ResponseEntity<Map<String, String>> updateCheckout(@RequestBody Map<String, String> checkoutData) {
         try {
+            CheckoutBean checkout = new CheckoutBean();
+            checkout.setCheckoutId(checkoutData.get("checkoutId"));
+            checkout.setCustomerTel(checkoutData.get("customerTel"));
+            checkout.setEmployeeId(checkoutData.get("employeeId"));
+            checkout.setCheckoutTotalPrice(Integer.parseInt(checkoutData.get("checkoutTotalPrice")));
+            checkout.setCheckoutDate(dateFormat.parse(checkoutData.get("checkoutDate")));
+            checkout.setBonusPoints(Integer.parseInt(checkoutData.get("bonusPoints")));
+            checkout.setPointsDueDate(dateFormat.parse(checkoutData.get("pointsDueDate")));
+
             boolean success = checkoutService.updateCheckout(checkout);
             if (success) {
                 return ResponseEntity.ok(Map.of("status", "success", "message", "更新成功"));
             } else {
                 return ResponseEntity.badRequest().body(Map.of("status", "error", "message", "更新失敗"));
             }
-        } catch (DataAccessException e) {
-            logger.severe("更新結帳記錄失敗: " + e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("status", "error", "message", "更新時發生錯誤: " + e.getMessage()));
         }

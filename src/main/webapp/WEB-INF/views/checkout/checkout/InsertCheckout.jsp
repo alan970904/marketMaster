@@ -538,16 +538,11 @@ select.form-control {
             var products = [];
             $('#productList p').each(function() {
                 var $product = $(this);
-                var productId = $product.data('product-id');
-                var quantity = parseInt($product.find('.quantity').text());
-                var price = parseFloat($product.find('.price').text());
-                var subtotal = parseFloat($product.find('.subtotal').text());
-                
                 products.push({
-                    productId: productId,
-                    quantity: quantity,
-                    price: price,
-                    subtotal: subtotal
+                    productId: $product.data('product-id'),
+                    quantity: parseInt($product.find('.quantity').text()),
+                    price: parseFloat($product.find('.price').text()),
+                    subtotal: parseFloat($product.find('.subtotal').text())
                 });
             });
 
@@ -556,15 +551,22 @@ select.form-control {
                 return;
             }
 
-            var formData = new FormData(this);
-            formData.append('details', JSON.stringify(products));
+            var formData = {
+                checkoutId: $('#checkoutId').val(),
+                customerTel: $('#customerTel1').val() + $('#customerTel2').val(),
+                employeeId: $('#employeeId').val(),
+                totalAmount: parseFloat($('#totalAmount').val()),
+                checkoutDate: $('#checkoutDate').val(),
+                bonusPoints: parseInt($('#bonusPoints').val()),
+                pointsDueDate: $('#pointsDueDate').val(),
+                details: products
+            };
 
             $.ajax({
                 url: '${pageContext.request.contextPath}/checkout/add',
                 type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('結帳記錄新增成功');

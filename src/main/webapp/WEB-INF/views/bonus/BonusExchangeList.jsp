@@ -62,7 +62,7 @@
     </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../body/body.jsp"%>
     <main class="container mt-4">
         <h1 class="mb-4 text-center">可兌換商品列表</h1>
         <!-- 新增會員累積點數顯示 -->

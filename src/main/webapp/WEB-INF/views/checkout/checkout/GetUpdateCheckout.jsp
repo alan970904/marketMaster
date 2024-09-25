@@ -78,14 +78,14 @@
     </main>
     <script>
     $(document).ready(function() {
-        var originalCustomerTel = "${checkout.customerTel}";
-        var totalPrice = parseFloat($("#checkoutTotalPrice").val());
+    	 var originalCustomerTel = "${checkout.customerTel}";
+    	 var totalPrice = parseFloat($("#checkoutTotalPrice").val());
 
      	// 初始化時分割並填充電話號碼
         if (originalCustomerTel) {
-            $("#customerTel1").val(originalCustomerTel.substring(0, 4));
-            $("#customerTel2").val(originalCustomerTel.substring(4));
-        }
+        	$("#customerTel1").val(originalCustomerTel.substring(0, 4));
+       	 	$("#customerTel2").val(originalCustomerTel.substring(4));
+    	}
 
         function updateBonusAndDueDate() {
             var customerTel = $("#customerTel1").val() + $("#customerTel2").val();
@@ -108,25 +108,28 @@
 
         // 顧客手機號碼自動跳轉
         $("#customerTel1").on('input', function() {
-            if (this.value.length === 4) {
-                $("#customerTel2").focus();
-            }
-        });
+        	if (this.value.length === 4) {
+            	$("#customerTel2").focus();
+        	}
+    	});
 
         $("#updateForm").submit(function(e) {
             e.preventDefault();
-            var formData = $(this).serializeArray();
-            
-            // 合併電話號碼
-            var tel1 = $("#customerTel1").val();
-            var tel2 = $("#customerTel2").val();
-            formData.push({name: "customerTel", value: tel1 + tel2});
+            var formData = {
+                checkoutId: $("#checkoutId").val(),
+                customerTel: $("#customerTel1").val() + $("#customerTel2").val(),
+                employeeId: $("#employeeId").val(),
+                checkoutTotalPrice: $("#checkoutTotalPrice").val(),
+                checkoutDate: $("#checkoutDate").val(),
+                bonusPoints: $("#bonusPoints").val(),
+                pointsDueDate: $("#pointsDueDate").val()
+            };
             
             $.ajax({
-                url: $(this).attr('action'),
+                url: '${pageContext.request.contextPath}/checkout/update',
                 type: 'POST',
-                data: formData,
-                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('更新成功');

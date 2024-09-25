@@ -27,6 +27,9 @@
 
 	<!-- Custom CSS -->
 	<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+	
+	<!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 	<!-- DataTables CSS -->
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
@@ -34,9 +37,7 @@
 	<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 	<style>
-		.dataTables_length {
-			display: none;
-		}
+		.dataTables_length select { padding-right: 30px !important; background-position: right 0.5rem center !important; }
 	</style>
 </head>
 

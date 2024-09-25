@@ -32,10 +32,8 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <style>
-.dataTables_length{
-display:none;
-}
-</style>
+		.dataTables_length select { padding-right: 30px !important; background-position: right 0.5rem center !important; }
+	</style>
 </head>
 <body>
     <%@ include file="../../body/body.jsp"%>

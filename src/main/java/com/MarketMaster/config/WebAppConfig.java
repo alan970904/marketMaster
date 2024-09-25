@@ -1,10 +1,14 @@
 package com.MarketMaster.config;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -56,6 +60,11 @@ public class WebAppConfig implements WebMvcConfigurer {
         registry.addInterceptor(new WebRequestHandlerInterceptorAdapter(openSessionInViewInterceptor()))
                 .addPathPatterns("/**")
                 .excludePathPatterns("/resources/**");
+    }
+    
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(new MappingJackson2HttpMessageConverter());
     }
     
 //    @Bean
