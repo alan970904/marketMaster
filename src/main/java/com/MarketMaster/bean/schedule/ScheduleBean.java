@@ -40,8 +40,6 @@ public class ScheduleBean implements Serializable {
 		super();
 	}
 
-	
-
 	public ScheduleBean(String employeeId, EmpBean empBean, Date jobDate, Time startTime, Time endTime) {
 		super();
 		this.employeeId = employeeId;
@@ -50,8 +48,6 @@ public class ScheduleBean implements Serializable {
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
-
-
 
 	public String getEmployeeId() {
 		return employeeId;
@@ -92,4 +88,11 @@ public class ScheduleBean implements Serializable {
 	public void setEndTime(Time endTime) {
 		this.endTime = endTime;
 	}
+
+	@Override
+	public String toString() {
+		return "ScheduleBean [employeeId=" + employeeId + ", jobDate=" + jobDate + ", startTime=" + startTime
+				+ ", endTime=" + endTime + "]";
+	}
+
 }
