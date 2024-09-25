@@ -3,9 +3,12 @@ package com.MarketMaster.bean.product;
 import jakarta.persistence.*;
 import java.io.Serializable;
 
+import org.springframework.stereotype.Component;
+
 
 @Entity
 @Table(name = "products")
+@Component
 public class ProductBean implements Serializable {
     private static final long serialVersionUID = 1L;
 

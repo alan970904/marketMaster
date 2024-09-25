@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +30,9 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
  rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -43,7 +47,6 @@ href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script
  src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
  
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 <meta charset="UTF-8">
 <title>商品資料</title>
 <style>
@@ -76,7 +79,7 @@ tr td {
 </style>
 </head>
 <body class="body">
-<%@ include file="/body/body.jsp" %>
+<%@ include file="../body/body.jsp" %>
 <main>
 <div align="center">
     <h2>成功新增一筆商品資料</h2>
@@ -95,9 +98,10 @@ tr td {
 <tr><td>下架數量:<td><input type="text" disabled value=${product.numberOfRemove }>
 </table>
 <p>
-<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/productHomepage'">
     
 </div>
 </main>
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </body>
 </html>
