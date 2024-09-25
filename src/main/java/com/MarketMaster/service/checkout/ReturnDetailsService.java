@@ -1,139 +1,65 @@
 package com.MarketMaster.service.checkout;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import com.MarketMaster.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.MarketMaster.bean.checkout.ReturnDetailsBean;
 import com.MarketMaster.dao.checkout.ReturnDetailsDao;
+import com.MarketMaster.exception.DataAccessException;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Service
+@Transactional
 public class ReturnDetailsService {
-    private static final Logger logger = Logger.getLogger(ReturnDetailsService.class.getName());
-    private ReturnDetailsDao returnDetailsDao = new ReturnDetailsDao();
-    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-    public ReturnDetailsBean getReturnDetails(String returnId, String checkoutId, String productId) {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getOne(session, returnId, checkoutId, productId);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting return details", e);
-            return null;
-        }
+    @Autowired
+    private ReturnDetailsDao returnDetailsDao;
+
+    public ReturnDetailsBean getReturnDetails(String returnId, String checkoutId, String productId) throws DataAccessException {
+        return returnDetailsDao.getOne(returnId, checkoutId, productId);
     }
 
-    public List<ReturnDetailsBean> getReturnDetailsByReturnId(String returnId) {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getPart(session, returnId);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting return details by return ID", e);
-            return null;
-        }
+    public List<ReturnDetailsBean> getReturnDetailsByReturnId(String returnId) throws DataAccessException {
+        return returnDetailsDao.getPart(returnId);
     }
 
-    public List<ReturnDetailsBean> getAllReturnDetails() {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getAll(session);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting all return details", e);
-            return null;
-        }
+    public List<ReturnDetailsBean> getAllReturnDetails() throws DataAccessException {
+        return returnDetailsDao.getAll();
     }
 
-    public void addReturnDetails(ReturnDetailsBean returnDetails) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            returnDetailsDao.insert(session, returnDetails);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.log(Level.SEVERE, "Error adding return details", e);
-        }
+    public void addReturnDetails(ReturnDetailsBean returnDetails) throws DataAccessException {
+        returnDetailsDao.insert(returnDetails);
     }
 
-    public void updateReturnDetails(ReturnDetailsBean returnDetails) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            returnDetailsDao.update(session, returnDetails);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.log(Level.SEVERE, "Error updating return details", e);
-        }
+    public void updateReturnDetails(ReturnDetailsBean returnDetails) throws DataAccessException {
+        returnDetailsDao.update(returnDetails);
     }
 
-    public void deleteReturnDetails(String returnId, String checkoutId, String productId) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            returnDetailsDao.delete(session, returnId, checkoutId, productId);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.log(Level.SEVERE, "Error deleting return details", e);
-        }
+    public void deleteReturnDetails(String returnId, String checkoutId, String productId) throws DataAccessException {
+        returnDetailsDao.delete(returnId, checkoutId, productId);
     }
 
-    public List<ReturnDetailsBean> searchReturnDetailsByProductId(String productId) {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.searchByProductId(session, productId);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error searching return details by product ID", e);
-            return null;
-        }
+    public List<ReturnDetailsBean> searchReturnDetailsByProductId(String productId) throws DataAccessException {
+        return returnDetailsDao.searchByProductId(productId);
     }
 
-    public List<Map<String, Object>> getReturnComparisonReport() {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getReturnComparisonReport(session);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting return comparison report", e);
-            return null;
-        }
+    public List<Map<String, Object>> getReturnComparisonReport() throws DataAccessException {
+        return returnDetailsDao.getReturnComparisonReport();
     }
 
-    public List<Map<String, Object>> getReturnStatistics(Date startDate, Date endDate) {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getReturnStatistics(session, startDate, endDate);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting return statistics", e);
-            return null;
-        }
+    public List<Map<String, Object>> getReturnStatistics(Date startDate, Date endDate) throws DataAccessException {
+        return returnDetailsDao.getReturnStatistics(startDate, endDate);
     }
 
-    public List<Map<String, Object>> getMostCommonReturnReasons(int limit) {
-        try (Session session = sessionFactory.openSession()) {
-            return returnDetailsDao.getMostCommonReturnReasons(session, limit);
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, "Error getting most common return reasons", e);
-            return null;
-        }
+    public List<Map<String, Object>> getMostCommonReturnReasons(int limit) throws DataAccessException {
+        return returnDetailsDao.getMostCommonReturnReasons(limit);
     }
 
-    public void updateInventoryAfterReturn(String productId, int returnQuantity) {
-        Transaction transaction = null;
-        try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            returnDetailsDao.updateInventoryAfterReturn(session, productId, returnQuantity);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.log(Level.SEVERE, "Error updating inventory after return", e);
-        }
+    public void updateInventoryAfterReturn(String productId, int returnQuantity) throws DataAccessException {
+        returnDetailsDao.updateInventoryAfterReturn(productId, returnQuantity);
     }
 }

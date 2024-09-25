@@ -76,7 +76,7 @@ public class CheckoutServlet extends HttpServlet {
 				getUpdateCheckout(request, response);
 				break;
 			case "insert":
-				insertCheckout(request, response);
+//				insertCheckout(request, response);
 				break;
 			case "update":
 				updateCheckout(request, response);
@@ -159,23 +159,23 @@ public class CheckoutServlet extends HttpServlet {
 	}
 
 	// 插入新的結帳記錄
-	private void insertCheckout(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		CheckoutBean checkout = createCheckoutFromRequest(request);
-		List<CheckoutDetailsBean> details = createCheckoutDetailsFromRequest(request);
-		try {
-			boolean success = checkoutService.addCheckout(checkout);
-			if (success) {
-				request.setAttribute("message", "結帳記錄新增成功");
-			} else {
-				request.setAttribute("message", "結帳記錄新增失敗");
-			}
-		} catch (Exception e) {
-			request.setAttribute("message", "新增結帳記錄時發生錯誤：" + e.getMessage());
-		}
-		request.setAttribute("checkout", checkout);
-		request.getRequestDispatcher("/checkout/checkout/InsertCheckout.jsp").forward(request, response);
-	}
+//	private void insertCheckout(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		CheckoutBean checkout = createCheckoutFromRequest(request);
+//		List<CheckoutDetailsBean> details = createCheckoutDetailsFromRequest(request);
+//		try {
+//			boolean success = checkoutService.addCheckout(checkout);
+//			if (success) {
+//				request.setAttribute("message", "結帳記錄新增成功");
+//			} else {
+//				request.setAttribute("message", "結帳記錄新增失敗");
+//			}
+//		} catch (Exception e) {
+//			request.setAttribute("message", "新增結帳記錄時發生錯誤：" + e.getMessage());
+//		}
+//		request.setAttribute("checkout", checkout);
+//		request.getRequestDispatcher("/checkout/checkout/InsertCheckout.jsp").forward(request, response);
+//	}
 
 	// 新增方法來從請求中創建 CheckoutDetailsBean 列表
 	private List<CheckoutDetailsBean> createCheckoutDetailsFromRequest(HttpServletRequest request) {

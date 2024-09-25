@@ -9,8 +9,6 @@
     <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <!-- Bootstrap CSS -->
 <link
@@ -32,7 +30,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -47,10 +45,10 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
         <h1>產品搜索結果</h1>
         <table border="1">
@@ -70,20 +68,16 @@
                     <td>${detail.productPrice}</td>
                     <td>${detail.checkoutPrice}</td>
                     <td>
-                        <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=getOne&checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="action-button info">詳情</a>
-                        <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=getUpdate&checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="action-button edit">修改</a>
-                        <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=delete&checkoutId=${detail.checkoutId}&productId=${detail.productId}" onclick="return confirm('確定要刪除嗎？')" class="action-button delete">刪除</a>
+                        <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/details?checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
+                        <button class="btn btn-primary btn-sm update-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">修改</button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">刪除</button>
                     </td>
                 </tr>
             </c:forEach>
         </table>
         <br>
-        <button id="back" class="action-button">返回</button>
+        <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
    </main>
-    <script>
-        document.getElementById('back').addEventListener('click', function() {
-            window.history.back();
-        });
-    </script>
+  
 </body>
 </html>

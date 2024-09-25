@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+//import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.MarketMaster.controller.employee.AuthenticationInterceptor;
 
@@ -56,4 +57,12 @@ public class WebAppConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/resources/**");
     }
+    
+//    @Bean
+//    public CommonsMultipartResolver multipartResolver() {
+//        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+//        resolver.setDefaultEncoding("UTF-8");
+//        resolver.setMaxUploadSize(5242880); // 5MB
+//        return resolver;
+//    }
 }

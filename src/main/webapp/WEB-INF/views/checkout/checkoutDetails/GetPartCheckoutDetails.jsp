@@ -8,7 +8,6 @@
     <title>部分結帳明細</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +22,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+    <link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -39,7 +38,7 @@ display:none;
 </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
     <div >
         <h1>部分結帳明細</h1>
@@ -67,7 +66,7 @@ display:none;
                             <input type="text" value="${detail.numberOfCheckout * detail.productPrice}" readonly class="form-control-plaintext subtotal">
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=getOne&checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
+                            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/details?checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
                             <button class="btn btn-primary btn-sm update-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">修改</button>
                             <button class="btn btn-danger btn-sm delete-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">刪除</button>
                         </td>
@@ -80,8 +79,8 @@ display:none;
             <h4>紅利點數: <span id="bonusPoints">0</span></h4>
         </div>
         <div class="mt-3">
-            <button id="back" class="btn btn-secondary">返回主頁</button>
-            <a href="${pageContext.request.contextPath}/CheckoutServlet?action=getAll" class="btn btn-info">所有結帳紀錄</a>
+            <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
+            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/list" class="btn btn-info">所有結帳紀錄</a>
         </div>
     </div>
     </main>
@@ -107,10 +106,9 @@ display:none;
 
             // 更新資料庫中的總金額和紅利點數
             $.ajax({
-                url: '${pageContext.request.contextPath}/CheckoutServlet',
+            	url: '${pageContext.request.contextPath}/checkout/updateTotalAndBonus',
                 type: 'POST',
                 data: {
-                    action: 'updateTotalAndBonus',
                     checkoutId: '${param.checkoutId}',
                     totalAmount: total,
                     bonusPoints: bonusPoints
@@ -140,10 +138,9 @@ display:none;
         var checkoutPrice = Math.round(quantity * productPrice); // 使用 Math.round() 進行四捨五入
 
         $.ajax({
-            url: '${pageContext.request.contextPath}/CheckoutDetailsServlet',
+        	url: '${pageContext.request.contextPath}/checkout/checkoutDetails/update',
             type: 'POST',
             data: {
-                action: 'update',
                 checkoutId: checkoutId,
                 productId: productId,
                 numberOfCheckout: quantity,
@@ -172,10 +169,9 @@ display:none;
                 var productId = $(this).data('product-id');
                 var row = $(this).closest('tr');
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/CheckoutDetailsServlet',
+                	url: '${pageContext.request.contextPath}/checkout/checkoutDetails/delete',
                     type: 'POST',
                     data: {
-                        action: 'delete',
                         checkoutId: checkoutId,
                         productId: productId
                     },
@@ -188,9 +184,7 @@ display:none;
             }
         });
 
-        $('#back').click(function() {
-            window.location.href = "${pageContext.request.contextPath}/checkout/checkout/index.jsp";
-        });
+        
 
         // 頁面加載時計算初始總金額和紅利點數
         updateTotalAndBonus();

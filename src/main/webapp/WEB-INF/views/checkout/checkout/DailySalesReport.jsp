@@ -31,7 +31,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -46,10 +46,10 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
         <h1>每日銷售報告</h1>
         <table border="1">

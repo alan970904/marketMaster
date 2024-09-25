@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.List, com.MarketMaster.bean.employee.EmpBean,com.MarketMaster.bean.product.ProductBean, com.MarketMaster.bean.checkout.CheckoutBean,com.MarketMaster.bean.checkout.CheckoutDetailsBean" %>
-<% if (request.getAttribute("employees") == null) {
-    response.sendRedirect(request.getContextPath() + "/CheckoutServlet");
-    return;}%>
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -36,7 +34,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -51,7 +49,7 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 <style>
 main{
 /* 全局样式 */
@@ -272,7 +270,7 @@ select.form-control {
 </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
    
         <section id="checkout" class="section active">
@@ -281,7 +279,7 @@ select.form-control {
             </c:if>
             <div class="card">
                 <h2>新增結帳記錄</h2>
-                <form id="checkoutForm" action="${pageContext.request.contextPath}/CheckoutServlet" method="post" onsubmit="return validateForm()">
+                <form id="checkoutForm" action="${pageContext.request.contextPath}/checkout/add" method="post" onsubmit="return validateForm()">
                     <input type="hidden" name="action" value="insert">
                     <div class="form-grid">
                         <div class="form-group">
@@ -371,21 +369,18 @@ select.form-control {
     <script>
     $(document).ready(function() {
         // 自動生成結帳編號
-        $.get("${pageContext.request.contextPath}/CheckoutServlet?action=getNextCheckoutId", function(data) {
+        $.get("${pageContext.request.contextPath}/checkout/nextId", function(data) {
             $("#checkoutId").val(data);
         });
       
         // 產品類別變更時獲取對應的商品
-        $('#product_category').change(function() {
+         $('#product_category').change(function() {
             var category = $(this).val();
             if (category) {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/CheckoutServlet',
+                    url: '${pageContext.request.contextPath}/checkout/products',
                     type: 'GET',
-                    data: {
-                        action: 'getProductNames',
-                        category: category
-                    },
+                    data: { category: category },
                     dataType: 'json',
                     success: function(data) {
                         var productSelect = $('#product_name');
@@ -410,6 +405,28 @@ select.form-control {
                 $('#product_price').val('');
             }
         });
+        
+      // 如果沒有員工數據，則通過 AJAX 獲取
+         if ($('#employeeId option').length <= 1) {
+             $.ajax({
+                 url: '${pageContext.request.contextPath}/checkout/employees',
+                 type: 'GET',
+                 dataType: 'json',
+                 success: function(data) {
+                     var employeeSelect = $('#employeeId');
+                     $.each(data, function(i, emp) {
+                         employeeSelect.append($('<option>')
+                             .text(emp.employeeId + ' - ' + emp.employeeName)
+                             .attr('value', emp.employeeId));
+                     });
+                 },
+                 error: function(jqXHR, textStatus, errorThrown) {
+                     console.error('獲取員工資料失敗:', textStatus, errorThrown);
+                     alert('獲取員工資料時出錯，請稍後再試');
+                 }
+             });
+         }
+        
          
         // 商品名稱變更時更新商品編號和價格
         $('#product_name').change(function() {
@@ -534,35 +551,24 @@ select.form-control {
                 });
             });
 
-            console.log('Products to be sent:', products); // 添加這行來調試
-
             if (products.length === 0) {
                 alert('請至少添加一件商品');
                 return;
             }
 
-            var formData = {
-                checkoutId: $('#checkoutId').val(),
-                customerTel: $('#customerTel1').val() + $('#customerTel2').val(),
-                employeeId: $('#employeeId').val(),
-                totalAmount: $('#totalAmount').val(),
-                checkoutDate: $('#checkoutDate').val(),
-                bonusPoints: $('#bonusPoints').val(),
-                pointsDueDate: $('#pointsDueDate').val(),
-                products: JSON.stringify(products)
-            };
-
-            console.log('Form data to be sent:', formData); // 添加這行來調試
+            var formData = new FormData(this);
+            formData.append('details', JSON.stringify(products));
 
             $.ajax({
-                url: '${pageContext.request.contextPath}/CheckoutServlet?action=insertCheckoutWithDetails',
+                url: '${pageContext.request.contextPath}/checkout/add',
                 type: 'POST',
                 data: formData,
+                processData: false,
+                contentType: false,
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('結帳記錄新增成功');
-                        // 在用戶點擊確定後跳轉到所有結帳紀錄頁面
-                        window.location.href = "${pageContext.request.contextPath}/CheckoutServlet?action=getAll";
+                        window.location.href = "${pageContext.request.contextPath}/checkout/list";
                     } else {
                         alert('結帳記錄新增失敗: ' + response.message);
                     }
@@ -604,7 +610,7 @@ select.form-control {
     }
 
     document.getElementById('back').addEventListener('click', function() {
-        window.location.href = "${pageContext.request.contextPath}/checkout/checkout/index.jsp";
+        window.location.href = "${pageContext.request.contextPath}/checkout/checkoutMain";
     });
     </script>
 </body>
