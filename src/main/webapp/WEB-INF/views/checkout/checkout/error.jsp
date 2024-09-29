@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
-<%@ include file="/body/body.jsp"%>
+<%@ include file="../../body/body.jsp"%>
 <main>
     <h1>發生錯誤</h1>
     <p>${errorMessage}</p>

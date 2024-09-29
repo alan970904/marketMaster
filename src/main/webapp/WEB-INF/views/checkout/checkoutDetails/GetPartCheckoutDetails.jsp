@@ -39,7 +39,7 @@ display:none;
 </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
     <div >
         <h1>部分結帳明細</h1>

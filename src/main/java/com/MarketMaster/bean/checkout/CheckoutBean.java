@@ -1,5 +1,6 @@
 package com.MarketMaster.bean.checkout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,8 @@ import java.util.List;
 import jakarta.persistence.*;
 
 @Entity @Table(name = "checkout")
-public class CheckoutBean {
+public class CheckoutBean implements Serializable  {
+	private static final long serialVersionUID = 1L;
 	
 	@Id @Column(name = "CHECKOUT_ID")
 	private String checkoutId;

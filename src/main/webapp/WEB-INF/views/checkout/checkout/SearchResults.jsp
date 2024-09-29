@@ -119,7 +119,7 @@ main{
 
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
      <main>
         <h1>搜尋結果</h1>
         <div class="search-info">

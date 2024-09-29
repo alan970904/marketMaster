@@ -1,63 +1,69 @@
 package com.MarketMaster.service.checkout;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.MarketMaster.bean.checkout.ReturnProductBean;
 import com.MarketMaster.bean.checkout.ReturnDetailsBean;
 import com.MarketMaster.dao.checkout.ReturnProductDao;
+import com.MarketMaster.exception.DataAccessException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+@Service
+@Transactional
 public class ReturnProductService {
-    private static final Logger logger = Logger.getLogger(ReturnProductService.class.getName());
-    private ReturnProductDao returnProductDao = new ReturnProductDao();
 
-    public ReturnProductBean getReturnProduct(String returnId) {
+    @Autowired
+    private ReturnProductDao returnProductDao;
+
+    public ReturnProductBean getReturnProduct(String returnId) throws DataAccessException {
         return returnProductDao.getOne(returnId);
     }
 
-    public List<ReturnProductBean> getAllReturnProducts() {
+    public List<ReturnProductBean> getAllReturnProducts() throws DataAccessException {
         return returnProductDao.getAll();
     }
 
-    public void addReturnProduct(ReturnProductBean returnProduct) {
+    public void addReturnProduct(ReturnProductBean returnProduct) throws DataAccessException {
         returnProductDao.insert(returnProduct);
     }
 
-    public boolean updateReturnProduct(ReturnProductBean returnProduct) {
+    public boolean updateReturnProduct(ReturnProductBean returnProduct) throws DataAccessException {
         return returnProductDao.update(returnProduct);
     }
 
-    public void deleteReturnProduct(String returnId) {
+    public void deleteReturnProduct(String returnId) throws DataAccessException {
         returnProductDao.delete(returnId);
     }
 
-    public List<ReturnProductBean> searchReturnProductsByEmployeeId(String employeeId) {
+    public List<ReturnProductBean> searchReturnProductsByEmployeeId(String employeeId) throws DataAccessException {
         return returnProductDao.searchByEmployeeId(employeeId);
     }
 
-    public void updateReturnTotalPrice(String returnId) {
+    public void updateReturnTotalPrice(String returnId) throws DataAccessException {
         returnProductDao.updateTotalPrice(returnId);
     }
 
-    public List<Map<String, Object>> getDailyReturnsReport() {
+    public List<Map<String, Object>> getDailyReturnsReport() throws DataAccessException {
         return returnProductDao.getDailyReturnsReport();
     }
 
-    public List<Map<String, Object>> getReturnSummary() {
+    public List<Map<String, Object>> getReturnSummary() throws DataAccessException {
         return returnProductDao.getReturnSummary();
     }
 
-    public String getLastReturnId() {
+    public String getLastReturnId() throws DataAccessException {
         return returnProductDao.getLastReturnId();
     }
 
-    public boolean insertReturnWithDetails(ReturnProductBean returnProduct, List<ReturnDetailsBean> details) {
+    public boolean insertReturnWithDetails(ReturnProductBean returnProduct, List<ReturnDetailsBean> details) throws DataAccessException {
         return returnProductDao.insertReturnWithDetails(returnProduct, details);
     }
 
-    public void deleteReturnAndDetails(String returnId) {
+    public void deleteReturnAndDetails(String returnId) throws DataAccessException {
         returnProductDao.deleteReturnAndDetails(returnId);
     }
 }

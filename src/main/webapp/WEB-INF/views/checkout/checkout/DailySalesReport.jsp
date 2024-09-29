@@ -49,7 +49,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
         <h1>每日銷售報告</h1>
         <table border="1">

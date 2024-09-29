@@ -34,7 +34,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main class="container mt-5">
         <h1 class="mb-4">結帳明細詳情</h1>
         <div class="card">

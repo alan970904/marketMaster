@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
         <h1>取消退貨</h1>
         <form action="${pageContext.request.contextPath}/CheckoutDetailsServlet" method="post">

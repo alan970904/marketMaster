@@ -272,7 +272,7 @@ select.form-control {
 </style>
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../../body/body.jsp"%>
     <main>
    
         <section id="checkout" class="section active">
