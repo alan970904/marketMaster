@@ -8,7 +8,6 @@
     <title>修改結帳明細</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +22,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+    <link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -37,7 +36,7 @@
     <%@ include file="../../body/body.jsp"%>
     <main class="container mt-5">
         <h1 class="mb-4">修改結帳明細</h1>
-        <form id="updateForm" action="${pageContext.request.contextPath}/CheckoutDetailsServlet" method="post" class="card">
+        <form id="updateForm" action="${pageContext.request.contextPath}/checkout/checkoutDetails/update" method="post" class="card">
             <div class="card-body">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="checkoutId" value="${checkoutDetails.checkoutId}">
@@ -87,7 +86,12 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    window.location.href = "${pageContext.request.contextPath}/CheckoutServlet?action=getAll";
+                    if (response.status === 'success') {
+                        alert('更新成功');
+                        window.location.href = "${pageContext.request.contextPath}/checkout/checkoutDetails/list";
+                    } else {
+                        alert('更新失敗: ' + response.message);
+                    }
                 },
                 error: function(xhr, status, error) {
                     alert('更新失敗: ' + error);

@@ -1,103 +1,125 @@
 package com.MarketMaster.dao.checkout;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.MarketMaster.bean.checkout.CheckoutBean;
 import com.MarketMaster.bean.checkout.CheckoutDetailsBean;
-import com.MarketMaster.exception.DataAccessException;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.math.BigDecimal;
 
 @Repository
 public class CheckoutDetailsDao {
-	
-	@Autowired
+    private static final Logger logger = Logger.getLogger(CheckoutDetailsDao.class.getName());
+
+    @Autowired
     private SessionFactory sessionFactory;
 
-    private Session getSession() {
+    private Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 
 	// 獲取單一結帳明細
-    public CheckoutDetailsBean getOne(String checkoutId, String productId) throws DataAccessException {
+    @Transactional(readOnly = true)
+    public CheckoutDetailsBean getOne(String checkoutId, String productId) {
         try {
-            return getSession().get(CheckoutDetailsBean.class,
+            return getCurrentSession().get(CheckoutDetailsBean.class,
                     new CheckoutDetailsBean.CheckoutDetailsId(checkoutId, productId));
         } catch (Exception e) {
-            throw new DataAccessException("獲取單一結帳明細失敗", e);
+            logger.log(Level.SEVERE, "獲取單一結帳明細時發生錯誤", e);
+            return null;
         }
     }
 
 	// 獲取特定結帳ID的所有明細
-    public List<CheckoutDetailsBean> getPart(String checkoutId) throws DataAccessException {
+    @Transactional(readOnly = true)
+    public List<CheckoutDetailsBean> getPart(String checkoutId) {
         try {
-            Query<CheckoutDetailsBean> query = getSession().createQuery(
+            Query<CheckoutDetailsBean> query = getCurrentSession().createQuery(
                     "FROM CheckoutDetailsBean cd WHERE cd.checkoutId = :checkoutId", CheckoutDetailsBean.class);
             query.setParameter("checkoutId", checkoutId);
             return query.list();
         } catch (Exception e) {
-            throw new DataAccessException("獲取特定結帳ID的所有明細失敗", e);
+            logger.log(Level.SEVERE, "獲取特定結帳ID的所有明細時發生錯誤", e);
+            return new ArrayList<>();
         }
     }
 
 	// 獲取所有結帳明細
-    public List<CheckoutDetailsBean> getAll() throws DataAccessException {
+    @Transactional(readOnly = true)
+    public List<CheckoutDetailsBean> getAll() {
         try {
-            return getSession().createQuery("FROM CheckoutDetailsBean", CheckoutDetailsBean.class).list();
+            return getCurrentSession().createQuery("FROM CheckoutDetailsBean", CheckoutDetailsBean.class).list();
         } catch (Exception e) {
-            throw new DataAccessException("獲取所有結帳明細失敗", e);
+            logger.log(Level.SEVERE, "獲取所有結帳明細時發生錯誤", e);
+            return new ArrayList<>();
         }
     }
 
+
 	// 插入新的結帳明細
-    public void insert(CheckoutDetailsBean detail) throws DataAccessException {
+    @Transactional
+    public void insert(CheckoutDetailsBean detail) {
         try {
-            getSession().save(detail);
+            getCurrentSession().save(detail);
+            logger.info("結帳明細插入成功: " + detail.getCheckoutId() + ", " + detail.getProductId());
         } catch (Exception e) {
-            throw new DataAccessException("插入結帳明細失敗", e);
+            logger.severe("插入結帳明細失敗: " + e.getMessage());
+            throw new RuntimeException("插入結帳明細失敗", e);
         }
     }
 
 	// 刪除結帳明細
-    public void delete(String checkoutId, String productId) throws DataAccessException {
+    @Transactional
+    public void delete(String checkoutId, String productId) {
         try {
-            CheckoutDetailsBean ckd = getSession().get(CheckoutDetailsBean.class,
+            CheckoutDetailsBean ckd = getCurrentSession().get(CheckoutDetailsBean.class,
                     new CheckoutDetailsBean.CheckoutDetailsId(checkoutId, productId));
             if (ckd != null) {
-                getSession().delete(ckd);
+                getCurrentSession().delete(ckd);
                 updateCheckoutTotalAndBonus(checkoutId);
             }
+            logger.info("結帳明細刪除成功，總金額和紅利點數已更新");
         } catch (Exception e) {
-            throw new DataAccessException("刪除結帳明細失敗", e);
+            logger.log(Level.SEVERE, "刪除結帳明細時發生錯誤", e);
+            throw new RuntimeException("刪除結帳明細失敗", e);
         }
     }
 
 	// 更新結帳明細
-    public void update(CheckoutDetailsBean ckd) throws DataAccessException {
+    @Transactional
+    public void update(CheckoutDetailsBean ckd) {
         try {
-            getSession().update(ckd);
+            getCurrentSession().update(ckd);
             updateCheckoutTotalAndBonus(ckd.getCheckoutId());
+            logger.info("結帳明細更新成功，總金額和紅利點數已更新");
         } catch (Exception e) {
-            throw new DataAccessException("更新結帳明細失敗", e);
+            logger.log(Level.SEVERE, "更新結帳明細時發生錯誤", e);
+            throw new RuntimeException("更新結帳明細失敗", e);
         }
     }
 
 	// 搜尋特定產品ID的結帳明細
-    public List<CheckoutDetailsBean> searchByProductId(String productId) throws DataAccessException {
+    @Transactional(readOnly = true)
+    public List<CheckoutDetailsBean> searchByProductId(String productId) {
         try {
-            Query<CheckoutDetailsBean> query = getSession().createQuery(
+            Query<CheckoutDetailsBean> query = getCurrentSession().createQuery(
                     "FROM CheckoutDetailsBean cd WHERE cd.productId LIKE :productId", CheckoutDetailsBean.class);
             query.setParameter("productId", "%" + productId + "%");
             return query.list();
         } catch (Exception e) {
-            throw new DataAccessException("搜尋特定產品ID的結帳明細失敗", e);
+            logger.log(Level.SEVERE, "搜尋特定產品ID的結帳明細時發生錯誤", e);
+            return new ArrayList<>();
         }
     }
 
@@ -148,12 +170,13 @@ public class CheckoutDetailsDao {
 //    }
 
 	// 計算商品退貨率
-    public List<Map<String, Object>> getProductReturnRates() throws DataAccessException {
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getProductReturnRates() {
         try {
             String hql = "SELECT cd.productId, CAST(ROUND((SUM(CASE WHEN rd.returnId IS NOT NULL THEN rd.numberOfReturn ELSE 0 END) * 100.0) / SUM(cd.numberOfCheckout), 2) AS java.math.BigDecimal) AS returnRate "
                     + "FROM CheckoutDetailsBean cd LEFT JOIN cd.returnDetails rd "
                     + "GROUP BY cd.productId";
-            Query<Object[]> query = getSession().createQuery(hql, Object[].class);
+            Query<Object[]> query = getCurrentSession().createQuery(hql, Object[].class);
             List<Object[]> results = query.list();
             List<Map<String, Object>> returnRates = new ArrayList<>();
             for (Object[] result : results) {
@@ -164,7 +187,8 @@ public class CheckoutDetailsDao {
             }
             return returnRates;
         } catch (Exception e) {
-            throw new DataAccessException("計算商品退貨率失敗", e);
+            logger.log(Level.SEVERE, "計算商品退貨率時發生錯誤", e);
+            return new ArrayList<>();
         }
     }
 
@@ -182,33 +206,29 @@ public class CheckoutDetailsDao {
 //    }
 
 	// 更新結帳總金額和紅利點數
-    private void updateCheckoutTotalAndBonus(String checkoutId) throws DataAccessException {
-        try {
-            int totalAmount = calculateCheckoutTotal(checkoutId);
-            int bonusPoints = calculateBonusPoints(totalAmount);
+    @Transactional
+    private void updateCheckoutTotalAndBonus(String checkoutId) {
+        int totalAmount = calculateCheckoutTotal(checkoutId);
+        int bonusPoints = calculateBonusPoints(totalAmount);
 
-            CheckoutBean checkout = getSession().get(CheckoutBean.class, checkoutId);
-            if (checkout != null) {
-                checkout.setCheckoutTotalPrice(totalAmount);
-                checkout.setBonusPoints(bonusPoints);
-                getSession().update(checkout);
-            }
-        } catch (Exception e) {
-            throw new DataAccessException("更新結帳總金額和紅利點數失敗", e);
+        CheckoutBean checkout = getCurrentSession().get(CheckoutBean.class, checkoutId);
+        if (checkout != null) {
+            checkout.setCheckoutTotalPrice(totalAmount);
+            checkout.setBonusPoints(bonusPoints);
+            getCurrentSession().update(checkout);
         }
+
+        logger.info("更新結帳總金額和紅利點數成功");
     }
 
 	// 計算結帳總金額（內部方法）
-    private int calculateCheckoutTotal(String checkoutId) throws DataAccessException {
-        try {
-            Query<Integer> query = getSession().createQuery(
-                    "SELECT COALESCE(CAST(SUM(cd.checkoutPrice) AS int), 0) " +
-                    "FROM CheckoutDetailsBean cd WHERE cd.checkoutId = :checkoutId", Integer.class);
-            query.setParameter("checkoutId", checkoutId);
-            return query.uniqueResult();
-        } catch (Exception e) {
-            throw new DataAccessException("計算結帳總金額失敗", e);
-        }
+    private int calculateCheckoutTotal(String checkoutId) {
+        Query<Integer> query = getCurrentSession().createQuery(
+                "SELECT COALESCE(CAST(SUM(cd.checkoutPrice) AS int), 0) "
+                        + "FROM CheckoutDetailsBean cd WHERE cd.checkoutId = :checkoutId",
+                Integer.class);
+        query.setParameter("checkoutId", checkoutId);
+        return query.uniqueResult();
     }
 
 	// 計算紅利點數

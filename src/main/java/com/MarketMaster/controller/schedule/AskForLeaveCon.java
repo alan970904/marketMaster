@@ -1,180 +1,128 @@
 package com.MarketMaster.controller.schedule;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import com.MarketMaster.dao.schedule.AskForLeaveDao;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import com.MarketMaster.bean.schedule.AskForLeaveBean;
-import com.MarketMaster.bean.employee.EmpBean;
-import com.MarketMaster.util.HibernateUtil;
+import com.MarketMaster.dao.schedule.AskForLeaveService;
 
-@WebServlet("/AskForLeaveCon")
-public class AskForLeaveCon extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/AskForLeaveCon")
+public class AskForLeaveCon {
+    @Autowired
+    private AskForLeaveService leaveService;
 
-	public AskForLeaveCon() {
-		super();
-	}
+    // 根據員工 ID 搜尋請假紀錄
+    @GetMapping("/searchLeaveRecords")
+    public String searchLeaveRecords(@RequestParam String employee_id, Model model) {
+        List<AskForLeaveBean> leaveRecords = leaveService.getLeaveRecordsById(employee_id);
+        model.addAttribute("leaveRecords", leaveRecords);
+        return "schedule/getLeaveById";
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String action = request.getParameter("action");
-		SessionFactory factory = HibernateUtil.getSessionFactory();
-		Session session = factory.getCurrentSession();
+    // 根據請假 ID 搜尋請假紀錄
+    @GetMapping("/searchByLeaveId")
+    public String searchByLeaveId(@RequestParam String leave_id, Model model) {
+        List<AskForLeaveBean> leaveRecordsById = leaveService.getLeaveRecordsByLeaveId(leave_id);
+        if (leaveRecordsById != null && !leaveRecordsById.isEmpty()) {
+            AskForLeaveBean leaveRecord = leaveRecordsById.get(0);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            model.addAttribute("startDatetimeFormatted", leaveRecord.getStartDatetime().format(formatter));
+            model.addAttribute("endDatetimeFormatted", leaveRecord.getEndDatetime().format(formatter));
+            model.addAttribute("leaveRecords", leaveRecordsById);
+            return "schedule/updateLeaveById";
+        } else {
+            return "error/404";
+        }
+    }
 
-		try {
-			AskForLeaveDao dao = new AskForLeaveDao(session);
+    // 獲取所有請假紀錄
+    @GetMapping("/allLeaveRecords")
+    public String allLeaveRecords(Model model) {
+        List<AskForLeaveBean> allLeaveRecords = leaveService.getLeaveRecords();
+        model.addAttribute("leaveRecords", allLeaveRecords);
+        return "schedule/getAllLeaveRecords";
+    }
 
-			switch (action) {
-			case "searchLeaveRecords":
-				String employeeId = request.getParameter("employee_id");
-				List<AskForLeaveBean> leaveRecords = dao.getLeaveRecordsById(employeeId);
-				request.setAttribute("leaveRecords", leaveRecords);
-				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
-				break;
+    // 刪除請假紀錄
+    @PostMapping("/deleteLeaveRecord")
+    public String deleteLeaveRecord(@RequestParam String leave_id, @RequestParam String employee_id, Model model) {
+        leaveService.deleteLeaveRecord(leave_id);
+        return searchLeaveRecords(employee_id, model);
+    }
 
-			case "searchByLeaveId":
-				String leaveId3 = request.getParameter("leave_id");
-				List<AskForLeaveBean> leaveRecords3 = dao.getLeaveRecordsByLeaveId(leaveId3);
+    // 顯示新增請假紀錄的表單
+    @PostMapping("/createForm")
+    public String createForm(@RequestParam String employee_id, Model model) {
+        String employeeName = leaveService.getEmployeeNameById(employee_id);
+        String newLeaveId = leaveService.generateNextLeaveId();
+        model.addAttribute("leave_id", newLeaveId);
+        model.addAttribute("employee_id", employee_id);
+        model.addAttribute("employee_name", employeeName);
+        return "schedule/addLeaveRecordById";
+    }
 
-				if (leaveRecords3 != null && !leaveRecords3.isEmpty()) {
-					AskForLeaveBean leaveRecord = leaveRecords3.get(0);
+    @PostMapping("/addLeaveRecord")
+    public String addLeaveRecord(@RequestParam String leave_id,
+                                 @RequestParam String employee_id,
+                                 @RequestParam String start_datetime,
+                                 @RequestParam String end_datetime,
+                                 @RequestParam String leave_category,
+                                 @RequestParam String reason_of_leave,
+                                 Model model) {
+        LocalDateTime startDatetime = LocalDateTime.parse(start_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime endDatetime = LocalDateTime.parse(end_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-					LocalDateTime startDatetime = leaveRecord.getStartDatetime();
-					LocalDateTime endDatetime = leaveRecord.getEndDatetime();
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-					String startDatetimeFormatted = startDatetime.format(formatter);
-					String endDatetimeFormatted = endDatetime.format(formatter);
+        AskForLeaveBean leave = new AskForLeaveBean();
+        leave.setLeaveId(leave_id);
+        leave.setEmployeeId(employee_id);
+        leave.setStartDatetime(startDatetime);
+        leave.setEndDatetime(endDatetime);
+        leave.setLeaveCategory(leave_category);
+        leave.setReasonOfLeave(reason_of_leave);
+        leave.setApprovedStatus("未批准");
 
-					request.setAttribute("startDatetimeFormatted", startDatetimeFormatted);
-					request.setAttribute("endDatetimeFormatted", endDatetimeFormatted);
+        leaveService.addLeaveRecordById(leave);
 
-					request.setAttribute("leaveRecords", leaveRecords3);
-					request.getRequestDispatcher("schedule/updateLeaveById.jsp").forward(request, response);
-				} else {
-					response.sendError(HttpServletResponse.SC_NOT_FOUND, "找不到指定 ID 的請假記錄。");
-				}
-				break;
+        List<AskForLeaveBean> updatedLeaveRecords = leaveService.getLeaveRecordsById(employee_id);
+        model.addAttribute("leaveRecords", updatedLeaveRecords);
 
-			case "allLeaveRecords":
-				List<AskForLeaveBean> allLeaveRecords = dao.getLeaveRecords();
-				request.setAttribute("leaveRecords", allLeaveRecords);
-				request.getRequestDispatcher("schedule/getAllLeaveRecords.jsp").forward(request, response);
-				break;
+        return "schedule/getLeaveById";
+    }
 
-			case "delete":
-				String leaveId = request.getParameter("leave_id");
-				String employeeId1 = request.getParameter("employee_id");
-				dao.deleteLeaveRecord(leaveId);
-				List<AskForLeaveBean> LeaveRecords = dao.getLeaveRecordsById(employeeId1);
-				request.setAttribute("leaveRecords", LeaveRecords);
-				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
-				break;
+    // 更新請假紀錄
+    @PostMapping("/updateLeaveRecord")
+    public String updateLeaveRecord(@RequestParam String leave_id,
+                                    @RequestParam String employee_id,
+                                    @RequestParam String start_datetime,
+                                    @RequestParam String end_datetime,
+                                    @RequestParam String leave_category,
+                                    @RequestParam String reason_of_leave,
+                                    Model model) {
+        LocalDateTime startDatetime = LocalDateTime.parse(start_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalDateTime endDatetime = LocalDateTime.parse(end_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
-			case "createForm":
-				String employeeId2 = request.getParameter("employee_id");
-				String employeeName = dao.getEmployeeNameById(employeeId2);
-				String leaveId1 = dao.generateNextLeaveId();
+        AskForLeaveBean leave = new AskForLeaveBean();
+        leave.setLeaveId(leave_id);
+        leave.setEmployeeId(employee_id);
+        leave.setStartDatetime(startDatetime);
+        leave.setEndDatetime(endDatetime);
+        leave.setLeaveCategory(leave_category);
+        leave.setReasonOfLeave(reason_of_leave);
 
-				request.setAttribute("leave_id", leaveId1);
-				request.setAttribute("employee_id", employeeId2);
-				request.setAttribute("employee_name", employeeName);
+        leaveService.updateLeaveRecord(leave);
 
-				request.getRequestDispatcher("schedule/addLeaveRecordById.jsp").forward(request, response);
-				break;
-
-			case "add":
-				String leaveId2 = request.getParameter("leave_id");
-				String employeeId4 = request.getParameter("employee_id");
-				String startDatetimeStr = request.getParameter("start_datetime");
-				String endDatetimeStr = request.getParameter("end_datetime");
-				String leaveCategory = request.getParameter("leave_category");
-				String reasonOfLeave = request.getParameter("reason_of_leave");
-				String approvedStatus = "未批准"; // 預設為 "未批准"
-
-				LocalDateTime startDatetime = LocalDateTime.parse(startDatetimeStr,
-						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-				LocalDateTime endDatetime = LocalDateTime.parse(endDatetimeStr,
-						DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-
-				AskForLeaveBean leave = new AskForLeaveBean();
-				leave.setLeaveId(leaveId2);
-				leave.setEmployeeId(employeeId4);
-				leave.setStartDatetime(startDatetime);
-				leave.setEndDatetime(endDatetime);
-				leave.setLeaveCategory(leaveCategory);
-				leave.setReasonOfLeave(reasonOfLeave);
-				leave.setApprovedStatus(approvedStatus);
-
-				// 獲取對應的 EmpBean 並設置關聯
-				EmpBean empBean = session.get(EmpBean.class, employeeId4);
-				leave.setEmpBean(empBean);
-
-				dao.addLeaveRecordById(leave);
-
-				List<AskForLeaveBean> leaveRecords4 = dao.getLeaveRecordsById(employeeId4);
-				request.setAttribute("leaveRecords", leaveRecords4);
-
-				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
-				break;
-
-			case "updateLeaveRecord":
-				String leaveIdUpdate = request.getParameter("leave_id");
-				String employeeIdUpdate = request.getParameter("employee_id");
-				String startDatetimeStr1 = request.getParameter("start_datetime");
-				String endDatetimeStr1 = request.getParameter("end_datetime");
-				String leaveCategoryUpdate = request.getParameter("leave_category");
-				String reasonOfLeaveUpdate = request.getParameter("reason_of_leave");
-
-				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-				LocalDateTime startDatetimeUpdate = LocalDateTime.parse(startDatetimeStr1, formatter1);
-				LocalDateTime endDatetimeUpdate = LocalDateTime.parse(endDatetimeStr1, formatter1);
-
-				AskForLeaveBean leave1 = session.get(AskForLeaveBean.class, leaveIdUpdate);
-				if (leave1 != null) {
-					leave1.setStartDatetime(startDatetimeUpdate);
-					leave1.setEndDatetime(endDatetimeUpdate);
-					leave1.setLeaveCategory(leaveCategoryUpdate);
-					leave1.setReasonOfLeave(reasonOfLeaveUpdate);
-					leave1.setApprovedStatus("未批准");
-
-					// 如果員工 ID 有變更，更新關聯
-					if (!leave1.getEmployeeId().equals(employeeIdUpdate)) {
-						EmpBean newEmpBean = session.get(EmpBean.class, employeeIdUpdate);
-						leave1.setEmpBean(newEmpBean);
-						leave1.setEmployeeId(employeeIdUpdate);
-					}
-
-					dao.updateLeaveRecord(leave1);
-				}
-
-				List<AskForLeaveBean> leaveRecords1 = dao.getLeaveRecordsById(employeeIdUpdate);
-				request.setAttribute("leaveRecords", leaveRecords1);
-				request.getRequestDispatcher("schedule/getLeaveById.jsp").forward(request, response);
-				break;
-
-			default:
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "無效的操作。");
-				break;
-			}
-
-		} 
-		finally {
-		}
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
+        return "redirect:/AskForLeaveCon/searchLeaveRecords?employee_id=" + employee_id;
+    }
+    
+    @GetMapping("/view")
+    public String redirectToAskForLeavePage() {
+        return "schedule/AskForLeave";
+    }
 }

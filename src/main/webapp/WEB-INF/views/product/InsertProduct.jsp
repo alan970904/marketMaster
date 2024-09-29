@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,8 +22,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link href="<c:url value='/resources/CSS/style.css'/>" rel="stylesheet">
+
+<link href="<c:url value='/resources/CSS/extra.css'/>" rel="stylesheet">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -85,9 +88,9 @@
 </head>
 
 <body>
-    <%@ include file="/body/body.jsp" %>
+    <%@ include file="../body/body.jsp" %>
     <main>
-    <form method="post" action="${pageContext.request.contextPath}/ProductsServlet">
+    <form method="post" action="${pageContext.request.contextPath}/insertProduct">
         <fieldset>
             <legend>新增商品</legend>
 				<% if(request.getAttribute("errorMessage") != null) { %>
@@ -127,7 +130,7 @@
             </div>
                    <p>
                    <p>
-<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/product/productHomepage.jsp'">
+<input type="button" value="返回首頁" onclick="window.location.href='${pageContext.request.contextPath}/productHomepage'">
             
         </fieldset>
     </form>
@@ -140,5 +143,5 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 </body>
-
+<script src="<c:url value='/resources/js/main.js'/>"></script>
 </html>

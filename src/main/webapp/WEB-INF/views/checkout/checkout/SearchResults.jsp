@@ -9,8 +9,6 @@
    <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <!-- Bootstrap CSS -->
 <link
@@ -32,7 +30,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -46,7 +44,7 @@
 	src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 <style>
 main{
  body {
@@ -147,15 +145,15 @@ main{
                         <td>${checkout.bonusPoints}</td>
                         <td>${checkout.pointsDueDate}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=getPart&checkoutId=${checkout.checkoutId}" class="action-button info">查看明細</a>
-                            <a href="${pageContext.request.contextPath}/CheckoutServlet?action=getUpdate&checkoutId=${checkout.checkoutId}" class="action-button edit">修改</a>
-                            <button onclick="confirmDelete('${checkout.checkoutId}')" class="action-button delete">刪除</button>
+                            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/details?checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
+                            <button class="btn btn-primary btn-sm update-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">修改</button>
+                            <button class="btn btn-danger btn-sm delete-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">刪除</button>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
         </div>
-        <button id="back" class="action-button">返回主頁</button>
+        <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
     </main>
     
     <script>
@@ -164,9 +162,7 @@ main{
                 window.location.href = "${pageContext.request.contextPath}/CheckoutServlet?action=delete&checkoutId=" + checkoutId;
             }
         }
-        document.getElementById('back').addEventListener('click', function() {
-            window.location.href = "${pageContext.request.contextPath}/checkout/checkout/index.jsp";
-        });
+        
     </script>
 </body>
 </html>

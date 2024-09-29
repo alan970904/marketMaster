@@ -50,7 +50,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
-<%@ include file="/body/body.jsp"%>
+<%@ include file="../body/body.jsp"%>
 <main>
     <div class="container mt-4">
         <h1 class="mb-4">兌換記錄</h1>

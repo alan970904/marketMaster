@@ -9,8 +9,6 @@
     <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script
-	src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <!-- Bootstrap CSS -->
 <link
@@ -32,7 +30,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -47,13 +45,13 @@
 <script
 	src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 </head>
 <body>
     <%@ include file="../../body/body.jsp"%>
     <main>
         <h1>新增結帳明細</h1>
-        <form action="${pageContext.request.contextPath}/CheckoutDetailsServlet" method="post">
+        <form action="${pageContext.request.contextPath}/checkout/checkoutDetails/add" method="post" class="card">
             <input type="hidden" name="action" value="insert">
             <p>結帳編號: <input type="text" name="checkoutId"></p>
             <p>產品編號: <input type="text" name="productId"></p>
@@ -61,13 +59,9 @@
             <p>產品價格: <input type="text" name="productPrice"></p>
             <p>結帳總價: <input type="text" name="checkoutPrice"></p>
             <button type="submit" class="action-button">提交</button>
-            <button id="back" class="action-button">返回</button>
+            <a href="${pageContext.request.contextPath}/checkoutDetails/list" class="btn btn-secondary">返回</a>
         </form>
    </main>
-    <script>
-        document.getElementById('back').addEventListener('click', function() {
-            window.history.back();
-        });
-    </script>
+  
 </body>
 </html>

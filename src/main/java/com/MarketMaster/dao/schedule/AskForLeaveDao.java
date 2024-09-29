@@ -2,21 +2,30 @@ package com.MarketMaster.dao.schedule;
 
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.MarketMaster.bean.employee.EmpBean;
 import com.MarketMaster.bean.schedule.AskForLeaveBean;
 
-public class AskForLeaveDao {
+@Service
+@Transactional
+public class AskForLeaveDao implements AskForLeaveService {
 
-	private Session session;
+	@Autowired
+	private SessionFactory sessionFactory;
 
-	public AskForLeaveDao(Session session) {
-		this.session = session;
+	private Session getSession() {
+		return sessionFactory.getCurrentSession();
 	}
 
-	// 生成下一個請假編號
+	@Override
 	public String generateNextLeaveId() {
 		String sql = "SELECT MAX(CAST(SUBSTRING(a.leaveId, 2, LENGTH(a.leaveId) - 1) AS INTEGER)) FROM AskForLeaveBean a";
-		Query<Integer> query = session.createQuery(sql, Integer.class);
+		Query<Integer> query = getSession().createQuery(sql, Integer.class);
 		Integer maxId = query.uniqueResult();
 
 		if (maxId != null) {
@@ -25,65 +34,66 @@ public class AskForLeaveDao {
 		return "L00001";
 	}
 
-	// 根據員工編號獲取員工姓名
+	@Override
 	public String getEmployeeNameById(String employeeId) {
 		if (employeeId == null || employeeId.trim().isEmpty()) {
 			return null;
 		}
 
-		String hql = "SELECT e.employeeName FROM EmpBean e WHERE e.employeeId = :employeeId";
-		Query<String> query = session.createQuery(hql, String.class);
-		query.setParameter("employeeId", employeeId);
-		return query.uniqueResult();
+		EmpBean empBean = getSession().get(EmpBean.class, employeeId);
+		return empBean != null ? empBean.getEmployeeName() : null;
 	}
 
-	// 新增請假記錄
+	@Override
 	public void addLeaveRecordById(AskForLeaveBean leave) {
+		Session session = getSession();
+		EmpBean empBean = session.get(EmpBean.class, leave.getEmployeeId());
+		leave.setEmpBean(empBean);
 		session.persist(leave);
+		session.flush(); // 強制立即執行插入操作
 	}
 
-	// 更新請假記錄
-	public void updateLeaveRecord(AskForLeaveBean leave) {
-		session.merge(leave);
-	}
-
-	// 根據員工編號獲取請假記錄
+	@Override
 	public List<AskForLeaveBean> getLeaveRecordsById(String employeeId) {
-		String hql = "SELECT a FROM AskForLeaveBean a JOIN FETCH a.empBean e WHERE a.employeeId = :employeeId";
-		Query<AskForLeaveBean> query = session.createQuery(hql, AskForLeaveBean.class);
+		String hql = "SELECT DISTINCT a FROM AskForLeaveBean a LEFT JOIN FETCH a.empBean e WHERE a.employeeId = :employeeId";
+		Query<AskForLeaveBean> query = getSession().createQuery(hql, AskForLeaveBean.class);
 		query.setParameter("employeeId", employeeId);
 		return query.list();
 	}
 
-	// 根據請假編號獲取請假記錄
+	@Override
 	public List<AskForLeaveBean> getLeaveRecordsByLeaveId(String leaveId) {
 		String hql = "SELECT a FROM AskForLeaveBean a JOIN FETCH a.empBean e WHERE a.leaveId = :leaveId";
-		Query<AskForLeaveBean> query = session.createQuery(hql, AskForLeaveBean.class);
+		Query<AskForLeaveBean> query = getSession().createQuery(hql, AskForLeaveBean.class);
 		query.setParameter("leaveId", leaveId);
 		return query.list();
 	}
 
-	// 獲取所有請假記錄
+	@Override
 	public List<AskForLeaveBean> getLeaveRecords() {
 		String hql = "SELECT a FROM AskForLeaveBean a JOIN FETCH a.empBean";
-		Query<AskForLeaveBean> query = session.createQuery(hql, AskForLeaveBean.class);
+		Query<AskForLeaveBean> query = getSession().createQuery(hql, AskForLeaveBean.class);
 		return query.list();
 	}
 
-	// 刪除請假記錄
+	@Override
 	public void deleteLeaveRecord(String leaveId) {
-		AskForLeaveBean leave = session.get(AskForLeaveBean.class, leaveId);
+		AskForLeaveBean leave = getSession().get(AskForLeaveBean.class, leaveId);
 		if (leave != null) {
-			session.remove(leave);
+			getSession().remove(leave);
 		}
 	}
 
-	//
-	public boolean updateLeaveRecord(String leaveIdUpdate, String employeeId, String employeeNameUpdate,
-			String startDatetimeUpdate, String endDatetimeUpdate, String leaveCategoryUpdate,
-			String reasonOfLeaveUpdate) {
-		return false;
+	@Override
+	public void updateLeaveRecord(AskForLeaveBean leave) {
+		Session session = getSession();
+		AskForLeaveBean existingLeave = session.get(AskForLeaveBean.class, leave.getLeaveId());
+		if (existingLeave != null) {
+			existingLeave.setStartDatetime(leave.getStartDatetime());
+			existingLeave.setEndDatetime(leave.getEndDatetime());
+			existingLeave.setLeaveCategory(leave.getLeaveCategory());
+			existingLeave.setReasonOfLeave(leave.getReasonOfLeave());
+			session.update(existingLeave);
+		}
 	}
-	
-	
 }

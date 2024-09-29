@@ -27,8 +27,8 @@
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>人資系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
 					<a href="${pageContext.request.contextPath}/employee/empMain" class="dropdown-item">員工資訊</a>
-					<a href="${pageContext.request.contextPath}/schedule/AskForLeave.jsp" class="dropdown-item">請假</a>
-                    <a href="${pageContext.request.contextPath}/ScheduleHome" class="dropdown-item">排班</a>
+					<a href="${pageContext.request.contextPath}/AskForLeaveCon/view" class="dropdown-item">請假</a>
+                    <a href="${pageContext.request.contextPath}/schedule" class="dropdown-item">排班</a>
 				</div>
 			</div>
 
@@ -36,18 +36,17 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>商品資訊</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="<%=request.getContextPath()%>/product/InsertProduct.jsp" class="dropdown-item">新增商品</a>
-					<a href="${pageContext.request.contextPath}/product/productHomepage.jsp" class="dropdown-item">商品主頁</a>
+					<a href="${pageContext.request.contextPath}/insertProduct" class="dropdown-item">新增商品</a>
+					<a href="${pageContext.request.contextPath}/getPagesProduct" class="dropdown-item">商品主頁</a>
 				</div>
 			</div>
 			<div class="nav-item dropdown">
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>庫存系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/html/reStockMain.jsp"
-						class="dropdown-item">新增庫存</a> <a
-						href="${pageContext.request.contextPath}/restock/GetAllRestockDetails.jsp"
-						class="dropdown-item">庫存明細</a>
+					<a href="${pageContext.request.contextPath}/restock/RestockMain" class="dropdown-item">新增庫存</a>
+					<a href="${pageContext.request.contextPath}/restock/GetAllRestockDetailsDetail" class="dropdown-item">庫存明細</a>
+
 				</div>
 			</div>
 			<div class="nav-item dropdown">
@@ -63,10 +62,8 @@
 				<a href="#" class="nav-link dropdown-toggle"
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>會員系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
-					<a href="${pageContext.request.contextPath}/employee/CustomerMain.jsp"
-						class="dropdown-item">會員資訊</a>
-					<a href="${pageContext.request.contextPath}/bonus/BonusExchangeInput.jsp"
-						class="dropdown-item">紅利兌換查詢</a>
+					<a href="${pageContext.request.contextPath}/customer/cusMain" class="dropdown-item">會員資訊</a>
+					<a href="${pageContext.request.contextPath}/bonus/BonusExchangeInput.jsp" class="dropdown-item">紅利兌換查詢</a>
 				</div>
 			</div>
 			<div class="dropdown-menu bg-transparent border-0">
@@ -83,7 +80,7 @@
 	<!-- Navbar Start -->
 	<nav
 		class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-		<a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+		<a href="${pageContext.request.contextPath}/homePage" class="navbar-brand d-flex d-lg-none me-4">
 			<h2 class="text-primary mb-0">
 				<i class="fa fa-hashtag"></i>
 			</h2>

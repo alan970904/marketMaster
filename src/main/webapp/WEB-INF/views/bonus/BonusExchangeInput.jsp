@@ -49,7 +49,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
 </head>
 <body>
-    <%@ include file="/body/body.jsp"%>
+    <%@ include file="../body/body.jsp"%>
     <main class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6">

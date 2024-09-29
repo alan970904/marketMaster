@@ -8,7 +8,6 @@
     <title>所有結帳明細</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +22,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="/ispan/CSS/extra.css">
+    <link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -33,9 +32,7 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <style>
-    .dataTables_length{
-        display:none;
-    }
+		.dataTables_length select { padding-right: 30px !important; background-position: right 0.5rem center !important; }
     </style>
 </head>
 <body>
@@ -67,7 +64,7 @@
                             <input type="text" value="${detail.numberOfCheckout * detail.productPrice}" readonly class="form-control-plaintext subtotal">
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/CheckoutDetailsServlet?action=getOne&checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
+                            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/details?checkoutId=${detail.checkoutId}&productId=${detail.productId}" class="btn btn-info btn-sm">詳情</a>
                             <button class="btn btn-primary btn-sm update-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">修改</button>
                             <button class="btn btn-danger btn-sm delete-btn" data-checkout-id="${detail.checkoutId}" data-product-id="${detail.productId}">刪除</button>
                         </td>
@@ -76,7 +73,7 @@
             </tbody>
         </table>
         <div class="mt-3">
-            <button id="back" class="btn btn-secondary">返回主頁</button>
+            <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
         </div>
     </div>
     </main>
@@ -106,10 +103,9 @@
             var checkoutPrice = quantity * productPrice;
 
             $.ajax({
-                url: '${pageContext.request.contextPath}/CheckoutDetailsServlet',
+            	url: '${pageContext.request.contextPath}/checkout/checkoutDetails/update',
                 type: 'POST',
                 data: {
-                    action: 'update',
                     checkoutId: checkoutId,
                     productId: productId,
                     numberOfCheckout: quantity,
@@ -136,10 +132,9 @@
                 var productId = $(this).data('product-id');
                 var row = $(this).closest('tr');
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/CheckoutDetailsServlet',
+                	url: '${pageContext.request.contextPath}/checkout/checkoutDetails/delete',
                     type: 'POST',
                     data: {
-                        action: 'delete',
                         checkoutId: checkoutId,
                         productId: productId
                     },
@@ -154,9 +149,7 @@
             }
         });
 
-        $('#back').click(function() {
-            window.location.href = "${pageContext.request.contextPath}/checkout/checkout/index.jsp";
-        });
+        
     });
     </script>
 </body>

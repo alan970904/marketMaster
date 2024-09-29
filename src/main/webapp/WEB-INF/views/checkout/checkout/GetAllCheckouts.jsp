@@ -11,12 +11,16 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/CSS/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/CSS/extra.css">
+    <link href="${pageContext.request.contextPath}/resources/CSS/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/CSS/extra.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <style>
-.dataTables_length{
-display:none;
-}
+
+	.dataTables_length select { padding-right: 30px !important; background-position: right 0.5rem center !important; }
+
 </style>
 </head>
 <body>
@@ -48,7 +52,7 @@ display:none;
                         <td>${checkout.bonusPoints}</td>
                         <td>${checkout.pointsDueDate}</td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/checkoutDetails/listByCheckoutId?checkoutId=${checkout.checkoutId}" class="btn btn-info btn-sm">查看明細</a>
+                            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/listByCheckoutId?checkoutId=${checkout.checkoutId}" class="btn btn-info btn-sm">查看明細</a>
                             <a href="${pageContext.request.contextPath}/checkout/update?checkoutId=${checkout.checkoutId}" class="btn btn-primary btn-sm">修改</a>
                             <button class="btn btn-danger btn-sm delete-btn" data-checkout-id="${checkout.checkoutId}">刪除</button>
                         </td>
@@ -57,18 +61,13 @@ display:none;
             </tbody>
         </table>
         <div class="mt-3">
-             <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
-            <a href="${pageContext.request.contextPath}/checkoutDetails/GetAllCheckoutDetails" class="btn btn-info">所有結帳明細</a>
+            <a href="${pageContext.request.contextPath}/checkout/checkoutMain" class="btn btn-secondary">返回主頁</a>
+            <a href="${pageContext.request.contextPath}/checkout/checkoutDetails/list" class="btn btn-info">所有結帳明細</a>
         </div>
     </div>
     </main>
-    
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 
-   <script>
+    <script>
     $(document).ready(function() {
         var table = $('#checkoutsTable').DataTable({
             "language": {
@@ -83,13 +82,19 @@ display:none;
                 $.ajax({
                     url: '${pageContext.request.contextPath}/checkout/delete',
                     type: 'POST',
-                    data: { checkoutId: checkoutId },
+                    data: {
+                        checkoutId: checkoutId
+                    },
                     success: function(response) {
-                        if (response.status === 'success') {
-                            alert(response.message);
+                        var result = JSON.parse(response);
+                        if (result.status === 'success') {
+                            // 显示成功提示
+                            alert(result.message);
+                            // 从 DataTable 中移除该行
                             table.row(row).remove().draw();
                         } else {
-                            alert('刪除失敗: ' + response.message);
+                            // 如果删除失败，显示错误信息
+                            alert('刪除失敗: ' + result.message);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -98,6 +103,8 @@ display:none;
                 });
             }
         });
+
+        
     });
     </script>
 </body>
