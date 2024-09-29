@@ -63,7 +63,7 @@
 					data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>會員系統</a>
 				<div class="dropdown-menu bg-transparent border-0">
 					<a href="${pageContext.request.contextPath}/customer/cusMain" class="dropdown-item">會員資訊</a>
-					<a href="${pageContext.request.contextPath}/bonus/BonusExchangeInput.jsp" class="dropdown-item">紅利兌換查詢</a>
+					<a href="${pageContext.request.contextPath}/bonusExchange" class="dropdown-item">紅利兌換查詢</a>
 				</div>
 			</div>
 			<div class="dropdown-menu bg-transparent border-0">

@@ -13,8 +13,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "bonus_exchange")
-public class BonusExchangeBean {
-    
+public class BonusExchangeBean implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
     @Id
     @Column(name="exchange_id")
     private String exchangeId;
@@ -80,3 +80,4 @@ public class BonusExchangeBean {
     }
     
 }
+

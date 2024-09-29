@@ -1,116 +1,172 @@
-//package com.MarketMaster.dao.bonus;
-//
-//import java.util.List;
-//import java.util.logging.Logger;
-//import java.util.logging.Level;
-//import org.hibernate.Session;
-//import org.hibernate.query.Query;
-//
-//import com.MarketMaster.bean.bonus.BonusExchangeBean;
-//import com.MarketMaster.bean.bonus.PointsHistoryBean;
-//import com.MarketMaster.bean.product.ProductBean;
-//import com.MarketMaster.util.HibernateUtil;
-//import com.MarketMaster.exception.DataAccessException;
-//
-//public class BonusExchangeDao {
-//    private static final Logger logger = Logger.getLogger(BonusExchangeDao.class.getName());
-//
-//    public List<ProductBean> findExchangeableProducts(int customerPoints) throws DataAccessException {
-//        logger.info("查詢可兌換商品，客戶積分：" + customerPoints);
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            String hql = "FROM ProductBean p WHERE p.productPrice <= :customerPoints AND p.numberOfInventory > 0";
-//            List<ProductBean> products = session.createQuery(hql, ProductBean.class)
-//                .setParameter("customerPoints", customerPoints)
-//                .list();
-//            logger.info("成功找到 " + products.size() + " 個可兌換商品");
-//            return products;
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "查詢可兌換商品時發生錯誤", e);
-//            throw new DataAccessException("查詢可兌換商品失敗: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    public String getLastExchangeId() {
-//        logger.info("獲取最後一個兌換ID");
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            String hql = "SELECT b.exchangeId FROM BonusExchangeBean b ORDER BY b.exchangeId DESC";
-//            Query<String> query = session.createQuery(hql, String.class);
-//            query.setMaxResults(1);
-//            List<String> results = query.getResultList();
-//            if (!results.isEmpty()) {
-//                String lastId = results.get(0);
-//                logger.info("找到最後的兌換ID: " + lastId);
-//                return lastId;
-//            } else {
-//                logger.info("沒有找到兌換ID，返回null");
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "獲取最後兌換ID時發生錯誤", e);
-//            return null;
-//        }
-//    }
-//
-//    public void saveExchange(BonusExchangeBean exchange) throws DataAccessException {
-//        logger.info("保存兌換記錄: " + exchange.getExchangeId());
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            session.save(exchange);
-//            logger.info("兌換記錄保存成功");
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "保存兌換記錄時發生錯誤", e);
-//            throw new DataAccessException("保存兌換記錄失敗: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    public void updateProductInventory(String productId, int quantity) throws DataAccessException {
-//        logger.info("更新商品庫存，商品ID: " + productId + ", 數量變化: " + quantity);
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            ProductBean product = session.get(ProductBean.class, productId);
-//            if (product != null) {
-//                product.setNumberOfInventory(product.getNumberOfInventory() - quantity);
-//                product.setNumberOfExchange(product.getNumberOfExchange() + quantity);
-//                session.update(product);
-//                logger.info("商品庫存更新成功");
-//            } else {
-//                throw new DataAccessException("未找到商品: " + productId);
-//            }
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "更新商品庫存時發生錯誤", e);
-//            throw new DataAccessException("更新商品庫存失敗: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    public void savePointsHistory(PointsHistoryBean pointsHistory) throws DataAccessException {
-//        logger.info("保存積分歷史記錄");
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            session.save(pointsHistory);
-//            logger.info("積分歷史記錄保存成功");
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "保存積分歷史記錄時發生錯誤", e);
-//            throw new DataAccessException("保存積分歷史記錄失敗: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    public List<BonusExchangeBean> getExchangeRecords(String customerTel) throws DataAccessException {
-//        logger.info("獲取客戶兌換記錄，客戶電話: " + customerTel);
-//        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-//        try {
-//            String hql = "FROM BonusExchangeBean b WHERE b.customerTel = :customerTel";
-//            List<BonusExchangeBean> records = session.createQuery(hql, BonusExchangeBean.class)
-//                .setParameter("customerTel", customerTel)
-//                .list();
-//            logger.info("成功找到 " + records.size() + " 條兌換記錄");
-//            return records;
-//        } catch (Exception e) {
-//            logger.log(Level.SEVERE, "獲取兌換記錄時發生錯誤", e);
-//            throw new DataAccessException("獲取兌換記錄失敗: " + e.getMessage(), e);
-//        }
-//    }
-//
-//    // 可以根據需要添加更多的方法
-//}
+package com.MarketMaster.dao.bonus;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+
+import com.MarketMaster.bean.bonus.BonusExchangeBean;
+import com.MarketMaster.bean.product.ProductBean;
+import com.MarketMaster.exception.DataAccessException;
+
+import java.util.List;
+
+@Repository
+public class BonusExchangeDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    private Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
+    
+    public BonusExchangeDao() {
+        System.out.println("BonusExchangeDao 被创建，sessionFactory 是否为 null：" + (sessionFactory == null));
+    }//檢查 sessionFactory 是否为 null
+    
+    
+    public int getCustomerPoints(String customerTel) throws DataAccessException {
+        try {
+            String hql = "SELECT c.totalPoints FROM CustomerBean c WHERE c.customerTel = :customerTel";
+            return getSession().createQuery(hql, Integer.class)
+                .setParameter("customerTel", customerTel)
+                .uniqueResult();
+        } catch (Exception e) {
+            throw new DataAccessException("獲取客戶積分失敗: " + e.getMessage(), e);
+        }
+    }
+
+    public List<ProductBean> findExchangeableProducts(int customerPoints) throws DataAccessException {
+        try {
+            String hql = "FROM ProductBean p WHERE p.productPrice <= :customerPoints AND p.numberOfInventory > 0";
+            return getSession().createQuery(hql, ProductBean.class)
+                .setParameter("customerPoints", customerPoints)
+                .list();
+        } catch (Exception e) {
+            throw new DataAccessException("查詢可兌換商品失敗: " + e.getMessage(), e);
+        }
+    }
+
+    public String getLastExchangeId() {
+        try {
+            String hql = "SELECT b.exchangeId FROM BonusExchangeBean b ORDER BY b.exchangeId DESC";
+            Query<String> query = getSession().createQuery(hql, String.class);
+            query.setMaxResults(1);
+            List<String> results = query.getResultList();
+            return results.isEmpty() ? null : results.get(0);
+        } catch (Exception e) {
+            throw new DataAccessException("獲取最後兌換ID時發生錯誤", e);
+        }
+    }
+
+    public void saveExchange(BonusExchangeBean exchange) throws DataAccessException {
+        try {
+            getSession().save(exchange);
+        } catch (Exception e) {
+            throw new DataAccessException("保存兌換記錄失敗: " + e.getMessage(), e);
+        }
+    }
+
+    public List<BonusExchangeBean> getExchangeRecords(String customerTel) throws DataAccessException {
+        try {
+            String hql = "FROM BonusExchangeBean b WHERE b.customerTel = :customerTel";
+            return getSession().createQuery(hql, BonusExchangeBean.class)
+                .setParameter("customerTel", customerTel)
+                .list();
+        } catch (Exception e) {
+            throw new DataAccessException("獲取兌換記錄失敗: " + e.getMessage(), e);
+        }
+    }
+
+    public ProductBean getProductById(String productId) throws DataAccessException {
+        try {
+            return getSession().get(ProductBean.class, productId);
+        } catch (Exception e) {
+            throw new DataAccessException("獲取商品信息失敗: " + e.getMessage(), e);
+        }
+    }
+    
+    public void updateCustomerPoints(String customerTel, int newPoints) throws DataAccessException {
+        try {
+            String hql = "UPDATE CustomerBean c SET c.totalPoints = :newPoints WHERE c.customerTel = :customerTel";
+            getSession().createQuery(hql)
+                .setParameter("newPoints", newPoints)
+                .setParameter("customerTel", customerTel)
+                .executeUpdate();
+        } catch (Exception e) {
+            throw new DataAccessException("更新客戶積分失敗: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateProductInventory(String productId, int newInventory) throws DataAccessException {
+        try {
+            String hql = "UPDATE ProductBean p SET p.numberOfInventory = :newInventory WHERE p.productId = :productId";
+            getSession().createQuery(hql)
+                .setParameter("newInventory", newInventory)
+                .setParameter("productId", productId)
+                .executeUpdate();
+        } catch (Exception e) {
+            throw new DataAccessException("更新商品庫存失敗: " + e.getMessage(), e);
+        }
+    }
+    
+    public BonusExchangeBean getExchangeRecordById(String exchangeId) throws DataAccessException {
+        try {
+            return getSession().get(BonusExchangeBean.class, exchangeId);
+        } catch (Exception e) {
+            throw new DataAccessException("獲取兌換記錄失敗: " + e.getMessage(), e);
+        }
+    }
+
+
+	public List<ProductBean> getProductsByCategory(String category) throws DataAccessException {
+        try {
+            String hql = "FROM ProductBean WHERE productCategory = :category";
+            return getSession().createQuery(hql, ProductBean.class)
+                .setParameter("category", category)
+                .list();
+        } catch (Exception e) {
+            throw new DataAccessException("獲取商品列表失敗: " + e.getMessage(), e);
+        }
+    }
+	
+	public void updateExchangeRecord(BonusExchangeBean exchangeRecord) throws DataAccessException {
+        try {
+            getSession().update(exchangeRecord);
+        } catch (Exception e) {
+            throw new DataAccessException("更新兌換記錄失敗: " + e.getMessage(), e);
+        }
+    }
+    public List<ProductBean> getProductNamesByCategory(String category) throws DataAccessException {
+        try {
+            String hql = "FROM ProductBean WHERE productCategory = :category";
+            return getSession().createQuery(hql, ProductBean.class)
+                          .setParameter("category", category)
+                          .list();
+        } catch (Exception e) {
+            throw new DataAccessException("獲取產品列表失敗: " + e.getMessage(), e);
+        }
+    }
+    
+    public void deleteExchangeRecord(String exchangeId) throws DataAccessException {
+        try {
+            BonusExchangeBean exchangeRecord = getSession().get(BonusExchangeBean.class, exchangeId);
+            if (exchangeRecord != null) {
+                getSession().delete(exchangeRecord);
+            } else {
+                throw new DataAccessException("未找到指定的兌換記錄");
+            }
+        } catch (Exception e) {
+            throw new DataAccessException("刪除兌換記錄失敗: " + e.getMessage(), e);
+        }
+    }
+
+
+
+	
+
+
+    // Implement other methods (updateExchange, deleteExchange, etc.) as needed
+}
